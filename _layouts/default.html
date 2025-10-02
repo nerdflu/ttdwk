@@ -1,11 +1,12 @@
 <!doctype html><html lang="en-AU"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 {% seo %}<link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
-</head><body class="{% if is_home == false %}has-sidebar{% endif %}">
+</head>
 {% assign is_home = page.url == "/" %}
 {% assign is_city = page.collection == "cities" %}
 {% assign is_activity = page.collection == "activities" %}
 {% assign show_sidebar = is_home == false %}
+<body class="{% if show_sidebar %}has-sidebar{% endif %}">
 
 <header class="site-head">
 <button class="sidebar-toggle" data-toggle-sidebar aria-controls="sidebar" aria-expanded="false" {% if show_sidebar == false %}hidden{% endif %}>Menu</button>
