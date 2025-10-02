@@ -2,14 +2,42 @@
 layout: default
 ---
 {% assign prep = page.preposition | default: "in" %}
-<p class="lede">Family activities {{ prep }} {{ page.title }}.</p>
-
 {% assign all = site.activities | where: "city", page.slug %}
-<h2 id="all">All activities {{ prep }} {{ page.title }}</h2>
-<ul>
+
+<p class="lede">Family activities {{ prep }} {{ page.city_title | default: page.title }}.</p>
+
+{% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
+{% assign ordered = site.data.categories %}
+
+<nav class="cats" aria-label="Categories">
+  <ul class="pill-list">
+    {% for c in ordered %}
+      {% if present contains c %}
+        <li><a href="#cat-{{ c | slugify }}">{{ c | replace: "-", " " | capitalize }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+  </nav>
+
+<h2 id="all">All activities {{ prep }} {{ page.city_title | default: page.title }}</h2>
+<ol>
   {% for a in all %}
-    <li><a href="{{ a.url | relative_url }}">{{ a.title }}</a></li>
+    <li><a href="{{ a.url | relative_url }}">{{ a.title }}</a> <small>· {{ a.categories | join: ", " }}</small></li>
   {% endfor %}
-</ul>
+</ol>
+
+{% for c in ordered %}
+  {% if present contains c %}
+    <section id="cat-{{ c | slugify }}">
+      <h2>{{ c | replace: "-", " " | capitalize }} things to do {{ prep }} {{ page.city_title | default: page.title }}</h2>
+      <ul>
+        {% assign subset = all | where_exp: "x", "x.categories contains c" %}
+        {% for a in subset %}
+          <li><a href="{{ a.url | relative_url }}">{{ a.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+{% endfor %}
 
 

@@ -1,9 +1,11 @@
 ---
-title: Taronga Zoo Sydney
+title: Taronga Zoo
 city: sydney
-category: Zoos & Aquariums
-layout: activity
+categories: [animals, outdoor, all-day]
+address: Bradleys Head Rd, Mosman NSW
+price: Ticketed
+hours: Daily 9:30am–5pm
 ---
-Meet Australian wildlife with stunning harbour views and great family facilities.
+Keeper talks, harbour views, and a full-day winner for families.
 
 

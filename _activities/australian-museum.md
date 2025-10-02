@@ -1,9 +1,11 @@
 ---
 title: Australian Museum
 city: sydney
-category: Museums
-layout: activity
+categories: [museums, indoor, animals]
+address: 1 William St, Darlinghurst NSW
+price: Free general entry
+hours: Daily 10am–5pm
 ---
-Explore natural history, dinosaurs, and hands-on learning spaces for kids.
+Big dino halls, insects, and hands-on discovery spaces.
 
 
