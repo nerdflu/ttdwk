@@ -22,14 +22,17 @@
       </ul>
     </div>
     <h2 class="side-title">Categories</h2>
-    <ul class="pill-list">
+    <ul class="cat-list">
       {% for c in categories %}
         {% assign category_slug = c | slugify %}
         {% if category_slug != '' and present_categories contains category_slug %}
           {% assign is_active_category = page.category == category_slug %}
           <li>
-            <a class="pill-list__link{% if is_active_category %} is-active{% endif %}"
-               href="/{{ city_slug }}/{{ category_slug }}/"{% if is_active_category %} aria-current="page"{% endif %}>{{ c | replace: "-", " " | capitalize }}</a>
+            <a class="cat-list__link{% if is_active_category %} is-active{% endif %}"
+               href="/{{ city_slug }}/{{ category_slug }}/"{% if is_active_category %} aria-current="page"{% endif %}>
+              <span class="cat-icon" aria-hidden="true"></span>
+              <span class="cat-text">{{ c | replace: "-", " " | capitalize }}</span>
+            </a>
           </li>
         {% endif %}
       {% endfor %}

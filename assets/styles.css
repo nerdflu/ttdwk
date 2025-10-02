@@ -25,6 +25,11 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-h
 .city-menu{list-style:none;padding:8px 0;margin:8px 0 0;border:1px solid #eee;border-radius:8px}
 .city-menu li a{display:block;padding:8px 12px;text-decoration:none}
 .city-menu li a:hover{background:#f6f6f6}
+.cat-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.cat-list__link{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;border:1px solid transparent}
+.cat-list__link:hover{background:#f6f6f6;border-color:#eee}
+.cat-list__link.is-active{background:#eef;border-color:#dfe}
+.cat-icon{width:10px;height:10px;border-radius:50%;background:#ccc;display:inline-block}
 .content{background:#FFFAF6;border-radius: 0 40px 40px 0;padding:12px}
 @media (min-width:768px){.content{border-radius:40px;padding:20px}}
 
