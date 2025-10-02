@@ -1,63 +1,53 @@
-<!doctype html><html lang="en-AU"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-{% seo %}<link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
+<!doctype html><html lang="en-AU">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  {% seo %}
+  <link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
 </head>
+
+{% comment %}
+Derive page context + sidebar rules
+{% endcomment %}
 {% assign is_home = page.url == "/" %}
 {% assign is_city = page.collection == "cities" %}
 {% assign is_activity = page.collection == "activities" %}
-{% assign show_sidebar = is_home == false %}
+
+{% assign sidebar_variant = page.sidebar %}
+{% assign city_slug = page.city_slug %}
+{% if is_city %}{% assign city_slug = page.slug %}{% endif %}
+{% if is_activity %}{% assign city_slug = page.city %}{% endif %}
+
+{% assign current_city = page.current_city %}
+{% if current_city == nil and city_slug %}
+  {% assign current_city = site.cities | where: "slug", city_slug | first %}
+{% endif %}
+
+{% assign show_sidebar = false %}
+{% if sidebar_variant %}
+  {% assign show_sidebar = true %}
+{% elsif is_city or is_activity %}
+  {% assign show_sidebar = true %}
+{% elsif is_home == false %}
+  {% assign show_sidebar = true %}
+{% endif %}
+
+{% if show_sidebar and sidebar_variant == nil %}
+  {% assign sidebar_variant = "city" %}
+{% endif %}
+
 <body class="{% if show_sidebar %}has-sidebar{% endif %}">
+  {% include site-header.html show_sidebar=show_sidebar %}
 
-<header class="site-head">
-<button class="sidebar-toggle" data-toggle-sidebar aria-controls="sidebar" aria-expanded="false" {% if show_sidebar == false %}hidden{% endif %}>Menu</button>
-<a class="brand" href="/">Things To Do With Kids</a></header>
-
-<div class="site-shell">
-  <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
-    {% if show_sidebar %}
-    {% assign city_slug = page.city_slug %}
-    {% if is_city %}{% assign city_slug = page.slug %}{% endif %}
-    {% if is_activity %}{% assign city_slug = page.city %}{% endif %}
-    {% assign ordered = site.data.categories %}
-    {% if city_slug %}
-      {% assign all = site.activities | where: "city", city_slug %}
-      {% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
-    {% endif %}
-    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
-      <a class="brand side-brand" href="/">Things To Do With Kids</a>
-      {% if city_slug %}
-      {% assign current_city = site.cities | where: "slug", city_slug | first %}
-      <div class="city-select">
-        <button class="city-select-toggle" aria-controls="city-menu" aria-expanded="false">{{ current_city.city_title | default: current_city.title | default: city_slug | replace: "-", " " | capitalize }}</button>
-        <ul id="city-menu" class="city-menu" hidden>
-          {% for c in site.cities %}
-            <li><a href="{{ c.url | relative_url }}">{{ c.city_title | default: c.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      <h2 class="side-title">Categories</h2>
-      <ul class="pill-list">
-        {% for c in ordered %}
-          <li><a href="/{{ city_slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
-        {% endfor %}
-      </ul>
+  <div class="site-shell">
+    <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
+      {% if show_sidebar %}
+        {% include sidebar.html city_slug=city_slug current_city=current_city sidebar_variant=sidebar_variant %}
       {% endif %}
-    </aside>
-    {% endif %}
-
-    <main class="content"><h1>{{ page.h1 | default: page.title }}</h1>{{ content }}</main>
+      <main class="content"><h1>{{ page.h1 | default: page.title }}</h1>{{ content }}</main>
+    </div>
   </div>
-</div>
 
-<footer class="site-foot">&copy; {{ "now" | date: "%Y" }}</footer>
-<script>(function(){
-var btn=document.querySelector('[data-toggle-sidebar]');
-var sb=document.getElementById('sidebar');
-if(btn&&sb){btn.addEventListener('click',function(){var open=sb.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');});}
-var ct=document.querySelector('.city-select-toggle');
-var cm=document.getElementById('city-menu');
-if(ct&&cm){ct.addEventListener('click',function(){var isOpen=cm.hasAttribute('hidden')===false; if(isOpen){cm.setAttribute('hidden',''); ct.setAttribute('aria-expanded','false');} else {cm.removeAttribute('hidden'); ct.setAttribute('aria-expanded','true');}});}
-})();</script>
-</body></html>
-
-
+  {% include site-footer.html %}
+  <script>{% include sidebar-toggle.js %}</script>
+</body>
+</html>

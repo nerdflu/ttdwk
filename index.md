@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Things To Do With Kids in Australia
+sidebar: default
 ---
 Pick a city to start.
 <ul class="city-grid">

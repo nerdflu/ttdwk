@@ -1,0 +1,35 @@
+{% assign city_slug = include.city_slug %}
+{% assign current_city = include.current_city %}
+{% assign sidebar_variant = include.sidebar_variant | default: 'default' %}
+{% unless current_city %}
+  {% if city_slug %}
+    {% assign current_city = site.cities | where: "slug", city_slug | first %}
+  {% endif %}
+{% endunless %}
+{% assign categories = site.data.categories %}
+<aside class="sidebar sidebar--{{ sidebar_variant }}" id="sidebar" aria-label="Sidebar">
+  <a class="brand side-brand" href="/">Things To Do With Kids</a>
+  {% if city_slug %}
+    <div class="city-select">
+      <button class="city-select-toggle" aria-controls="city-menu" aria-expanded="false">{{ current_city.city_title | default: current_city.title | default: city_slug | replace: "-", " " | capitalize }}</button>
+      <ul id="city-menu" class="city-menu" hidden>
+        {% for c in site.cities %}
+          <li><a href="{{ c.url | relative_url }}">{{ c.city_title | default: c.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <h2 class="side-title">Categories</h2>
+    <ul class="pill-list">
+      {% for c in categories %}
+        <li><a href="/{{ city_slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h2 class="side-title">Cities</h2>
+    <ul class="city-menu">
+      {% for c in site.cities %}
+        <li><a href="{{ c.url | relative_url }}">{{ c.city_title | default: c.title }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</aside>
