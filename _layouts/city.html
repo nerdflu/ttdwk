@@ -3,8 +3,13 @@ layout: default
 ---
 {% assign prep = page.preposition | default: "in" %}
 {% assign all = site.activities | where: "city", page.slug %}
+{% assign cityname = page.city_title | default: page.title %}
 
-<p class="lede">Family activities {{ prep }} {{ page.city_title | default: page.title }}.</p>
+{% if page.photo %}
+<figure class="city-hero"><img src="{{ page.photo | relative_url }}" alt="{{ cityname }}"></figure>
+{% endif %}
+
+<p class="lede">{{ page.lede | default: "Family activities " | append: prep | append: " " | append: cityname | append: "." }}</p>
 
 {% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
 {% assign ordered = site.data.categories %}
