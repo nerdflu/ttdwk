@@ -25,6 +25,15 @@
     <aside class="sidebar" id="sidebar" aria-label="Sidebar">
       <a class="brand side-brand" href="/">Things To Do With Kids</a>
       {% if city_slug %}
+      {% assign current_city = site.cities | where: "slug", city_slug | first %}
+      <div class="city-select">
+        <button class="city-select-toggle" aria-controls="city-menu" aria-expanded="false">{{ current_city.city_title | default: current_city.title | default: city_slug | replace: "-", " " | capitalize }}</button>
+        <ul id="city-menu" class="city-menu" hidden>
+          {% for c in site.cities %}
+            <li><a href="{{ c.url | relative_url }}">{{ c.city_title | default: c.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
       <h2 class="side-title">Categories</h2>
       <ul class="pill-list">
         {% for c in ordered %}
@@ -40,7 +49,14 @@
 </div>
 
 <footer class="site-foot">&copy; {{ "now" | date: "%Y" }}</footer>
-<script>(function(){var btn=document.querySelector('[data-toggle-sidebar]');var sb=document.getElementById('sidebar');if(!btn||!sb)return;btn.addEventListener('click',function(){var open=sb.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');});})();</script>
+<script>(function(){
+var btn=document.querySelector('[data-toggle-sidebar]');
+var sb=document.getElementById('sidebar');
+if(btn&&sb){btn.addEventListener('click',function(){var open=sb.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');});}
+var ct=document.querySelector('.city-select-toggle');
+var cm=document.getElementById('city-menu');
+if(ct&&cm){ct.addEventListener('click',function(){var isOpen=cm.hasAttribute('hidden')===false; if(isOpen){cm.setAttribute('hidden',''); ct.setAttribute('aria-expanded','false');} else {cm.removeAttribute('hidden'); ct.setAttribute('aria-expanded','true');}});}
+})();</script>
 </body></html>
 
 
