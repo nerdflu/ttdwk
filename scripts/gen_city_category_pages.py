@@ -1,4 +1,4 @@
-import os, re, pathlib, yaml
+import os, re, pathlib
 
 ROOT = pathlib.Path(".")
 CITIES_DIR = ROOT / "_cities"
