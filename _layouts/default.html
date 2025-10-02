@@ -1,37 +1,53 @@
-<!doctype html><html lang="en-AU"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-{% seo %}<link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
+<!doctype html><html lang="en-AU">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  {% seo %}
+  <link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
 </head>
+
+{% comment %}
+Derive page context + sidebar rules
+{% endcomment %}
+{% assign is_home = page.url == "/" %}
 {% assign is_city = page.collection == "cities" %}
 {% assign is_activity = page.collection == "activities" %}
+
 {% assign sidebar_variant = page.sidebar %}
 {% assign city_slug = page.city_slug %}
 {% if is_city %}{% assign city_slug = page.slug %}{% endif %}
 {% if is_activity %}{% assign city_slug = page.city %}{% endif %}
+
 {% assign current_city = page.current_city %}
 {% if current_city == nil and city_slug %}
   {% assign current_city = site.cities | where: "slug", city_slug | first %}
 {% endif %}
+
 {% assign show_sidebar = false %}
 {% if sidebar_variant %}
   {% assign show_sidebar = true %}
 {% elsif is_city or is_activity %}
   {% assign show_sidebar = true %}
-  {% assign sidebar_variant = sidebar_variant | default: "city" %}
+{% elsif is_home == false %}
+  {% assign show_sidebar = true %}
 {% endif %}
+
 {% if show_sidebar and sidebar_variant == nil %}
-  {% assign sidebar_variant = "default" %}
+  {% assign sidebar_variant = "city" %}
 {% endif %}
+
 <body class="{% if show_sidebar %}has-sidebar{% endif %}">
-{% include site-header.html show_sidebar=show_sidebar %}
-<div class="site-shell">
-  <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
-    {% if show_sidebar %}
-      {% include sidebar.html city_slug=city_slug current_city=current_city sidebar_variant=sidebar_variant %}
-    {% endif %}
-    <main class="content"><h1>{{ page.h1 | default: page.title }}</h1>{{ content }}</main>
+  {% include site-header.html show_sidebar=show_sidebar %}
+
+  <div class="site-shell">
+    <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
+      {% if show_sidebar %}
+        {% include sidebar.html city_slug=city_slug current_city=current_city sidebar_variant=sidebar_variant %}
+      {% endif %}
+      <main class="content"><h1>{{ page.h1 | default: page.title }}</h1>{{ content }}</main>
+    </div>
   </div>
-</div>
-{% include site-footer.html %}
-<script>{% include sidebar-toggle.js %}</script>
-</body></html>
+
+  {% include site-footer.html %}
+  <script>{% include sidebar-toggle.js %}</script>
+</body>
+</html>
