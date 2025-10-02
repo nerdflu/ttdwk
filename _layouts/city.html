@@ -15,16 +15,6 @@ layout: default
 {% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
 {% assign ordered = site.data.categories %}
 
-<nav class="cats" aria-label="Categories">
-  <ul class="pill-list">
-    {% for c in ordered %}
-      {% if present contains c %}
-        <li><a href="/{{ page.slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-  </nav>
-
 <h2 id="all">All activities {{ prep }} {{ page.city_title | default: page.title }}</h2>
 <ol>
   {% for a in all %}
@@ -32,18 +22,6 @@ layout: default
   {% endfor %}
 </ol>
 
-{% for c in ordered %}
-  {% if present contains c %}
-    <section id="cat-{{ c | slugify }}">
-      <h2>{{ c | replace: "-", " " | capitalize }} </h2>
-      <ul>
-        {% assign subset = all | where_exp: "x", "x.categories contains c" %}
-        {% for a in subset %}
-          <li><a href="{{ a.url | relative_url }}">{{ a.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </section>
-  {% endif %}
-{% endfor %}
+
 
 
