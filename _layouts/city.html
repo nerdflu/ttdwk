@@ -5,9 +5,6 @@ layout: default
 {% assign all = site.activities | where: "city", page.slug %}
 {% assign cityname = page.city_title | default: page.title %}
 
-{% if page.photo %}
-<figure class="city-hero"><img src="{{ page.photo | relative_url }}" alt="{{ cityname }}"></figure>
-{% endif %}
 
 {% if page.lede %}
 <p class="lede">{{ page.lede }}</p>
@@ -22,7 +19,7 @@ layout: default
   <ul class="pill-list">
     {% for c in ordered %}
       {% if present contains c %}
-        <li><a href="#cat-{{ c | slugify }}">{{ c | replace: "-", " " | capitalize }}</a></li>
+        <li><a href="/{{ page.slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
       {% endif %}
     {% endfor %}
   </ul>
@@ -38,7 +35,7 @@ layout: default
 {% for c in ordered %}
   {% if present contains c %}
     <section id="cat-{{ c | slugify }}">
-      <h2>{{ c | replace: "-", " " | capitalize }} things to do {{ prep }} {{ page.city_title | default: page.title }}</h2>
+      <h2>{{ c | replace: "-", " " | capitalize }} </h2>
       <ul>
         {% assign subset = all | where_exp: "x", "x.categories contains c" %}
         {% for a in subset %}

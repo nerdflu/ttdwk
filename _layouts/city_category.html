@@ -1,0 +1,40 @@
+---
+layout: default
+---
+{% assign prep = page.preposition | default: "in" %}
+{% assign all = site.activities | where: "city", page.city_slug %}
+{% assign subset = all | where_exp: "x", "x.categories contains page.category" %}
+
+<h1>{{ page.h1 }}</h1>
+<p class="lede">{{ page.category | replace: "-", " " | capitalize }} things to do {{ prep }} {{ page.city_title }}</p>
+
+<ol itemscope itemtype="https://schema.org/ItemList">
+  {% for a in subset %}
+  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+    <span itemprop="position">{{ forloop.index }}</span>
+    <a itemprop="item" href="{{ a.url | relative_url }}"><span itemprop="name">{{ a.title }}</span></a>
+    <small> · {{ a.categories | join: ", " }}</small>
+  </li>
+  {% endfor %}
+  {% if subset == empty %}
+  <li>No activities found in this category yet. Check back soon.</li>
+  {% endif %}
+</ol>
+
+<nav class="back"><a href="/{{ page.city_slug }}/">&larr; Back to {{ page.city_title }}</a></nav>
+
+<!-- JSON-LD: ItemList -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ItemList",
+  "name":"{{ page.h1 | escape }}",
+  "itemListElement":[
+    {% for a in subset %}
+    {"@type":"ListItem","position":{{ forloop.index }},"url":"{{ a.url | absolute_url }}"}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+

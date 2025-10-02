@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Generate /city/category pages
+        run: python scripts/gen_city_category_pages.py
       - uses: actions/configure-pages@v5
       - uses: actions/setup-ruby@v1
         with: { ruby-version: '3.2' }
