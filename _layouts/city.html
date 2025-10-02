@@ -9,7 +9,11 @@ layout: default
 <figure class="city-hero"><img src="{{ page.photo | relative_url }}" alt="{{ cityname }}"></figure>
 {% endif %}
 
-<p class="lede">{{ page.lede | default: "Family activities " | append: prep | append: " " | append: cityname | append: "." }}</p>
+{% if page.lede %}
+<p class="lede">{{ page.lede }}</p>
+{% else %}
+<p class="lede">Family activities {{ prep }} {{ cityname }}.</p>
+{% endif %}
 
 {% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
 {% assign ordered = site.data.categories %}
