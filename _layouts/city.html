@@ -1,0 +1,19 @@
+{% assign city_slug = page.slug | default: page.name | default: page.title | downcase %}
+{% assign city_slug = city_slug | replace: ' ', '-' %}
+{% assign city_activities = site.activities | where: "city", city_slug %}
+{% assign categories = site.data.categories %}
+{% layout default %}
+<div class="city-intro">
+  {{ content }}
+</div>
+<h2>Activities in {{ page.title }}</h2>
+<ul>
+  {% for item in city_activities %}
+  <li>
+    <a href="{{ item.url }}">{{ item.title }}</a>
+    {% if item.category %}<small>— {{ item.category }}</small>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+
+

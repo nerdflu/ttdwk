@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Sitemap: https://thingstodowithkids.com.au/sitemap.xml
+
+

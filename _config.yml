@@ -1,0 +1,31 @@
+title: Things To Do With Kids
+url: https://thingstodowithkids.com.au
+baseurl: ""
+timezone: Australia/Brisbane
+locale: en-AU
+permalink: pretty
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+markdown: kramdown
+kramdown: { input: GFM }
+
+collections:
+  cities:
+    output: true
+    permalink: "/:name/"
+  activities:
+    output: true
+    permalink: "/:collection/:name/"
+
+defaults:
+  - scope: { path: "_cities" }
+    values: { layout: city }
+  - scope: { path: "_activities" }
+    values: { layout: activity }
+
+exclude:
+  - vendor
+  - node_modules
+
+

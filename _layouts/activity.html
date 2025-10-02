@@ -1,0 +1,7 @@
+{% layout default %}
+<article class="activity">
+  <p class="meta">In <a href="/{{ page.city }}/">{{ page.city | capitalize }}</a>{% if page.category %} · {{ page.category }}{% endif %}</p>
+  {{ content }}
+</article>
+
+
