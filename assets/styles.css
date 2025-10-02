@@ -5,6 +5,8 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-h
 .pill-list{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0 0 16px}
 .pill-list a{border:1px solid #ddd;border-radius:999px;padding:6px 10px;text-decoration:none}
 .pill-list a:hover{text-decoration:underline}
+.pill-list__link.is-active{background:#4031a0;color:#fff;border-color:#4031a0;font-weight:600}
+.pill-list__link.is-active:hover{text-decoration:none}
 
 /* Layout shell paddings and window */
 .site-shell{padding:5px}
