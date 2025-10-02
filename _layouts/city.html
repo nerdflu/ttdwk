@@ -1,18 +1,14 @@
-{% assign city_slug = page.slug | default: page.name | default: page.title | downcase %}
-{% assign city_slug = city_slug | replace: ' ', '-' %}
-{% assign city_activities = site.activities | where: "city", city_slug %}
-{% assign categories = site.data.categories %}
-{% layout default %}
-<div class="city-intro">
-  {{ content }}
-</div>
-<h2>Activities in {{ page.title }}</h2>
+---
+layout: default
+---
+{% assign prep = page.preposition | default: "in" %}
+<p class="lede">Family activities {{ prep }} {{ page.title }}.</p>
+
+{% assign all = site.activities | where: "city", page.slug %}
+<h2 id="all">All activities {{ prep }} {{ page.title }}</h2>
 <ul>
-  {% for item in city_activities %}
-  <li>
-    <a href="{{ item.url }}">{{ item.title }}</a>
-    {% if item.category %}<small>— {{ item.category }}</small>{% endif %}
-  </li>
+  {% for a in all %}
+    <li><a href="{{ a.url | relative_url }}">{{ a.title }}</a></li>
   {% endfor %}
 </ul>
 

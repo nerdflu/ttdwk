@@ -1,8 +1,8 @@
 ---
 title: Sydney
 slug: sydney
-layout: city
+preposition: in
+h1: Things to do with kids in Sydney
 ---
-Sydney is Australia’s largest city, famous for its harbour, beaches, and family-friendly attractions.
 
 

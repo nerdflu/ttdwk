@@ -13,7 +13,7 @@ kramdown: { input: GFM }
 collections:
   cities:
     output: true
-    permalink: "/:name/"
+    permalink: "/:title/"
   activities:
     output: true
     permalink: "/:collection/:name/"
@@ -23,6 +23,9 @@ defaults:
     values: { layout: city }
   - scope: { path: "_activities" }
     values: { layout: activity }
+  - scope: { path: "", type: "cities" }
+    values:
+      layout: city
 
 exclude:
   - vendor
