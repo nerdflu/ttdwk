@@ -14,7 +14,7 @@
 <div class="site-shell">
   <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
     {% if show_sidebar %}
-    {% assign city_slug = nil %}
+    {% assign city_slug = page.city_slug %}
     {% if is_city %}{% assign city_slug = page.slug %}{% endif %}
     {% if is_activity %}{% assign city_slug = page.city %}{% endif %}
     {% assign ordered = site.data.categories %}
@@ -28,11 +28,7 @@
       <ul class="pill-list">
         {% for c in ordered %}
           {% if present contains c %}
-            {% if is_city %}
-              <li><a href="#cat-{{ c | slugify }}">{{ c | replace: "-", " " | capitalize }}</a></li>
-            {% else %}
-              <li><a href="/{{ city_slug }}/#cat-{{ c | slugify }}">{{ c | replace: "-", " " | capitalize }}</a></li>
-            {% endif %}
+            <li><a href="/{{ city_slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
           {% endif %}
         {% endfor %}
       </ul>
