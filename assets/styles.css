@@ -11,11 +11,14 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-h
 @media (min-width:768px){.site-shell{padding:20px}}
 .layout{display:grid;grid-template-columns:1fr;gap:12px;max-width:1200px;margin:0 auto}
 .layout.with-sidebar{grid-template-columns:260px 1fr}
-.sidebar{background:#fff;border-radius:20px;padding:12px;transform:translateX(-110%);transition:transform .25s ease}
+.sidebar{background:#fff;border-radius:40px 0 0 40px;padding:12px;transform:translateX(-110%);transition:transform .25s ease}
 .sidebar.open{transform:translateX(0)}
 @media (min-width:768px){.sidebar{transform:none;border-radius:40px;padding:16px}}
 .sidebar-toggle{background:#fff;border:1px solid #ddd;border-radius:999px;padding:6px 10px;margin-right:8px}
-.content{background:#FFFAF6;border-radius:20px;padding:12px}
+@media (min-width:768px){.sidebar-toggle{display:none}}
+.side-brand{display:block;margin:0 0 12px;font-weight:700;text-decoration:none}
+.has-sidebar .site-head .brand{display:none}
+.content{background:#FFFAF6;border-radius: 0 40px 40px 0;padding:12px}
 @media (min-width:768px){.content{border-radius:40px;padding:20px}}
 
 

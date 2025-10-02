@@ -5,7 +5,6 @@ layout: default
 {% assign all = site.activities | where: "city", page.city_slug %}
 {% assign subset = all | where_exp: "x", "x.categories contains page.category" %}
 
-<h1>{{ page.h1 }}</h1>
 <p class="lede">{{ page.category | replace: "-", " " | capitalize }} things to do {{ prep }} {{ page.city_title }}</p>
 
 <ol itemscope itemtype="https://schema.org/ItemList">

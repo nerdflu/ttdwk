@@ -1,7 +1,7 @@
 <!doctype html><html lang="en-AU"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 {% seo %}<link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
-</head><body>
+</head><body class="{% if is_home == false %}has-sidebar{% endif %}">
 {% assign is_home = page.url == "/" %}
 {% assign is_city = page.collection == "cities" %}
 {% assign is_activity = page.collection == "activities" %}
@@ -23,13 +23,12 @@
       {% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
     {% endif %}
     <aside class="sidebar" id="sidebar" aria-label="Sidebar">
-      {% if city_slug and present %}
+      <a class="brand side-brand" href="/">Things To Do With Kids</a>
+      {% if city_slug %}
       <h2 class="side-title">Categories</h2>
       <ul class="pill-list">
         {% for c in ordered %}
-          {% if present contains c %}
-            <li><a href="/{{ city_slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
-          {% endif %}
+          <li><a href="/{{ city_slug }}/{{ c | slugify }}/">{{ c | replace: "-", " " | capitalize }}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
