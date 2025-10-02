@@ -2,9 +2,50 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 {% seo %}<link rel="stylesheet" href="/assets/styles.css">
 </head><body>
-<header class="site-head"><a class="brand" href="/">Things To Do With Kids</a></header>
-<main class="container"><h1>{{ page.h1 | default: page.title }}</h1>{{ content }}</main>
+{% assign is_home = page.url == "/" %}
+{% assign is_city = page.collection == "cities" %}
+{% assign is_activity = page.collection == "activities" %}
+{% assign show_sidebar = is_home == false %}
+
+<header class="site-head">
+<button class="sidebar-toggle" data-toggle-sidebar aria-controls="sidebar" aria-expanded="false" {% if show_sidebar == false %}hidden{% endif %}>Menu</button>
+<a class="brand" href="/">Things To Do With Kids</a></header>
+
+<div class="site-shell">
+  <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
+    {% if show_sidebar %}
+    {% assign city_slug = nil %}
+    {% if is_city %}{% assign city_slug = page.slug %}{% endif %}
+    {% if is_activity %}{% assign city_slug = page.city %}{% endif %}
+    {% assign ordered = site.data.categories %}
+    {% if city_slug %}
+      {% assign all = site.activities | where: "city", city_slug %}
+      {% assign present = all | map: "categories" | join: "," | split: "," | uniq %}
+    {% endif %}
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+      {% if city_slug and present %}
+      <h2 class="side-title">Categories</h2>
+      <ul class="pill-list">
+        {% for c in ordered %}
+          {% if present contains c %}
+            {% if is_city %}
+              <li><a href="#cat-{{ c | slugify }}">{{ c | replace: "-", " " | capitalize }}</a></li>
+            {% else %}
+              <li><a href="/{{ city_slug }}/#cat-{{ c | slugify }}">{{ c | replace: "-", " " | capitalize }}</a></li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </aside>
+    {% endif %}
+
+    <main class="content"><h1>{{ page.h1 | default: page.title }}</h1>{{ content }}</main>
+  </div>
+</div>
+
 <footer class="site-foot">&copy; {{ "now" | date: "%Y" }}</footer>
+<script>(function(){var btn=document.querySelector('[data-toggle-sidebar]');var sb=document.getElementById('sidebar');if(!btn||!sb)return;btn.addEventListener('click',function(){var open=sb.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');});})();</script>
 </body></html>
 
 
