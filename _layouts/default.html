@@ -1,6 +1,6 @@
 <!doctype html><html lang="en-AU"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-{% seo %}<link rel="stylesheet" href="/assets/styles.css">
+{% seo %}<link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.github.build_revision | default: site.time | date: '%s' }}">
 </head><body>
 {% assign is_home = page.url == "/" %}
 {% assign is_city = page.collection == "cities" %}
