@@ -1,51 +1,49 @@
-{% assign city_slug = include.city_slug %}
+{% assign city_slug = include.city_slug | to_s | strip %}
 {% assign current_city = include.current_city %}
 {% assign sidebar_variant = include.sidebar_variant | default: 'default' %}
 {% unless current_city %}
-  {% if city_slug %}
+  {% if city_slug != '' %}
     {% assign current_city = site.cities | where: "slug", city_slug | first %}
   {% endif %}
 {% endunless %}
+{% assign resolved_city_slug = current_city.slug | default: city_slug %}
 {% assign categories = site.data.categories %}
 <aside class="sidebar sidebar--{{ sidebar_variant }}" id="sidebar" aria-label="Sidebar">
   <a class="brand side-brand" href="/">Things To Do With Kids</a>
-  {% if city_slug %}
-    {% assign city_activities = site.activities | where: 'city', city_slug %}
-    {% if city_activities == empty %}
-      <h2 class="side-title">Cities</h2>
-      <ul class="city-menu">
+  {% if resolved_city_slug != '' %}
+    {% assign city_activities = site.activities | where: 'city', resolved_city_slug %}
+    {% assign city_categories = city_activities | map: 'categories' | join: ',' %}
+    {% assign present_categories = city_categories | split: ',' | uniq %}
+    {% assign present_categories = present_categories | where_exp: 'cat', 'cat != ""' %}
+    <div class="city-select">
+      <button class="city-select-toggle" aria-controls="city-menu" aria-expanded="false">{{ current_city.city_title | default: current_city.title | default: resolved_city_slug | replace: "-", " " | capitalize }}</button>
+      <ul id="city-menu" class="city-menu" hidden>
         {% for c in site.cities %}
           <li><a href="{{ c.url | relative_url }}">{{ c.city_title | default: c.title }}</a></li>
         {% endfor %}
       </ul>
-    {% else %}
-      {% assign city_categories = city_activities | map: 'categories' | join: ',' %}
-      {% assign present_categories = city_categories | split: ',' | uniq %}
-      <div class="city-select">
-        <button class="city-select-toggle" aria-controls="city-menu" aria-expanded="false">{{ current_city.city_title | default: current_city.title | default: city_slug | replace: "-", " " | capitalize }}</button>
-        <ul id="city-menu" class="city-menu" hidden>
-          {% for c in site.cities %}
-            <li><a href="{{ c.url | relative_url }}">{{ c.city_title | default: c.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      <h2 class="side-title">Categories</h2>
-      <ul class="cat-list">
-        {% for c in categories %}
-          {% assign category_slug = c | slugify %}
-          {% assign is_active_category = page.category == category_slug %}
-          {% if category_slug != '' and present_categories contains category_slug %}
-            <li>
-              <a class="cat-list__link{% if is_active_category %} is-active{% endif %}"
-                 href="/{{ city_slug }}/{{ category_slug }}/"{% if is_active_category %} aria-current="page"{% endif %}>
-                <span class="cat-icon" aria-hidden="true"></span>
-                <span class="cat-text">{{ c | replace: "-", " " | capitalize }}</span>
-              </a>
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    {% endif %}
+    </div>
+    <h2 class="side-title">Categories</h2>
+    <ul class="cat-list">
+      {% assign has_visible_category = false %}
+      {% for c in categories %}
+        {% assign category_slug = c | slugify %}
+        {% assign is_active_category = page.category == category_slug %}
+        {% if category_slug != '' and present_categories contains category_slug %}
+          {% assign has_visible_category = true %}
+          <li>
+            <a class="cat-list__link{% if is_active_category %} is-active{% endif %}"
+               href="/{{ resolved_city_slug }}/{{ category_slug }}/"{% if is_active_category %} aria-current="page"{% endif %}>
+              <span class="cat-icon" aria-hidden="true"></span>
+              <span class="cat-text">{{ c | replace: "-", " " | capitalize }}</span>
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      {% unless has_visible_category %}
+        <li class="cat-list__empty">No categories for this city yet.</li>
+      {% endunless %}
+    </ul>
   {% else %}
     <h2 class="side-title">Cities</h2>
     <ul class="city-menu">
