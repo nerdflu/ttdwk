@@ -1,4 +1,11 @@
 {% assign city_slug = include.city_slug | to_s | strip %}
+{% if city_slug == '' %}
+  {% if page.collection == 'cities' %}
+    {% assign city_slug = page.slug %}
+  {% elsif page.collection == 'activities' %}
+    {% assign city_slug = page.city %}
+  {% endif %}
+{% endif %}
 {% assign current_city = include.current_city %}
 {% assign sidebar_variant = include.sidebar_variant | default: 'default' %}
 {% unless current_city %}
