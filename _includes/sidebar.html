@@ -9,6 +9,7 @@
 {% assign resolved_city_slug = current_city.slug | default: city_slug %}
 {% assign categories = site.data.categories %}
 <aside class="sidebar sidebar--{{ sidebar_variant }}" id="sidebar" aria-label="Sidebar">
+  <!-- debug: page.collection={{ page.collection }} page.url={{ page.url }} include.city_slug={{ include.city_slug }} current_city.slug={{ current_city.slug }} resolved_city_slug={{ resolved_city_slug }} -->
   <a class="brand side-brand" href="/">Things To Do With Kids</a>
   {% if resolved_city_slug != '' %}
     {% assign city_activities = site.activities | where: 'city', resolved_city_slug %}
