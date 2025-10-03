@@ -8,20 +8,40 @@
 {% comment %}
 Derive page context + sidebar rules
 {% endcomment %}
+{%- comment -%}
+Identify page type. These flags are used to decide sidebar behavior and
+to infer the `city_slug` when not explicitly provided in the page front matter.
+{%- endcomment -%}
 {% assign is_home = page.url == "/" %}
 {% assign is_city = page.collection == "cities" %}
 {% assign is_activity = page.collection == "activities" %}
 
+{%- comment -%}
+Figure out which sidebar variant to render and what `city_slug` should be.
+- `page.sidebar` allows forcing a specific variant from a layout/page.
+- For city pages, use the city's `slug`.
+- For activity pages, use the activity's `city`.
+{%- endcomment -%}
 {% assign sidebar_variant = page.sidebar %}
 {% assign city_slug = page.city_slug %}
 {% if is_city %}{% assign city_slug = page.slug %}{% endif %}
 {% if is_activity %}{% assign city_slug = page.city %}{% endif %}
 
+{%- comment -%}
+Resolve the `current_city` object for use by the sidebar include.
+If a city slug is known but `page.current_city` is not set, look it up.
+{%- endcomment -%}
 {% assign current_city = page.current_city %}
 {% if current_city == nil and city_slug %}
   {% assign current_city = site.cities | where: "slug", city_slug | first %}
 {% endif %}
 
+{%- comment -%}
+Decide whether to show the sidebar at all:
+- If a specific `sidebar_variant` is requested, always show it.
+- Otherwise, show on city and activity pages.
+- Otherwise, show on any non-home page.
+{%- endcomment -%}
 {% assign show_sidebar = false %}
 {% if sidebar_variant %}
   {% assign show_sidebar = true %}
@@ -31,6 +51,11 @@ Derive page context + sidebar rules
   {% assign show_sidebar = true %}
 {% endif %}
 
+{%- comment -%}
+If we decided to show a sidebar but no variant was specified, default to the
+"city" variant. The `sidebar.html` include will then decide what to render
+based on `city_slug` and available activities, with fallbacks where needed.
+{%- endcomment -%}
 {% if show_sidebar and sidebar_variant == nil %}
   {% assign sidebar_variant = "city" %}
 {% endif %}
@@ -40,6 +65,12 @@ Derive page context + sidebar rules
 
   <div class="site-shell">
     <div class="layout{% if show_sidebar %} with-sidebar{% endif %}">
+      {%- comment -%}
+      Render the sidebar include with the derived context:
+      - `sidebar_variant` controls the overall sidebar mode (defaults to "city")
+      - `city_slug` and `current_city` let the sidebar compute categories and fallbacks
+      The include contains logic to show a Cities list if a city has no activities yet.
+      {%- endcomment -%}
       {% if show_sidebar %}
         {% include sidebar.html city_slug=city_slug current_city=current_city sidebar_variant=sidebar_variant %}
       {% endif %}
