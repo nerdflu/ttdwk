@@ -2,10 +2,15 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   {% assign _month_year = site.time | date: "%B %Y" %}
+  {% assign _year = site.time | date: "%Y" %}
   {% assign _computed_title = page.title %}
   {% if page.collection == "cities" %}
     {% assign _cityname = page.city_title | default: page.title %}
     {% assign _computed_title = "Top 20 things to do with kids in " | append: _cityname | append: " - " | append: _month_year %}
+  {% elsif page.layout == "city_category" or page.category %}
+    {% assign _cat = page.category | replace: "-", " " | capitalize %}
+    {% assign _city_display = page.city_title | default: page.city_slug | replace: "-", " " | capitalize %}
+    {% assign _computed_title = _cat | append: " things to do with kids in " | append: _city_display | append: " (" | append: _year | append: ")" %}
   {% else %}
     {% assign _computed_title = page.title | append: " - " | append: _month_year %}
   {% endif %}
