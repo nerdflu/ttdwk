@@ -15,10 +15,8 @@
 {% endunless %}
 {% assign resolved_city_slug = current_city.slug | default: city_slug %}
 {% assign categories = site.data.categories %}
-<aside class="sidebar sidebar--{{ sidebar_variant }}" id="sidebar" aria-label="Sidebar" data-city="{{ resolved_city_slug }}" data-variant="{{ sidebar_variant }}" data-collection="{{ page.collection }}">
-  <!-- debug: page.collection={{ page.collection }} page.url={{ page.url }} include.city_slug={{ include.city_slug }} current_city.slug={{ current_city.slug }} resolved_city_slug={{ resolved_city_slug }} -->
+<aside class="sidebar sidebar--{{ sidebar_variant }}" id="sidebar" aria-label="Sidebar">
   <a class="brand side-brand" href="/">Things To Do With Kids</a>
-  <div class="sidebar-debug">debug: city={{ resolved_city_slug }} variant={{ sidebar_variant }} collection={{ page.collection }}</div>
   {% if resolved_city_slug != '' %}
     {% assign city_activities = site.activities | where: 'city', resolved_city_slug %}
     {% assign city_categories = city_activities | map: 'categories' | join: ',' %}
