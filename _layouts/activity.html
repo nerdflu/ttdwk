@@ -3,7 +3,7 @@ layout: default
 sidebar: city
 ---
 <article class="activity">
-  <p class="meta">In <a href="/{{ page.city | append: "/" | relative_url }}">{{ page.city | replace: '-', ' ' | capitalize }}</a>{% if page.categories %} · {{ page.categories | join: ", " }}{% endif %}</p>
+  <p class="meta">In <a href="{{ page.city | append: '/' | relative_url }}">{{ page.city | replace: '-', ' ' | capitalize }}</a>{% if page.categories %} · {{ page.categories | join: ", " }}{% endif %}</p>
   {{ content }}
 </article>
 
