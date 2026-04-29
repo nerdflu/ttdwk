@@ -4,9 +4,12 @@ baseurl: ""
 timezone: Australia/Brisbane
 locale: en-AU
 permalink: pretty
+theme: ""
+
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+
 markdown: kramdown
 kramdown: { input: GFM }
 
@@ -23,14 +26,15 @@ defaults:
     values: { layout: city }
   - scope: { path: "_activities" }
     values: { layout: activity }
-  - scope: { path: "", type: "cities" }
-    values:
-      layout: city
-  - scope: { path: "", type: "activities" }
-    values: { layout: activity }
 
 exclude:
   - vendor
-  - node_modules
-
-
+  - .bundle
+  - scripts
+  - Gemfile
+  - Gemfile.lock
+  - PROJECT_PLAN.md
+  - THEME_MAP.md
+  - .gitignore
+  - category_pages
+  - _site

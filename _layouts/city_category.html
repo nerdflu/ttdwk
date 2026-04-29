@@ -1,11 +1,12 @@
 ---
 layout: default
+sidebar: city
 ---
 {% assign prep = page.preposition | default: "in" %}
 {% assign all = site.activities | where: "city", page.city_slug %}
 {% assign subset = all | where_exp: "x", "x.categories contains page.category" %}
 
-<p class="lede">{{ page.category | replace: "-", " " | capitalize }} things to do {{ prep }} {{ page.city_title }}</p>
+<p class="lede">Things to do {{ prep }} {{ page.city_title }} - {{ page.category | replace: "-", " " | capitalize }}</p>
 
 <ol itemscope itemtype="https://schema.org/ItemList">
   {% for a in subset %}
