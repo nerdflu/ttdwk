@@ -4,7 +4,6 @@ baseurl: ""
 timezone: Australia/Brisbane
 locale: en-AU
 permalink: pretty
-theme: ""
 
 plugins:
   - jekyll-seo-tag
