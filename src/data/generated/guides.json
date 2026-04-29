@@ -1,0 +1,16 @@
+[
+  {
+    "status": "published",
+    "title": "Free things to do on the Gold Coast",
+    "slug": "free-things-to-do",
+    "city": "gold-coast",
+    "summary": "The ultimate guide to keeping the kids entertained without spending a cent.",
+    "categories": [
+      "free"
+    ],
+    "related_place_slugs": [
+      "burleigh-heads-rockpools",
+      "broadwater-parklands"
+    ]
+  }
+]

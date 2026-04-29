@@ -1,36 +1,57 @@
-import citiesData from '../data/cities.json';
-import categoriesData from '../data/categories.json';
-import tagsData from '../data/discovery-tags.json';
-import placesData from '../data/places.json';
-import eventsData from '../data/events.json';
-import ideasData from '../data/ideas.json';
-import guidesData from '../data/guides.json';
+import fs from 'fs';
+import path from 'path';
+
+function loadData(filename: string) {
+  try {
+    const generatedPath = path.resolve(process.cwd(), `src/data/generated/${filename}.json`);
+    if (fs.existsSync(generatedPath)) {
+      return JSON.parse(fs.readFileSync(generatedPath, 'utf-8'));
+    }
+  } catch (e) {
+    console.warn(`Failed to read generated data for ${filename}, falling back to sample.`);
+  }
+
+  try {
+    const sourcePath = path.resolve(process.cwd(), `src/data/${filename}.json`);
+    return JSON.parse(fs.readFileSync(sourcePath, 'utf-8'));
+  } catch (e) {
+    return [];
+  }
+}
+
+const citiesData = loadData('cities');
+const categoriesData = loadData('categories');
+const tagsData = loadData('discovery-tags');
+const placesData = loadData('places');
+const eventsData = loadData('events');
+const ideasData = loadData('ideas');
+const guidesData = loadData('guides');
 
 export const getCities = () => citiesData;
-export const getCityBySlug = (slug: string) => citiesData.find(c => c.slug === slug);
+export const getCityBySlug = (slug: string) => citiesData.find((c: any) => c.slug === slug);
 export const getCategories = () => categoriesData;
-export const getCategoryBySlug = (slug: string) => categoriesData.find(c => c.slug === slug);
+export const getCategoryBySlug = (slug: string) => categoriesData.find((c: any) => c.slug === slug);
 export const getDiscoveryTags = () => tagsData;
 
-export const getApprovedPlaces = () => placesData.filter(p => p.status === 'approved' || p.status === 'published');
-export const getApprovedEvents = () => eventsData.filter(e => e.status === 'approved' || e.status === 'published');
-export const getApprovedIdeas = () => ideasData.filter(i => i.status === 'approved' || i.status === 'published');
-export const getApprovedGuides = () => guidesData.filter(g => g.status === 'approved' || g.status === 'published');
+// Note: Import script already filters to 'approved' and 'published' for generated JSON.
+// We maintain this filter for sample data fallbacks.
+export const getApprovedPlaces = () => placesData.filter((p: any) => p.status === 'approved' || p.status === 'published' || !p.status);
+export const getApprovedEvents = () => eventsData.filter((e: any) => e.status === 'approved' || e.status === 'published' || !e.status);
+export const getApprovedIdeas = () => ideasData.filter((i: any) => i.status === 'approved' || i.status === 'published' || !i.status);
+export const getApprovedGuides = () => guidesData.filter((g: any) => g.status === 'approved' || g.status === 'published' || !g.status);
 
-export const getPlacesForCity = (citySlug: string) => getApprovedPlaces().filter(p => p.city === citySlug);
-export const getEventsForCity = (citySlug: string) => getApprovedEvents().filter(e => e.city === citySlug);
-export const getIdeasForCity = (citySlug: string) => getApprovedIdeas().filter(i => i.city === citySlug);
-export const getGuidesForCity = (citySlug: string) => getApprovedGuides().filter(g => g.city === citySlug);
+export const getPlacesForCity = (citySlug: string) => getApprovedPlaces().filter((p: any) => p.city === citySlug);
+export const getEventsForCity = (citySlug: string) => getApprovedEvents().filter((e: any) => e.city === citySlug);
+export const getIdeasForCity = (citySlug: string) => getApprovedIdeas().filter((i: any) => i.city === citySlug);
+export const getGuidesForCity = (citySlug: string) => getApprovedGuides().filter((g: any) => g.city === citySlug);
 
-// Simplified for now, just checking if start_date >= today
 export const getUpcomingEventsForCity = (citySlug: string) => {
   const today = new Date().toISOString().split('T')[0];
-  return getEventsForCity(citySlug).filter(e => e.start_date && e.start_date >= today);
+  return getEventsForCity(citySlug).filter((e: any) => e.start_date && e.start_date >= today);
 };
 
-// Simplified: just return upcoming for now, or events specifically marked for this weekend
 export const getWeekendEventsForCity = (citySlug: string) => {
-  return getUpcomingEventsForCity(citySlug); // Expand logic later using dates.ts
+  return getUpcomingEventsForCity(citySlug); 
 };
 
 export const getAvailableCategoriesForCity = (citySlug: string) => {
@@ -40,11 +61,11 @@ export const getAvailableCategoriesForCity = (citySlug: string) => {
   const guides = getGuidesForCity(citySlug);
 
   const usedCategorySlugs = new Set<string>();
-  [...places, ...events, ...ideas, ...guides].forEach(item => {
+  [...places, ...events, ...ideas, ...guides].forEach((item: any) => {
     (item.categories || []).forEach((cat: string) => usedCategorySlugs.add(cat));
   });
 
-  return getCategories().filter(cat => usedCategorySlugs.has(cat.slug));
+  return getCategories().filter((cat: any) => usedCategorySlugs.has(cat.slug));
 };
 
 export const getCityNavItems = (citySlug: string) => {
@@ -59,12 +80,12 @@ export const getCityNavItems = (citySlug: string) => {
   }
   
   const availableCats = getAvailableCategoriesForCity(citySlug);
-  availableCats.forEach(cat => {
+  availableCats.forEach((cat: any) => {
     items.push({ label: cat.title, href: `/${citySlug}/${cat.slug}/` });
   });
 
   if (getGuidesForCity(citySlug).length > 0) {
-    items.push({ label: 'Guides', href: `/${citySlug}/guides/` }); // Assuming guides overview, or just show if there are guides
+    items.push({ label: 'Guides', href: `/${citySlug}/guides/` });
   }
   
   return items;

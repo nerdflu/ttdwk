@@ -1,0 +1,31 @@
+[
+  {
+    "status": "published",
+    "title": "Weekend Kids Workshop",
+    "slug": "weekend-kids-workshop",
+    "city": "gold-coast",
+    "start_date": "2026-05-02",
+    "end_date": "2026-05-02",
+    "is_free": true,
+    "booking_required": false,
+    "categories": [
+      "events",
+      "free"
+    ],
+    "summary": "A fun craft workshop for kids."
+  },
+  {
+    "status": "published",
+    "title": "Brisbane Festival Family Day",
+    "slug": "brisbane-festival-family-day",
+    "city": "brisbane",
+    "start_date": "2026-05-03",
+    "end_date": "2026-05-03",
+    "is_free": false,
+    "booking_required": false,
+    "categories": [
+      "events"
+    ],
+    "summary": "Annual family festival."
+  }
+]

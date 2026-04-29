@@ -1,0 +1,11 @@
+title,slug,description,mood_group
+Low Energy,low-energy,Chill activities,energy
+High Energy,high-energy,Burn some steam,energy
+Pram Friendly,pram-friendly,Easy to roll,access
+Coffee Nearby,coffee-nearby,Parent fuel,amenities
+Toddler Friendly,toddler-friendly,Safe for little ones,age
+Teens,teens,Older kids,age
+Quick Stop,quick-stop,Under an hour,duration
+Half Day,half-day,A few hours,duration
+Full Day,full-day,Make a day of it,duration
+Cheap,cheap,Budget friendly,cost

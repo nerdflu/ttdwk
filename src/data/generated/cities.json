@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Gold Coast",
+    "slug": "gold-coast",
+    "preposition": "on the",
+    "state": "QLD",
+    "region": "South East Queensland",
+    "description": "Family fun on the Gold Coast",
+    "nearby_regions": [
+      "brisbane",
+      "sunshine-coast"
+    ]
+  },
+  {
+    "title": "Brisbane",
+    "slug": "brisbane",
+    "preposition": "in",
+    "state": "QLD",
+    "region": "South East Queensland",
+    "description": "Explore Brisbane with kids",
+    "nearby_regions": [
+      "gold-coast",
+      "sunshine-coast"
+    ]
+  },
+  {
+    "title": "Sydney",
+    "slug": "sydney",
+    "preposition": "in",
+    "state": "NSW",
+    "region": "Greater Sydney",
+    "description": "Sydney's best kid-friendly spots",
+    "nearby_regions": [
+      "central-coast"
+    ]
+  }
+]

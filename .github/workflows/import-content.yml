@@ -1,0 +1,63 @@
+name: Import Content from Google Sheets
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 10 * * *' # Run daily at 10 AM (UTC)
+
+permissions:
+  contents: write
+
+jobs:
+  import-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download Remote CSVs (If URLs provided)
+        run: |
+          mkdir -p src/data/source
+          
+          if [ -n "$CITIES_CSV_URL" ]; then curl -L "$CITIES_CSV_URL" -o src/data/source/cities.csv; fi
+          if [ -n "$CATEGORIES_CSV_URL" ]; then curl -L "$CATEGORIES_CSV_URL" -o src/data/source/categories.csv; fi
+          if [ -n "$DISCOVERY_TAGS_CSV_URL" ]; then curl -L "$DISCOVERY_TAGS_CSV_URL" -o src/data/source/discovery-tags.csv; fi
+          if [ -n "$PLACES_CSV_URL" ]; then curl -L "$PLACES_CSV_URL" -o src/data/source/places.csv; fi
+          if [ -n "$EVENTS_CSV_URL" ]; then curl -L "$EVENTS_CSV_URL" -o src/data/source/events.csv; fi
+          if [ -n "$IDEAS_CSV_URL" ]; then curl -L "$IDEAS_CSV_URL" -o src/data/source/ideas.csv; fi
+          if [ -n "$GUIDES_CSV_URL" ]; then curl -L "$GUIDES_CSV_URL" -o src/data/source/guides.csv; fi
+        env:
+          CITIES_CSV_URL: ${{ vars.CITIES_CSV_URL }}
+          CATEGORIES_CSV_URL: ${{ vars.CATEGORIES_CSV_URL }}
+          DISCOVERY_TAGS_CSV_URL: ${{ vars.DISCOVERY_TAGS_CSV_URL }}
+          PLACES_CSV_URL: ${{ vars.PLACES_CSV_URL }}
+          EVENTS_CSV_URL: ${{ vars.EVENTS_CSV_URL }}
+          IDEAS_CSV_URL: ${{ vars.IDEAS_CSV_URL }}
+          GUIDES_CSV_URL: ${{ vars.GUIDES_CSV_URL }}
+
+      - name: Import and Validate Content
+        run: npm run import:content
+
+      - name: Verify Build
+        run: npm run build
+
+      - name: Commit and Push Generated JSON
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add src/data/generated/
+          if git diff --staged --quiet; then
+            echo "No changes in generated content."
+          else
+            git commit -m "chore(data): auto-update generated JSON from Google Sheets"
+            git push
+          fi

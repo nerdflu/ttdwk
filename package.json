@@ -7,12 +7,16 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "import:content": "tsx scripts/import-content-from-csv.ts",
+    "validate:content": "tsx scripts/validate-content.ts"
   },
   "dependencies": {
     "astro": "^4.5.0"
   },
   "devDependencies": {
+    "csv-parse": "^5.5.5",
+    "tsx": "^4.7.2",
     "typescript": "^5.3.0"
   }
 }
