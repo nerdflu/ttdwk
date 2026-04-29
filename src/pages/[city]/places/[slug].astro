@@ -1,0 +1,49 @@
+---
+import CityShell from '../../../components/CityShell.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import RelatedLinks from '../../../components/RelatedLinks.astro';
+import { getApprovedPlaces, getCityBySlug } from '../../../lib/data';
+
+export function getStaticPaths() {
+  return getApprovedPlaces().map(place => ({
+    params: { city: place.city, slug: place.slug },
+    props: { place }
+  }));
+}
+
+const { city, slug } = Astro.params;
+const { place } = Astro.props;
+const cityData = getCityBySlug(city as string);
+const title = `${place.title} with kids`;
+const description = place.summary;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Place",
+  "name": place.title,
+  "description": place.summary,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": place.suburb,
+    "addressRegion": place.state,
+    "addressCountry": "AU"
+  }
+};
+---
+<CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: 'Places' },
+    { label: place.title }
+  ]} />
+  
+  <h1>{place.title}</h1>
+  <p class="summary">{place.summary}</p>
+  
+  {place.why_we_like_it && <div><h2>Why we like it</h2><p>{place.why_we_like_it}</p></div>}
+  {place.good_to_know && <div><h2>Good to know</h2><p>{place.good_to_know}</p></div>}
+  {place.parent_tip && <div><h2>Parent tip</h2><p>{place.parent_tip}</p></div>}
+  
+  <RelatedLinks citySlug={city as string} cityName={cityData?.title || (city as string)} />
+</CityShell>

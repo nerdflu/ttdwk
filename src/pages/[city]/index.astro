@@ -1,0 +1,82 @@
+---
+import CityShell from '../../components/CityShell.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getCities, getCityBySlug, getPlacesForCity, getEventsForCity, getIdeasForCity, getGuidesForCity } from '../../lib/data';
+import { generateCitySeoTitle } from '../../lib/seo';
+
+export function getStaticPaths() {
+  return getCities().map(city => ({
+    params: { city: city.slug }
+  }));
+}
+
+const { city } = Astro.params;
+const cityData = getCityBySlug(city as string);
+const title = generateCitySeoTitle(city as string);
+const description = cityData?.description || title;
+
+const places = getPlacesForCity(city as string);
+const events = getEventsForCity(city as string);
+const ideas = getIdeasForCity(city as string);
+const guides = getGuidesForCity(city as string);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": title,
+  "description": description,
+  "url": `https://thingstodowithkids.com.au/${city}/`
+};
+---
+<CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string) }
+  ]} />
+
+  <h1>{title}</h1>
+  <p>{cityData?.description}</p>
+  
+  {events.length > 0 && (
+    <section>
+      <h2>Upcoming Events</h2>
+      <ul>
+        {events.map(e => (
+          <li><a href={`/${city}/events/${e.slug}/`}>{e.title}</a></li>
+        ))}
+      </ul>
+      <a href={`/${city}/events/`}>All events &rarr;</a>
+    </section>
+  )}
+
+  <section>
+    <h2>Places to explore</h2>
+    <ul>
+      {places.map(p => (
+        <li><a href={`/${city}/places/${p.slug}/`}>{p.title}</a></li>
+      ))}
+    </ul>
+  </section>
+  
+  {ideas.length > 0 && (
+    <section>
+      <h2>Little Adventures</h2>
+      <ul>
+        {ideas.map(i => (
+          <li><a href={`/${city}/ideas/${i.slug}/`}>{i.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {guides.length > 0 && (
+    <section>
+      <h2>Guides</h2>
+      <ul>
+        {guides.map(g => (
+          <li><a href={`/${city}/guides/${g.slug}/`}>{g.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</CityShell>

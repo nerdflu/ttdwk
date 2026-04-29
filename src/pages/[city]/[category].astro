@@ -1,0 +1,57 @@
+---
+import CityShell from '../../components/CityShell.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getCities, getCityBySlug, getAvailableCategoriesForCity, getPlacesForCity, getEventsForCity, getIdeasForCity, getCategoryBySlug } from '../../lib/data';
+import { generateCategorySeoTitle } from '../../lib/seo';
+
+export function getStaticPaths() {
+  const paths: { params: { city: string, category: string } }[] = [];
+  
+  getCities().forEach(city => {
+    const cats = getAvailableCategoriesForCity(city.slug);
+    cats.forEach(cat => {
+      paths.push({
+        params: { city: city.slug, category: cat.slug }
+      });
+    });
+  });
+  
+  return paths;
+}
+
+const { city, category } = Astro.params;
+const cityData = getCityBySlug(city as string);
+const catData = getCategoryBySlug(category as string);
+const title = generateCategorySeoTitle(city as string, category as string);
+const description = catData?.description || title;
+
+const places = getPlacesForCity(city as string).filter(p => p.categories?.includes(category as string));
+const events = getEventsForCity(city as string).filter(e => e.categories?.includes(category as string));
+const ideas = getIdeasForCity(city as string).filter(i => i.categories?.includes(category as string));
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": title,
+  "description": description,
+  "url": `https://thingstodowithkids.com.au/${city}/${category}/`
+};
+---
+<CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: catData?.title || (category as string) }
+  ]} />
+
+  <h1>{title}</h1>
+  <p>{catData?.description}</p>
+  
+  <section>
+    <ul>
+      {places.map(p => <li><a href={`/${city}/places/${p.slug}/`}>Place: {p.title}</a></li>)}
+      {events.map(e => <li><a href={`/${city}/events/${e.slug}/`}>Event: {e.title}</a></li>)}
+      {ideas.map(i => <li><a href={`/${city}/ideas/${i.slug}/`}>Idea: {i.title}</a></li>)}
+    </ul>
+  </section>
+</CityShell>

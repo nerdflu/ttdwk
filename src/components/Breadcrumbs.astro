@@ -1,0 +1,53 @@
+---
+export interface Props {
+  items: { label: string; href?: string }[];
+}
+
+const { items } = Astro.props;
+
+// Build JSON-LD
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.label,
+    "item": item.href ? `https://thingstodowithkids.com.au${item.href}` : undefined
+  }))
+};
+---
+<nav aria-label="Breadcrumb">
+  <ol class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {items.map((item, index) => (
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        {item.href ? (
+          <a itemprop="item" href={item.href}>
+            <span itemprop="name">{item.label}</span>
+          </a>
+        ) : (
+          <span itemprop="name">{item.label}</span>
+        )}
+        <meta itemprop="position" content={(index + 1).toString()} />
+        {index < items.length - 1 && <span class="separator"> &gt; </span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<style>
+  .breadcrumbs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  .breadcrumbs li { display: inline; }
+  .separator { margin: 0 8px; }
+  .breadcrumbs a { color: #007bff; text-decoration: none; }
+</style>

@@ -1,0 +1,12 @@
+[
+  { "title": "Low Energy", "slug": "low-energy", "description": "Chill activities", "mood_group": "energy" },
+  { "title": "High Energy", "slug": "high-energy", "description": "Burn some steam", "mood_group": "energy" },
+  { "title": "Pram Friendly", "slug": "pram-friendly", "description": "Easy to roll", "mood_group": "access" },
+  { "title": "Coffee Nearby", "slug": "coffee-nearby", "description": "Parent fuel", "mood_group": "amenities" },
+  { "title": "Toddler Friendly", "slug": "toddler-friendly", "description": "Safe for little ones", "mood_group": "age" },
+  { "title": "Teens", "slug": "teens", "description": "Older kids", "mood_group": "age" },
+  { "title": "Quick Stop", "slug": "quick-stop", "description": "Under an hour", "mood_group": "duration" },
+  { "title": "Half Day", "slug": "half-day", "description": "A few hours", "mood_group": "duration" },
+  { "title": "Full Day", "slug": "full-day", "description": "Make a day of it", "mood_group": "duration" },
+  { "title": "Cheap", "slug": "cheap", "description": "Budget friendly", "mood_group": "cost" }
+]

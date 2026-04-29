@@ -1,0 +1,29 @@
+---
+import CityShell from '../../../components/CityShell.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import RelatedLinks from '../../../components/RelatedLinks.astro';
+import { getApprovedGuides, getCityBySlug } from '../../../lib/data';
+
+export function getStaticPaths() {
+  return getApprovedGuides().map(guide => ({
+    params: { city: guide.city, slug: guide.slug },
+    props: { guide }
+  }));
+}
+
+const { city } = Astro.params;
+const { guide } = Astro.props;
+const cityData = getCityBySlug(city as string);
+---
+<CityShell citySlug={city as string} title={guide.title} description={guide.summary}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: 'Guides' },
+    { label: guide.title }
+  ]} />
+  <h1>{guide.title}</h1>
+  <p>{guide.summary}</p>
+
+  <RelatedLinks citySlug={city as string} cityName={cityData?.title || (city as string)} />
+</CityShell>

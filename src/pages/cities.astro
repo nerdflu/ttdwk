@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCities } from '../lib/data';
+
+const cities = getCities();
+---
+<BaseLayout title="All Cities | Things to do with kids" description="Browse all cities available on Things To Do With Kids.">
+  <main style="padding: 40px; max-width: 800px; margin: 0 auto;">
+    <h1>All Cities</h1>
+    <ul>
+      {cities.map(city => (
+        <li><a href={`/${city.slug}/`}>{city.title}</a></li>
+      ))}
+    </ul>
+  </main>
+</BaseLayout>

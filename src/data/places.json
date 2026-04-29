@@ -1,0 +1,51 @@
+[
+  {
+    "status": "published",
+    "title": "Burleigh Heads Rockpools",
+    "slug": "burleigh-heads-rockpools",
+    "city": "gold-coast",
+    "suburb": "Burleigh Heads",
+    "state": "QLD",
+    "categories": ["free", "beaches-rockpools"],
+    "discovery_tags": ["pram-friendly", "coffee-nearby"],
+    "summary": "Great little rockpools to explore at low tide.",
+    "why_we_like_it": "It's free, scenic, and kids love finding crabs.",
+    "good_to_know": "Check the tide times before you go.",
+    "parent_tip": "Grab a coffee from the kiosk first.",
+    "best_for": "Toddlers and primary kids.",
+    "what_to_bring": "Sunscreen, hats, reef shoes.",
+    "safety_notes": "Rocks can be slippery.",
+    "features": ["pram_friendly", "cafe"]
+  },
+  {
+    "status": "published",
+    "title": "South Bank Parklands",
+    "slug": "south-bank-parklands",
+    "city": "brisbane",
+    "suburb": "South Brisbane",
+    "state": "QLD",
+    "categories": ["free", "playgrounds", "water-play"],
+    "discovery_tags": ["pram-friendly", "coffee-nearby", "full-day"],
+    "summary": "Huge parklands with multiple playgrounds and a massive man-made beach.",
+    "features": ["pram_friendly", "toilets", "shade", "cafe", "wheelchair_accessible"]
+  },
+  {
+    "status": "published",
+    "title": "Broadwater Parklands",
+    "slug": "broadwater-parklands",
+    "city": "gold-coast",
+    "suburb": "Southport",
+    "state": "QLD",
+    "categories": ["free", "playgrounds", "water-play"],
+    "discovery_tags": ["pram-friendly", "half-day"],
+    "summary": "Massive park with a monorail, jumping pillow, and water play area.",
+    "features": ["pram_friendly", "toilets", "shade", "parking_easy"]
+  },
+  {
+    "status": "draft",
+    "title": "Draft Place",
+    "slug": "draft-place",
+    "city": "gold-coast",
+    "categories": ["free"]
+  }
+]

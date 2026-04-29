@@ -1,0 +1,30 @@
+---
+import CityShell from '../../../components/CityShell.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import RelatedLinks from '../../../components/RelatedLinks.astro';
+import { getApprovedIdeas, getCityBySlug } from '../../../lib/data';
+
+export function getStaticPaths() {
+  return getApprovedIdeas().map(idea => ({
+    params: { city: idea.city, slug: idea.slug },
+    props: { idea }
+  }));
+}
+
+const { city } = Astro.params;
+const { idea } = Astro.props;
+const cityData = getCityBySlug(city as string);
+const title = `${idea.title} with kids on the Gold Coast`;
+---
+<CityShell citySlug={city as string} title={title} description={idea.summary}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: 'Ideas' },
+    { label: idea.title }
+  ]} />
+  <h1>{idea.title}</h1>
+  <p>{idea.summary}</p>
+  
+  <RelatedLinks citySlug={city as string} cityName={cityData?.title || (city as string)} />
+</CityShell>

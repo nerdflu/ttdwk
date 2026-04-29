@@ -1,9 +1,8 @@
-_site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
-vendor/
-.bundle/
-category_pages/
-*.gem
+node_modules/
+dist/
+.astro/
 .DS_Store
+.env
+.bundle/
+vendor/bundle/
+_site/

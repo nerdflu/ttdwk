@@ -1,0 +1,24 @@
+---
+import { getCityNavItems } from '../lib/data';
+
+export interface Props {
+  citySlug: string;
+}
+
+const { citySlug } = Astro.props;
+const navItems = getCityNavItems(citySlug);
+---
+<nav class="city-nav">
+  <ul>
+    {navItems.map(item => (
+      <li><a href={item.href}>{item.label}</a></li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .city-nav ul { list-style: none; padding: 0; }
+  .city-nav li { margin-bottom: 10px; }
+  .city-nav a { text-decoration: none; color: #333; }
+  .city-nav a:hover { color: #007bff; }
+</style>

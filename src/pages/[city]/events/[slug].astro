@@ -1,0 +1,47 @@
+---
+import CityShell from '../../../components/CityShell.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import RelatedLinks from '../../../components/RelatedLinks.astro';
+import { getApprovedEvents, getCityBySlug } from '../../../lib/data';
+
+export function getStaticPaths() {
+  return getApprovedEvents().map(event => ({
+    params: { city: event.city, slug: event.slug },
+    props: { event }
+  }));
+}
+
+const { city } = Astro.params;
+const { event } = Astro.props;
+const cityData = getCityBySlug(city as string);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": event.title,
+  "startDate": event.start_date,
+  "endDate": event.end_date || event.start_date,
+  "description": event.summary,
+  "location": {
+    "@type": "Place",
+    "name": event.venue || event.city,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": event.suburb || event.city
+    }
+  }
+};
+---
+<CityShell citySlug={city as string} title={event.title} description={event.summary} jsonLd={jsonLd}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: 'Events', href: `/${city}/events/` },
+    { label: event.title }
+  ]} />
+  <h1>{event.title}</h1>
+  <p>{event.summary}</p>
+  <p><strong>Date:</strong> {event.start_date}</p>
+  
+  <RelatedLinks citySlug={city as string} cityName={cityData?.title || (city as string)} />
+</CityShell>

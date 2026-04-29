@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CityContextNav from './CityContextNav.astro';
+import { getCityBySlug } from '../lib/data';
+
+export interface Props {
+  citySlug: string;
+  title: string;
+  description: string;
+  jsonLd?: any;
+}
+
+const { citySlug, title, description, jsonLd } = Astro.props;
+const city = getCityBySlug(citySlug);
+---
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="city-shell">
+    <aside class="left-rail">
+      <div class="brand">ThingsToDoWithKids</div>
+      <div class="city-selector">
+        <strong>{city?.title} â–¼</strong>
+      </div>
+      <CityContextNav citySlug={citySlug} />
+      <a href="/cities/" class="browse-all">Browse all cities</a>
+      <button class="suggest-cta">Suggest a local gem</button>
+    </aside>
+    
+    <main class="center-column">
+      <slot />
+    </main>
+    
+    <aside class="right-rail">
+      <div class="weekend-digest">
+        <h3>Weekend Digest</h3>
+        <p>Get the best ideas in your inbox.</p>
+      </div>
+      <div class="nearby-regions">
+        <h3>Nearby Regions</h3>
+        <ul>
+          {city?.nearby_regions?.map((region: string) => (
+            <li><a href={`/${region}/`}>{region}</a></li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .city-shell {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .left-rail { width: 250px; padding: 20px; }
+  .center-column { flex: 1; padding: 20px; }
+  .right-rail { width: 300px; padding: 20px; }
+  
+  @media (max-width: 768px) {
+    .city-shell { flex-direction: column; }
+    .left-rail, .right-rail { width: 100%; }
+  }
+</style>

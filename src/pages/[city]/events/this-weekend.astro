@@ -1,0 +1,34 @@
+---
+import CityShell from '../../../components/CityShell.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { getCities, getWeekendEventsForCity, getCityBySlug } from '../../../lib/data';
+
+export function getStaticPaths() {
+  const paths: { params: { city: string } }[] = [];
+  getCities().forEach(city => {
+    if (getWeekendEventsForCity(city.slug).length > 0) {
+      paths.push({ params: { city: city.slug } });
+    }
+  });
+  return paths;
+}
+
+const { city } = Astro.params;
+const cityData = getCityBySlug(city as string);
+const events = getWeekendEventsForCity(city as string);
+const title = `Things to do with kids in ${cityData?.title || city} this weekend`;
+---
+<CityShell citySlug={city as string} title={title} description="What's on this weekend for kids.">
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: 'Events', href: `/${city}/events/` },
+    { label: 'This weekend' }
+  ]} />
+  <h1>This Weekend</h1>
+  <ul>
+    {events.map(e => (
+      <li><a href={`/${city}/events/${e.slug}/`}>{e.title}</a> ({e.start_date})</li>
+    ))}
+  </ul>
+</CityShell>
