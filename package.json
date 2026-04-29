@@ -8,9 +8,11 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "download:source-csvs": "tsx scripts/download-source-csvs.ts",
     "import:content": "tsx scripts/import-content-from-csv.ts",
     "validate:content": "tsx scripts/validate-content.ts",
-    "download:source-csvs": "tsx scripts/download-source-csvs.ts"
+    "sync:content": "npm run download:source-csvs && npm run import:content && npm run validate:content",
+    "sync:build": "npm run sync:content && npm run build"
   },
   "dependencies": {
     "astro": "^4.5.0"

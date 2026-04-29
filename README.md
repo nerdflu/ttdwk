@@ -19,24 +19,23 @@ Ensure you have Node.js installed.
 2. **Start the dev server:**
    `npm run dev`
 
-3. **Build the production site:**
-   `npm run build`
+## Local Google Sheets sync
 
-## Managing Content (CSV Pipeline)
-
-The `src/data/source` folder holds the raw CSV files.
-The `src/data/generated` folder holds the output JSON files consumed by the site.
-
-To process local CSVs into JSON:
-`npm run import:content`
-
-To validate your CSVs without saving:
-`npm run validate:content`
-
-### Testing Google Sheets locally
 To pull down live data from your own Google Sheets into your local workspace:
-1. `cp .env.example .env` and fill out the CSV URLs.
-2. `npm run download:source-csvs`
-3. `npm run import:content`
+
+```bash
+cp .env.example .env
+# paste published Google Sheets CSV URLs into .env
+npm run sync:content
+npm run dev
+```
+
+### Full local check
+
+If you want to sync the content and verify that the production build works end-to-end:
+
+```bash
+npm run sync:build
+```
 
 Read more in `docs/GOOGLE_SHEETS_PIPELINE.md`.

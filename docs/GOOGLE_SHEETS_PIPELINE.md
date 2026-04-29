@@ -3,6 +3,8 @@
 ## Overview
 ThingsToDoWithKids.com.au operates on a static Astro build architecture, meaning there is no backend server running the database queries at runtime. Instead, Google Sheets serves as our primary admin UI and database.
 
+**Warning: The public site does not fetch Google Sheets at runtime.** The static HTML is compiled during the build step, ensuring peak speed and removing external dependencies for users.
+
 When content is ready to be published, an automated CI/CD pipeline reads CSV exports from the sheets, validates the models, translates flat columns into structured JSON, and feeds them into the Astro static compiler. 
 
 ### Why Google Sheets?
@@ -19,23 +21,38 @@ Every content piece (Places, Events, Ideas, Guides) must have a `status` column.
 - **approved / published**: The only statuses that will be translated into `src/data/generated/*.json` and built onto the public site.
 - **rejected / expired**: Kept for historical reference in the Sheets, but omitted from the site.
 
-## How it works
+## How to Publish Tabs as CSV
+For the pipeline to work, Google Sheets must be told to expose its tabs publically as CSV format:
+1. Open your Google Sheet.
+2. Go to **File > Share > Publish to web**.
+3. Choose the specific tab (e.g., "Places") rather than "Entire Document".
+4. Choose **Comma-separated values (.csv)** from the format dropdown.
+5. Click Publish. Copy the URL.
+6. Repeat for all required tabs.
 
-1. **Source data (CSV):** `src/data/source/*.csv` 
-   - During local dev, you can drop CSV files directly into this directory, or download them locally using `.env` URLs.
-   - In production, GitHub Actions downloads these via URL.
-2. **Import Script:** `npm run import:content`
-   - Reads the CSVs and performs hard validation (slug uniqueness, missing fields, orphaned relations).
-   - Translates "yes/no/true/false" into actual Booleans.
-   - Nests attributes into the `features` array.
-3. **Generated JSON:** `src/data/generated/*.json`
-   - Clean, perfectly typed JSON payloads mapped directly to our Astro data layer.
+## Testing a Change from Google Sheets locally
+
+If you have made a change in Google Sheets and want to preview it:
+
+1. Add your CSV URLs to `.env`:
+   ```env
+   CITIES_CSV_URL=https://docs.google...
+   CATEGORIES_CSV_URL=https://docs.google...
+   ...
+   ```
+2. Run the local sync command:
+   ```bash
+   npm run sync:content
+   ```
+3. Boot the local dev server to see the changes:
+   ```bash
+   npm run dev
+   ```
 
 ## How to Set Up Production Automations
 
-1. Publish your Google Sheets tabs to the web as CSVs.
-2. In GitHub, go to **Settings > Secrets and variables > Actions > Variables**.
-3. Create the following Repository Variables containing the published CSV URLs:
+1. In GitHub, go to **Settings > Secrets and variables > Actions > Variables**.
+2. Create the Repository Variables containing the published CSV URLs:
    - `CITIES_CSV_URL`
    - `CATEGORIES_CSV_URL`
    - `DISCOVERY_TAGS_CSV_URL`
@@ -44,14 +61,4 @@ Every content piece (Places, Events, Ideas, Guides) must have a `status` column.
    - `IDEAS_CSV_URL`
    - `GUIDES_CSV_URL`
 
-Whenever you manually run the "Import Content from Google Sheets" Action (or once we turn on the daily schedule), GitHub will download the latest rows, write the JSON, commit them back to `main`, and Astro will statically compile and deploy the fresh site.
-
-## Testing Google Sheets locally
-
-If you have your own published Google Sheet tabs, you can sync them directly into your local development environment.
-
-1. Copy `.env.example` to `.env`.
-2. Fill in the variables with your published CSV URLs.
-3. Run `npm run download:source-csvs` to pull them down into `src/data/source/`.
-4. Run `npm run import:content` to parse the CSVs into `.json` representations.
-5. Boot `npm run dev` or `npm run build`.
+Whenever you manually run the "Import Content from Google Sheets" Action, GitHub will run the full import, commit the generated `.json` files, and trigger the Astro deployment automatically.

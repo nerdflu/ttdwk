@@ -17,7 +17,7 @@ try {
   // Ignore
 }
 
-const fileUrls: Record<string, string | undefined> = {
+const fileMap: Record<string, string | undefined> = {
   'cities.csv': process.env.CITIES_CSV_URL,
   'categories.csv': process.env.CATEGORIES_CSV_URL,
   'discovery-tags.csv': process.env.DISCOVERY_TAGS_CSV_URL,
@@ -29,7 +29,9 @@ const fileUrls: Record<string, string | undefined> = {
 
 async function downloadFile(url: string, dest: string) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.statusText}`);
+  if (!res.ok) {
+    throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+  }
   const text = await res.text();
   fs.writeFileSync(dest, text);
 }
@@ -40,20 +42,43 @@ async function main() {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  for (const [filename, url] of Object.entries(fileUrls)) {
+  let downloadedCount = 0;
+  let skippedCount = 0;
+  let errorCount = 0;
+
+  console.log('--- Starting CSV Download ---');
+
+  for (const [filename, url] of Object.entries(fileMap)) {
     if (!url) {
-      console.warn(`[WARN] Skipping ${filename}: URL not found in environment.`);
+      console.warn(`[SKIP] ${filename}: URL missing in environment.`);
+      skippedCount++;
       continue;
     }
     
-    console.log(`Downloading ${filename}...`);
+    process.stdout.write(`Downloading ${filename}... `);
     try {
       await downloadFile(url, path.join(outDir, filename));
-      console.log(` âœ“ Saved ${filename}`);
-    } catch (e) {
-      console.error(` [ERROR] Failed to download ${filename}:`, e);
+      process.stdout.write('DONE\n');
+      downloadedCount++;
+    } catch (e: any) {
+      process.stdout.write('FAILED\n');
+      console.error(`  [ERROR] Could not download ${filename}: ${e.message}`);
+      errorCount++;
     }
+  }
+
+  console.log('\n--- Download Summary ---');
+  console.log(`Downloaded: ${downloadedCount}`);
+  console.log(`Skipped:    ${skippedCount}`);
+  console.log(`Errors:     ${errorCount}`);
+
+  if (errorCount > 0) {
+    console.error('\nDownload failed with errors.');
+    process.exit(1);
   }
 }
 
-main().catch(console.error);
+main().catch(e => {
+  console.error('Fatal execution error:', e);
+  process.exit(1);
+});
