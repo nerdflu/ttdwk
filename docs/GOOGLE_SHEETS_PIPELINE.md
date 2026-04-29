@@ -22,7 +22,7 @@ Every content piece (Places, Events, Ideas, Guides) must have a `status` column.
 ## How it works
 
 1. **Source data (CSV):** `src/data/source/*.csv` 
-   - During local dev, you can drop CSV files directly into this directory.
+   - During local dev, you can drop CSV files directly into this directory, or download them locally using `.env` URLs.
    - In production, GitHub Actions downloads these via URL.
 2. **Import Script:** `npm run import:content`
    - Reads the CSVs and performs hard validation (slug uniqueness, missing fields, orphaned relations).
@@ -45,3 +45,13 @@ Every content piece (Places, Events, Ideas, Guides) must have a `status` column.
    - `GUIDES_CSV_URL`
 
 Whenever you manually run the "Import Content from Google Sheets" Action (or once we turn on the daily schedule), GitHub will download the latest rows, write the JSON, commit them back to `main`, and Astro will statically compile and deploy the fresh site.
+
+## Testing Google Sheets locally
+
+If you have your own published Google Sheet tabs, you can sync them directly into your local development environment.
+
+1. Copy `.env.example` to `.env`.
+2. Fill in the variables with your published CSV URLs.
+3. Run `npm run download:source-csvs` to pull them down into `src/data/source/`.
+4. Run `npm run import:content` to parse the CSVs into `.json` representations.
+5. Boot `npm run dev` or `npm run build`.

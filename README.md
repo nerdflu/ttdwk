@@ -33,4 +33,10 @@ To process local CSVs into JSON:
 To validate your CSVs without saving:
 `npm run validate:content`
 
+### Testing Google Sheets locally
+To pull down live data from your own Google Sheets into your local workspace:
+1. `cp .env.example .env` and fill out the CSV URLs.
+2. `npm run download:source-csvs`
+3. `npm run import:content`
+
 Read more in `docs/GOOGLE_SHEETS_PIPELINE.md`.

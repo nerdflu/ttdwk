@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "import:content": "tsx scripts/import-content-from-csv.ts",
-    "validate:content": "tsx scripts/validate-content.ts"
+    "validate:content": "tsx scripts/validate-content.ts",
+    "download:source-csvs": "tsx scripts/download-source-csvs.ts"
   },
   "dependencies": {
     "astro": "^4.5.0"
