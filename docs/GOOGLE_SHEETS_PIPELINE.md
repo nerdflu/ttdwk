@@ -63,7 +63,7 @@ If you have made a change in Google Sheets and want to preview it:
 
 Whenever you manually run the "Import Content from Google Sheets" Action, GitHub will run the full import, commit the generated `.json` files, and trigger the Astro deployment automatically.
 
-## Testing the import in GitHub Actions
+## Publishing Content via GitHub Actions
 
 1. **Add Repository Variables**: 
    In GitHub, go to **Settings > Secrets and variables > Actions > Variables**. Add the published CSV URLs as variables:
@@ -76,13 +76,13 @@ Whenever you manually run the "Import Content from Google Sheets" Action, GitHub
    - `GUIDES_CSV_URL`
 
 2. **Run the workflow manually**:
-   Go to the **Actions** tab in your GitHub repository. Select **Import Content from Google Sheets** from the left sidebar, click **Run workflow**, ensure you are on the `astro-restart` branch, and click the **Run workflow** button.
+   Go to the **Actions** tab in your GitHub repository. Select **Import Content from Google Sheets** from the left sidebar, click **Run workflow**, ensure you are on the `main` branch, and click the **Run workflow** button.
 
-3. **What files should change**:
-   If there are new updates from the Google Sheets, the workflow will automatically commit changes to the JSON files within the `src/data/generated/` folder on the current branch.
+3. **What files change**:
+   If there are new updates from the Google Sheets, the workflow will automatically commit changes to the JSON files within the `src/data/generated/` folder.
 
-4. **How to confirm the build worked**:
-   In the Actions tab, you can click on the running workflow to view the logs. The `Sync and Build` step will show the download, validation, and Astro build output. A green checkmark indicates a successful sync and build.
+4. **Automatic Deployment**:
+   Once the "Import Content" action finishes successfully, it automatically triggers a second workflow called **Deploy to GitHub Pages**. This second workflow builds the static Astro site with the new content and pushes it to production. You do not need to trigger the deploy manually.
 
-5. **Production deploy is not enabled yet**:
-   This workflow currently serves as a pre-production content sync and build check. It updates the branch with the latest content but does not deploy over the live production site.
+5. **Confirming the build worked**:
+   You can watch both actions run sequentially in the Actions tab. Once the Deploy action gets a green checkmark, the changes are live on the public URL.
