@@ -2,6 +2,7 @@
 import CityShell from '../../../components/CityShell.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { getCities, getWeekendEventsForCity, getCityBySlug } from '../../../lib/data';
+import { collectionPageSchema, itemListSchema, breadcrumbSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
   const paths: { params: { city: string } }[] = [];
@@ -17,14 +18,27 @@ const { city } = Astro.params;
 const cityData = getCityBySlug(city as string);
 const events = getWeekendEventsForCity(city as string);
 const title = `Things to do with kids in ${cityData?.title || city} this weekend`;
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: cityData?.title || (city as string), href: `/${city}/` },
+  { label: 'Events', href: `/${city}/events/` },
+  { label: 'This weekend' }
+];
+
+const visibleItems = events.map(item => ({
+  name: item.title,
+  url: `/${city}/events/${item.slug}/`
+}));
+
+const jsonLd = [
+  collectionPageSchema(title, "What's on this weekend for kids.", `/${city}/events/this-weekend/`),
+  itemListSchema(visibleItems),
+  breadcrumbSchema(breadcrumbs)
+];
 ---
-<CityShell citySlug={city as string} title={title} description="What's on this weekend for kids.">
-  <Breadcrumbs items={[
-    { label: 'Home', href: '/' },
-    { label: cityData?.title || (city as string), href: `/${city}/` },
-    { label: 'Events', href: `/${city}/events/` },
-    { label: 'This weekend' }
-  ]} />
+<CityShell citySlug={city as string} title={title} description="What's on this weekend for kids." jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
   <h1>This Weekend</h1>
   <ul>
     {events.map(e => (

@@ -1,16 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { websiteSchema, organizationSchema } from '../lib/schema';
 import { getCities, getCategories } from '../lib/data';
 
 const cities = getCities();
 const categories = getCategories();
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Things To Do With Kids",
-  "url": "https://thingstodowithkids.com.au/"
-};
+const jsonLd = [websiteSchema(), organizationSchema()];
 ---
 <BaseLayout title="Things to do with kids in Australia" description="Discover the best family activities, events, and places to go with kids." jsonLd={jsonLd}>
   <main style="padding: 40px; max-width: 800px; margin: 0 auto;">

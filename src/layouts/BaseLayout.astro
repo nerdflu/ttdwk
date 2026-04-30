@@ -21,7 +21,10 @@ const shouldNoIndex = noindex || siteConfig.comingSoon;
     <meta name="description" content={description} />
     {shouldNoIndex && <meta name="robots" content="noindex,nofollow" />}
     {canonical && <link rel="canonical" href={canonical} />}
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {jsonLd && (Array.isArray(jsonLd) 
+      ? jsonLd.map(schema => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)
+      : <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
   </head>
   <body>
     <ComingSoonGate />
