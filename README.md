@@ -49,4 +49,6 @@ We use a chained GitHub Actions workflow pipeline to sync content from our Googl
 
 *Note: Daily scheduled imports can be enabled in the `.github/workflows/import-content.yml` file once the content team is ready for full automation.*
 
-For detailed instructions, see [Google Sheets Pipeline](docs/GOOGLE_SHEETS_PIPELINE.md).
+For detailed instructions, see [Google Sheets Pipeline](docs/GOOGLE_SHEETS_PIPELINE.md)
+
+For architectural guidelines, content models, and SEO strategies, please refer to the [Docs folder](docs/README.md)..
