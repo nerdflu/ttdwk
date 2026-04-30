@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Import Content from Google Sheets"]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -16,6 +20,8 @@ concurrency:
 
 jobs:
   build:
+    # Only run if it's a push, a manual dispatch, or if the import workflow actually succeeded.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
