@@ -84,6 +84,20 @@ const processDataset = (filename: string, typeName: string, requiredFields: stri
     }
 
     checkRequired(row, typeName, requiredFields);
+    // Date validation for events
+    if (typeName === "Event") {
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (row.start_date && !dateRegex.test(row.start_date)) {
+        logError(typeName, row.slug || "Unknown", `Invalid start_date format, must be YYYY-MM-DD: ${row.start_date}`);
+      }
+      if (row.end_date && !dateRegex.test(row.end_date)) {
+        logError(typeName, row.slug || "Unknown", `Invalid end_date format, must be YYYY-MM-DD: ${row.end_date}`);
+      }
+      if (row.start_date && row.end_date && row.end_date < row.start_date) {
+        logError(typeName, row.slug || "Unknown", `end_date cannot be before start_date`);
+      }
+    }
+
 
     if (row.slug) {
       if (seenSlugs.has(row.slug)) {
