@@ -1,7 +1,7 @@
-export const getTodayString = (): string => {
+export const getTodayString = (timezone: string = "Australia/Sydney"): string => {
   const now = new Date();
   const formatter = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Australia/Sydney",
+    timeZone: timezone,
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
@@ -13,18 +13,18 @@ export const parseLocalDate = (dateString: string): Date => {
   return new Date(dateString + "T00:00:00");
 };
 
-export const isEventUpcoming = (event: any, todayStr?: string): boolean => {
-  const referenceStr = todayStr || getTodayString();
+export const isEventUpcoming = (event: any, timezone?: string, todayStr?: string): boolean => {
+  const referenceStr = todayStr || getTodayString(timezone);
   const endStr = event.end_date || event.start_date;
   return endStr >= referenceStr;
 };
 
-export const isEventExpired = (event: any, todayStr?: string): boolean => {
-  return !isEventUpcoming(event, todayStr);
+export const isEventExpired = (event: any, timezone?: string, todayStr?: string): boolean => {
+  return !isEventUpcoming(event, timezone, todayStr);
 };
 
-export const getThisWeekendWindow = (todayStr?: string) => {
-  const referenceStr = todayStr || getTodayString();
+export const getThisWeekendWindow = (timezone?: string, todayStr?: string) => {
+  const referenceStr = todayStr || getTodayString(timezone);
   const referenceDate = parseLocalDate(referenceStr);
   const dayOfWeek = referenceDate.getDay();
   
@@ -53,9 +53,9 @@ export const getThisWeekendWindow = (todayStr?: string) => {
   return { start: formatDate(friday), end: formatDate(sunday) };
 };
 
-export const isEventHappeningThisWeekend = (event: any, todayStr?: string): boolean => {
+export const isEventHappeningThisWeekend = (event: any, timezone?: string, todayStr?: string): boolean => {
   if (!event.start_date) return false;
-  const window = getThisWeekendWindow(todayStr);
+  const window = getThisWeekendWindow(timezone, todayStr);
   const eventStart = event.start_date;
   const eventEnd = event.end_date || event.start_date;
   

@@ -48,13 +48,15 @@ export const getGuidesForCity = (citySlug: string) => getApprovedGuides().filter
 
 export const getUpcomingEventsForCity = (citySlug: string) => {
   const cityEvents = getEventsForCity(citySlug);
-  const upcoming = cityEvents.filter((e: any) => isEventUpcoming(e));
+  const city = getCityBySlug(citySlug);
+  const upcoming = cityEvents.filter((e: any) => isEventUpcoming(e, city?.timezone));
   return sortEventsByStartDate(upcoming);
 };
 
 export const getWeekendEventsForCity = (citySlug: string) => {
   const upcoming = getUpcomingEventsForCity(citySlug);
-  return upcoming.filter((e: any) => isEventHappeningThisWeekend(e));
+  const city = getCityBySlug(citySlug);
+  return upcoming.filter((e: any) => isEventHappeningThisWeekend(e, city?.timezone));
 };
 
 export const getAvailableCategoriesForCity = (citySlug: string) => {

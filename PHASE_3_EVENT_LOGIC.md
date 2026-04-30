@@ -1,7 +1,7 @@
 # Phase 3: Event Logic & Production Safety
 
 ## Event Date Rules
-Event dates are evaluated using a strict string-based comparison format (`YYYY-MM-DD`). Because the site is statically compiled, "today" is calculated at build time. To ensure accuracy for Australian audiences, "today" is strictly derived using the `Australia/Sydney` timezone regardless of the GitHub Actions runner timezone.
+Event dates are evaluated using a strict string-based comparison format (`YYYY-MM-DD`). Because the site is statically compiled, "today" is calculated at build time. To ensure accuracy, "today" is strictly derived using the citys specific `timezone` field (e.g., `Australia/Brisbane`), falling back to `Australia/Sydney` if omitted, regardless of the GitHub Actions runner timezone.
 
 ### Definitions
 - **Upcoming Event**: An event is considered upcoming if its `end_date` (or `start_date` if `end_date` is omitted) is greater than or equal to today's date string.
