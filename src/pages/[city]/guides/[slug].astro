@@ -3,6 +3,7 @@ import CityShell from '../../../components/CityShell.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import RelatedLinks from '../../../components/RelatedLinks.astro';
 import { getApprovedGuides, getCityBySlug } from '../../../lib/data';
+import { articleSchema, breadcrumbSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
   return getApprovedGuides().map(guide => ({
@@ -14,14 +15,20 @@ export function getStaticPaths() {
 const { city } = Astro.params;
 const { guide } = Astro.props;
 const cityData = getCityBySlug(city as string);
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: cityData?.title || (city as string), href: `/${city}/` },
+  { label: 'Guides' },
+  { label: guide.title }
+];
+
+const jsonLd = [
+  articleSchema(guide, cityData),
+  breadcrumbSchema(breadcrumbs)
+];
 ---
-<CityShell citySlug={city as string} title={guide.title} description={guide.summary}>
-  <Breadcrumbs items={[
-    { label: 'Home', href: '/' },
-    { label: cityData?.title || (city as string), href: `/${city}/` },
-    { label: 'Guides' },
-    { label: guide.title }
-  ]} />
+<CityShell citySlug={city as string} title={guide.title} description={guide.summary} jsonLd={jsonLd}>
+  <Breadcrumbs items={breadcrumbs} />
   <h1>{guide.title}</h1>
   <p>{guide.summary}</p>
 

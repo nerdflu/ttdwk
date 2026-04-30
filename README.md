@@ -40,14 +40,15 @@ npm run sync:build
 
 Read more in `docs/GOOGLE_SHEETS_PIPELINE.md`.
 
-## GitHub Actions content sync
+## GitHub Actions Content Sync & Deployment
 
-We use a manual GitHub Actions workflow to sync content from our Google Sheets database. 
+We use a chained GitHub Actions workflow pipeline to sync content from our Google Sheets database and deploy the site.
 
-- The workflow pulls Google Sheets CSV URLs from GitHub repository variables.
-- It generates and validates the content locally in the runner.
-- It runs a test build of the Astro site.
-- It automatically commits any updated generated JSON files back to the current branch.
-- *Note: Daily automation and production deployments are pending and will follow once manual syncs are thoroughly tested.*
+1. **Import Content from Google Sheets (Manual)**: Pulls CSVs via GitHub repository variables, validates the data, and commits any updated JSON files back to the `main` branch.
+2. **Deploy to GitHub Pages (Automatic)**: Automatically triggers upon the successful completion of the Import action (or on direct pushes to `main`). It builds the Astro site and deploys it live.
 
-For detailed instructions, see [Google Sheets Pipeline](docs/GOOGLE_SHEETS_PIPELINE.md).
+*Note: Daily scheduled imports can be enabled in the `.github/workflows/import-content.yml` file once the content team is ready for full automation.*
+
+For detailed instructions, see [Google Sheets Pipeline](docs/GOOGLE_SHEETS_PIPELINE.md)
+
+For architectural guidelines, content models, and SEO strategies, please refer to the [Docs folder](docs/README.md)..

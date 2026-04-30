@@ -3,6 +3,7 @@ import CityShell from '../../components/CityShell.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCities, getCityBySlug, getAvailableCategoriesForCity, getPlacesForCity, getEventsForCity, getIdeasForCity, getCategoryBySlug } from '../../lib/data';
 import { generateCategorySeoTitle } from '../../lib/seo';
+import { collectionPageSchema, itemListSchema, breadcrumbSchema } from '../../lib/schema';
 
 export function getStaticPaths() {
   const paths: { params: { city: string, category: string } }[] = [];
@@ -29,13 +30,30 @@ const places = getPlacesForCity(city as string).filter(p => p.categories?.includ
 const events = getEventsForCity(city as string).filter(e => e.categories?.includes(category as string));
 const ideas = getIdeasForCity(city as string).filter(i => i.categories?.includes(category as string));
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": title,
-  "description": description,
-  "url": `https://thingstodowithkids.com.au/${city}/${category}/`
-};
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: cityData?.title || (city as string), href: `/${city}/` },
+  { label: catData?.title || (category as string) }
+];
+
+const visibleItems = [...events, ...places, ...ideas].map(item => {
+  let subpath = "places";
+  if (item.start_date) subpath = "events";
+  else if (item.steps) subpath = "ideas";
+  
+  return {
+    name: item.title,
+    url: `/${city}/${subpath}/${item.slug}/`
+  };
+});
+
+const jsonLd = [
+  collectionPageSchema(title, description, `/${city}/${category}/`),
+  itemListSchema(visibleItems),
+  breadcrumbSchema(breadcrumbs)
+];
+
 ---
 <CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={[

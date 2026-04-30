@@ -31,3 +31,8 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 - Scrapers, user submissions, and emails will populate "pending" rows in the sheet.
 - After human approval, a GitHub Action will export the sheet to `src/data/` JSON and trigger a build.
 - **Note:** The public site will never call Google Sheets at runtime.
+
+## Phase 3: Hardening & Event Logic
+- **Local Date Handling**: Event dates are evaluated against the `Australia/Sydney` timezone at build-time.
+- **Dynamic Routing**: Event routes (`/events/`, `/events/this-weekend/`, and individual detail pages) are strictly filtered so that expired events are dropped, and empty event hubs are skipped entirely during the static build.
+- **Production Safety**: A global `noindex` and `robots.txt` disallow strategy is in place until the site is ready for a public launch to prevent search engines from crawling test data.

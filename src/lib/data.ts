@@ -1,5 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
+import { isEventUpcoming, isEventHappeningThisWeekend, sortEventsByStartDate } from "./dates";
 
 function loadData(filename: string) {
   try {
@@ -46,12 +47,16 @@ export const getIdeasForCity = (citySlug: string) => getApprovedIdeas().filter((
 export const getGuidesForCity = (citySlug: string) => getApprovedGuides().filter((g: any) => g.city === citySlug);
 
 export const getUpcomingEventsForCity = (citySlug: string) => {
-  const today = new Date().toISOString().split('T')[0];
-  return getEventsForCity(citySlug).filter((e: any) => e.start_date && e.start_date >= today);
+  const cityEvents = getEventsForCity(citySlug);
+  const city = getCityBySlug(citySlug);
+  const upcoming = cityEvents.filter((e: any) => isEventUpcoming(e, city?.timezone));
+  return sortEventsByStartDate(upcoming);
 };
 
 export const getWeekendEventsForCity = (citySlug: string) => {
-  return getUpcomingEventsForCity(citySlug); 
+  const upcoming = getUpcomingEventsForCity(citySlug);
+  const city = getCityBySlug(citySlug);
+  return upcoming.filter((e: any) => isEventHappeningThisWeekend(e, city?.timezone));
 };
 
 export const getAvailableCategoriesForCity = (citySlug: string) => {
