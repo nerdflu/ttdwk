@@ -1,4 +1,5 @@
 ---
+import ComingSoonGate from "../components/ComingSoonGate.astro";
 export interface Props {
   title: string;
   description: string;
@@ -21,6 +22,7 @@ const { title, description, canonical, ogImage, noindex, jsonLd } = Astro.props;
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
+    <ComingSoonGate />
     <slot />
   </body>
 </html>

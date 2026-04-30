@@ -1,0 +1,73 @@
+---
+import { siteConfig } from '../config';
+---
+
+{siteConfig.comingSoon && (
+  <div id="coming-soon-gate" class="coming-soon-overlay">
+    <div class="coming-soon-content">
+      <h1>Things To Do With Kids</h1>
+      <p>We're building the ultimate family guide. Coming soon!</p>
+      <p class="hint">Check back soon for the best family-friendly places and events.</p>
+    </div>
+  </div>
+
+  <script is:inline>
+    // Make the disable function available globally in the browser console
+    window.disableComingSoon = function() {
+      localStorage.setItem('bypass_coming_soon', 'true');
+      const gate = document.getElementById('coming-soon-gate');
+      if (gate) gate.remove();
+      console.log('Coming soon gate disabled. Welcome!');
+      return 'Coming soon disabled!';
+    };
+
+    window.enableComingSoon = function() {
+      localStorage.removeItem('bypass_coming_soon');
+      window.location.reload();
+      return 'Coming soon enabled!';
+    };
+
+    // If already bypassed, remove the gate immediately
+    if (localStorage.getItem('bypass_coming_soon') === 'true') {
+      const gate = document.getElementById('coming-soon-gate');
+      if (gate) gate.remove();
+    }
+  </script>
+
+  <style>
+    .coming-soon-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .coming-soon-content {
+      max-width: 600px;
+      padding: 2rem;
+    }
+    .coming-soon-content h1 {
+      font-size: 2.5rem;
+      color: #111827;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+    .coming-soon-content p {
+      font-size: 1.25rem;
+      color: #4b5563;
+      margin-bottom: 0.5rem;
+    }
+    .coming-soon-content .hint {
+      font-size: 1rem;
+      color: #9ca3af;
+    }
+  </style>
+)}
