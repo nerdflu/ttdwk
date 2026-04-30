@@ -1,4 +1,4 @@
-title,slug,preposition,state,region,description,nearby_regions
-Gold Coast,gold-coast,on the,QLD,South East Queensland,Family fun on the Gold Coast,"brisbane,sunshine-coast"
-Brisbane,brisbane,in,QLD,South East Queensland,Explore Brisbane with kids,"gold-coast,sunshine-coast"
-Sydney,sydney,in,NSW,Greater Sydney,Sydney's best kid-friendly spots,central-coast
+title,slug,preposition,state,region,description,nearby_regions,status
+Gold Coast,gold-coast,on the,QLD,South East Queensland,"Family beaches, rockpools, wildlife parks, playgrounds, rainforest walks and little adventures.","brisbane,sunshine-coast,byron-bay",published
+Brisbane,brisbane,in,QLD,South East Queensland,"Parks, museums, libraries, river walks, wildlife spots, events and day trips for families.","gold-coast,sunshine-coast,ipswich",published
+Sydney,sydney,in,NSW,Greater Sydney,"Museums, harbour adventures, beaches, playgrounds, ferries and family-friendly events.","central-coast,wollongong,blue-mountains",published

@@ -1,11 +1,11 @@
 title,slug,description,group,seo_title_pattern,seo_description_pattern
-Free,free,Free activities,cost,Free things to do with kids {preposition} {city},Discover the best free family activities {preposition} {city}.
-Rainy Day,rainy-day,Indoor fun,weather,Rainy day things to do with kids {preposition} {city},Best indoor places {preposition} {city} for families.
-Playgrounds,playgrounds,Local parks,outdoor,Best playgrounds {preposition} {city},Top parks and playgrounds {preposition} {city}.
-Water Play,water-play,Splash pads and pools,water,Water play and splash parks {preposition} {city},Cool down at these water parks {preposition} {city}.
-Beaches & Rockpools,beaches-rockpools,Sandy shores,water,Beaches and rockpools for kids {preposition} {city},Kid-friendly beaches {preposition} {city}.
-Museums & Science,museums-science,Educational outings,indoor,Kid-friendly museums {preposition} {city},Learn and explore at museums {preposition} {city}.
-Nature Walks,nature-walks,Bushwalks and trails,nature,Family nature walks {preposition} {city},Easy trails for kids {preposition} {city}.
-Fishing Spots,fishing-spots,Cast a line,outdoor,Kid-friendly fishing spots {preposition} {city},Where to take the kids fishing {preposition} {city}.
-Events,events,What's on,events,Kids events {preposition} {city},Find out what's on for kids {preposition} {city}.
-Hidden Gems,hidden-gems,Secret spots,vibe,Hidden gem activities {preposition} {city},Secret spots for kids {preposition} {city}.
+Free,free,Free or low-cost family-friendly places and ideas,cost,Free things to do with kids {preposition} {city},"Explore free family-friendly places, events and little adventures for kids {preposition} {city}."
+Rainy day,rainy-day,Indoor or weather-safe ideas,weather,Rainy day things to do with kids {preposition} {city},"Find indoor play, museums, libraries and rainy day ideas for kids {preposition} {city}."
+Playgrounds,playgrounds,Playgrounds and parks for families,outdoor,Best playgrounds for kids {preposition} {city},"Find playgrounds, parks and family-friendly outdoor spaces {preposition} {city}."
+Water play,water-play,"Splash parks, pools, lagoons and calm water spots",water,Water play for kids {preposition} {city},"Find splash parks, pools, rockpools and water play ideas for kids {preposition} {city}."
+Beaches & rockpools,beaches-rockpools,"Beaches, bays and rockpools for family exploring",water,Beaches and rockpools for kids {preposition} {city},"Explore family-friendly beaches, bays and rockpools {preposition} {city}."
+Museums & science,museums-science,"Museums, galleries and hands-on science spots",indoor,Museums and science for kids {preposition} {city},"Find museums, science centres and hands-on learning ideas for kids {preposition} {city}."
+Nature walks,nature-walks,"Short walks, lookouts and kid-friendly trails",nature,Nature walks with kids {preposition} {city},"Find kid-friendly walks, lookouts and nature trails {preposition} {city}."
+Fishing spots,fishing-spots,Beginner-friendly fishing spots and calm waterways,water,Fishing spots for kids {preposition} {city},Find beginner-friendly family fishing spots and calm waterways {preposition} {city}.
+Events,events,Family-friendly things happening soon,events,Kids events {preposition} {city},"Find family-friendly events, workshops and things happening soon {preposition} {city}."
+Hidden gems,hidden-gems,Less obvious local gems and alternative ideas,discovery,Hidden gems for kids {preposition} {city},Discover local gems and alternative family-friendly ideas {preposition} {city}.

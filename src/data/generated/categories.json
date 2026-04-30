@@ -2,81 +2,81 @@
   {
     "title": "Free",
     "slug": "free",
-    "description": "Free activities",
+    "description": "Free or low-cost family-friendly places and ideas",
     "group": "cost",
     "seo_title_pattern": "Free things to do with kids {preposition} {city}",
-    "seo_description_pattern": "Discover the best free family activities {preposition} {city}."
+    "seo_description_pattern": "Explore free family-friendly places, events and little adventures for kids {preposition} {city}."
   },
   {
-    "title": "Rainy Day",
+    "title": "Rainy day",
     "slug": "rainy-day",
-    "description": "Indoor fun",
+    "description": "Indoor or weather-safe ideas",
     "group": "weather",
     "seo_title_pattern": "Rainy day things to do with kids {preposition} {city}",
-    "seo_description_pattern": "Best indoor places {preposition} {city} for families."
+    "seo_description_pattern": "Find indoor play, museums, libraries and rainy day ideas for kids {preposition} {city}."
   },
   {
     "title": "Playgrounds",
     "slug": "playgrounds",
-    "description": "Local parks",
+    "description": "Playgrounds and parks for families",
     "group": "outdoor",
-    "seo_title_pattern": "Best playgrounds {preposition} {city}",
-    "seo_description_pattern": "Top parks and playgrounds {preposition} {city}."
+    "seo_title_pattern": "Best playgrounds for kids {preposition} {city}",
+    "seo_description_pattern": "Find playgrounds, parks and family-friendly outdoor spaces {preposition} {city}."
   },
   {
-    "title": "Water Play",
+    "title": "Water play",
     "slug": "water-play",
-    "description": "Splash pads and pools",
+    "description": "Splash parks, pools, lagoons and calm water spots",
     "group": "water",
-    "seo_title_pattern": "Water play and splash parks {preposition} {city}",
-    "seo_description_pattern": "Cool down at these water parks {preposition} {city}."
+    "seo_title_pattern": "Water play for kids {preposition} {city}",
+    "seo_description_pattern": "Find splash parks, pools, rockpools and water play ideas for kids {preposition} {city}."
   },
   {
-    "title": "Beaches & Rockpools",
+    "title": "Beaches & rockpools",
     "slug": "beaches-rockpools",
-    "description": "Sandy shores",
+    "description": "Beaches, bays and rockpools for family exploring",
     "group": "water",
     "seo_title_pattern": "Beaches and rockpools for kids {preposition} {city}",
-    "seo_description_pattern": "Kid-friendly beaches {preposition} {city}."
+    "seo_description_pattern": "Explore family-friendly beaches, bays and rockpools {preposition} {city}."
   },
   {
-    "title": "Museums & Science",
+    "title": "Museums & science",
     "slug": "museums-science",
-    "description": "Educational outings",
+    "description": "Museums, galleries and hands-on science spots",
     "group": "indoor",
-    "seo_title_pattern": "Kid-friendly museums {preposition} {city}",
-    "seo_description_pattern": "Learn and explore at museums {preposition} {city}."
+    "seo_title_pattern": "Museums and science for kids {preposition} {city}",
+    "seo_description_pattern": "Find museums, science centres and hands-on learning ideas for kids {preposition} {city}."
   },
   {
-    "title": "Nature Walks",
+    "title": "Nature walks",
     "slug": "nature-walks",
-    "description": "Bushwalks and trails",
+    "description": "Short walks, lookouts and kid-friendly trails",
     "group": "nature",
-    "seo_title_pattern": "Family nature walks {preposition} {city}",
-    "seo_description_pattern": "Easy trails for kids {preposition} {city}."
+    "seo_title_pattern": "Nature walks with kids {preposition} {city}",
+    "seo_description_pattern": "Find kid-friendly walks, lookouts and nature trails {preposition} {city}."
   },
   {
-    "title": "Fishing Spots",
+    "title": "Fishing spots",
     "slug": "fishing-spots",
-    "description": "Cast a line",
-    "group": "outdoor",
-    "seo_title_pattern": "Kid-friendly fishing spots {preposition} {city}",
-    "seo_description_pattern": "Where to take the kids fishing {preposition} {city}."
+    "description": "Beginner-friendly fishing spots and calm waterways",
+    "group": "water",
+    "seo_title_pattern": "Fishing spots for kids {preposition} {city}",
+    "seo_description_pattern": "Find beginner-friendly family fishing spots and calm waterways {preposition} {city}."
   },
   {
     "title": "Events",
     "slug": "events",
-    "description": "What's on",
+    "description": "Family-friendly things happening soon",
     "group": "events",
     "seo_title_pattern": "Kids events {preposition} {city}",
-    "seo_description_pattern": "Find out what's on for kids {preposition} {city}."
+    "seo_description_pattern": "Find family-friendly events, workshops and things happening soon {preposition} {city}."
   },
   {
-    "title": "Hidden Gems",
+    "title": "Hidden gems",
     "slug": "hidden-gems",
-    "description": "Secret spots",
-    "group": "vibe",
-    "seo_title_pattern": "Hidden gem activities {preposition} {city}",
-    "seo_description_pattern": "Secret spots for kids {preposition} {city}."
+    "description": "Less obvious local gems and alternative ideas",
+    "group": "discovery",
+    "seo_title_pattern": "Hidden gems for kids {preposition} {city}",
+    "seo_description_pattern": "Discover local gems and alternative family-friendly ideas {preposition} {city}."
   }
 ]

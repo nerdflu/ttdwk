@@ -4,13 +4,50 @@
     "title": "Free things to do on the Gold Coast",
     "slug": "free-things-to-do",
     "city": "gold-coast",
-    "summary": "The ultimate guide to keeping the kids entertained without spending a cent.",
+    "summary": "A starter guide to free and low-cost family ideas on the Gold Coast.",
     "categories": [
-      "free"
+      "free",
+      "beaches-rockpools",
+      "playgrounds"
+    ],
+    "discovery_tags": [
+      "low-cost",
+      "mini-adventure"
     ],
     "related_place_slugs": [
-      "burleigh-heads-rockpools",
-      "broadwater-parklands"
-    ]
+      "burleigh-heads-rockpools"
+    ],
+    "related_idea_slugs": [
+      "rockpool-hunting-before-lunch"
+    ],
+    "intro": "You do not need a big budget to make a day feel special.",
+    "sections": "Rockpools|Playgrounds|Beach walks|Picnic ideas"
+  },
+  {
+    "status": "approved",
+    "title": "Rainy day ideas in Brisbane",
+    "slug": "rainy-day-ideas",
+    "city": "brisbane",
+    "summary": "Indoor and weather-safe ideas for Brisbane families.",
+    "categories": [
+      "rainy-day",
+      "free",
+      "museums-science"
+    ],
+    "discovery_tags": [
+      "calm-day",
+      "toddler-friendly"
+    ],
+    "related_place_slugs": [
+      "south-bank-parklands"
+    ],
+    "related_event_slugs": [
+      "free-library-storytime"
+    ],
+    "related_idea_slugs": [
+      "library-hot-chocolate-rainy-day"
+    ],
+    "intro": "Rain does not have to mean staying home all day.",
+    "sections": "Libraries|Museums|Indoor play|Cafe stops"
   }
 ]

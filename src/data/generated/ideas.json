@@ -6,11 +6,52 @@
     "city": "gold-coast",
     "categories": [
       "free",
-      "nature-walks"
+      "beaches-rockpools",
+      "water-play"
     ],
-    "summary": "A simple morning itinerary for little explorers.",
+    "discovery_tags": [
+      "mini-adventure",
+      "low-cost",
+      "something-different"
+    ],
+    "summary": "A simple morning adventure: check the tide, explore rockpools, then grab a treat nearby.",
+    "steps": "Check low tide|Pack reef shoes|Explore gently|Finish with a bakery stop",
+    "best_for": "Curious kids and families wanting a quick nature outing",
+    "what_to_bring": "Reef shoes, towel, sunscreen, water",
+    "estimated_duration": "1-2 hours",
+    "estimated_cost": "Free",
+    "ideal_weather": "Sunny",
+    "parent_tip": "Go early before it gets hot.",
     "related_place_slugs": [
       "burleigh-heads-rockpools"
-    ]
+    ],
+    "source_type": "manual"
+  },
+  {
+    "status": "approved",
+    "title": "Library and hot chocolate rainy day",
+    "slug": "library-hot-chocolate-rainy-day",
+    "city": "brisbane",
+    "categories": [
+      "free",
+      "rainy-day"
+    ],
+    "discovery_tags": [
+      "calm-day",
+      "low-cost",
+      "toddler-friendly"
+    ],
+    "summary": "A gentle rainy-day outing built around storytime, browsing books and a small cafe treat.",
+    "steps": "Check storytime schedule|Visit the library|Choose books|Finish with hot chocolate",
+    "best_for": "Toddlers and primary-aged kids",
+    "what_to_bring": "Library card, umbrella",
+    "estimated_duration": "1-2 hours",
+    "estimated_cost": "Low cost",
+    "ideal_weather": "Rainy",
+    "parent_tip": "Make it feel like a tiny tradition.",
+    "related_place_slugs": [
+      "free-library-storytime"
+    ],
+    "source_type": "manual"
   }
 ]

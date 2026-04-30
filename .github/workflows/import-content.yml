@@ -29,7 +29,7 @@ jobs:
         env:
           CITIES_CSV_URL: ${{ vars.CITIES_CSV_URL }}
           CATEGORIES_CSV_URL: ${{ vars.CATEGORIES_CSV_URL }}
-          DISCOVERY_TAGS_CSV_URL: ${{ vars.DISCOVERY_TAGS_URL }}
+          DISCOVERY_TAGS_CSV_URL: ${{ vars.DISCOVERY_TAGS_CSV_URL }}
           PLACES_CSV_URL: ${{ vars.PLACES_CSV_URL }}
           EVENTS_CSV_URL: ${{ vars.EVENTS_CSV_URL }}
           IDEAS_CSV_URL: ${{ vars.IDEAS_CSV_URL }}

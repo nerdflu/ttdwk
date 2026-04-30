@@ -62,3 +62,27 @@ If you have made a change in Google Sheets and want to preview it:
    - `GUIDES_CSV_URL`
 
 Whenever you manually run the "Import Content from Google Sheets" Action, GitHub will run the full import, commit the generated `.json` files, and trigger the Astro deployment automatically.
+
+## Testing the import in GitHub Actions
+
+1. **Add Repository Variables**: 
+   In GitHub, go to **Settings > Secrets and variables > Actions > Variables**. Add the published CSV URLs as variables:
+   - `CITIES_CSV_URL`
+   - `CATEGORIES_CSV_URL`
+   - `DISCOVERY_TAGS_CSV_URL`
+   - `PLACES_CSV_URL`
+   - `EVENTS_CSV_URL`
+   - `IDEAS_CSV_URL`
+   - `GUIDES_CSV_URL`
+
+2. **Run the workflow manually**:
+   Go to the **Actions** tab in your GitHub repository. Select **Import Content from Google Sheets** from the left sidebar, click **Run workflow**, ensure you are on the `astro-restart` branch, and click the **Run workflow** button.
+
+3. **What files should change**:
+   If there are new updates from the Google Sheets, the workflow will automatically commit changes to the JSON files within the `src/data/generated/` folder on the current branch.
+
+4. **How to confirm the build worked**:
+   In the Actions tab, you can click on the running workflow to view the logs. The `Sync and Build` step will show the download, validation, and Astro build output. A green checkmark indicates a successful sync and build.
+
+5. **Production deploy is not enabled yet**:
+   This workflow currently serves as a pre-production content sync and build check. It updates the branch with the latest content but does not deploy over the live production site.

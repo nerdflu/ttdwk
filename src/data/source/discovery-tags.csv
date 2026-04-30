@@ -1,11 +1,11 @@
 title,slug,description,mood_group
-Low Energy,low-energy,Chill activities,energy
-High Energy,high-energy,Burn some steam,energy
-Pram Friendly,pram-friendly,Easy to roll,access
-Coffee Nearby,coffee-nearby,Parent fuel,amenities
-Toddler Friendly,toddler-friendly,Safe for little ones,age
-Teens,teens,Older kids,age
-Quick Stop,quick-stop,Under an hour,duration
-Half Day,half-day,A few hours,duration
-Full Day,full-day,Make a day of it,duration
-Cheap,cheap,Budget friendly,cost
+Mini adventure,mini-adventure,A simple outing that feels more memorable than the usual routine,adventure
+Hidden gem,hidden-gem,A less obvious local idea worth sharing,discovery
+Burn energy,burn-energy,Good for active kids who need to move,energy
+Calm day,calm-day,Lower-stress outings and gentle activities,calm
+Something different,something-different,Fresh ideas beyond the usual playground or shopping centre,discovery
+Worth the drive,worth-the-drive,Good enough to travel a bit further for,adventure
+Quick outing,quick-outing,Good when you only have an hour or two,convenience
+Low cost,low-cost,Cheap or free ideas for families,budget
+Toddler-friendly,toddler-friendly,Good for younger kids and under-5s,age
+Teen-friendly,teen-friendly,Better suited to older kids and teens,age

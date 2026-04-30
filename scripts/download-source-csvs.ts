@@ -43,15 +43,15 @@ async function main() {
   }
 
   let downloadedCount = 0;
-  let skippedCount = 0;
+  
   let errorCount = 0;
 
   console.log('--- Starting CSV Download ---');
 
   for (const [filename, url] of Object.entries(fileMap)) {
     if (!url) {
-      console.warn(`[SKIP] ${filename}: URL missing in environment.`);
-      skippedCount++;
+      console.error(`[ERROR] ${filename}: URL missing in environment.`);
+      errorCount++;
       continue;
     }
     
@@ -69,7 +69,7 @@ async function main() {
 
   console.log('\n--- Download Summary ---');
   console.log(`Downloaded: ${downloadedCount}`);
-  console.log(`Skipped:    ${skippedCount}`);
+  
   console.log(`Errors:     ${errorCount}`);
 
   if (errorCount > 0) {

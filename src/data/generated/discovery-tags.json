@@ -1,62 +1,62 @@
 [
   {
-    "title": "Low Energy",
-    "slug": "low-energy",
-    "description": "Chill activities",
+    "title": "Mini adventure",
+    "slug": "mini-adventure",
+    "description": "A simple outing that feels more memorable than the usual routine",
+    "mood_group": "adventure"
+  },
+  {
+    "title": "Hidden gem",
+    "slug": "hidden-gem",
+    "description": "A less obvious local idea worth sharing",
+    "mood_group": "discovery"
+  },
+  {
+    "title": "Burn energy",
+    "slug": "burn-energy",
+    "description": "Good for active kids who need to move",
     "mood_group": "energy"
   },
   {
-    "title": "High Energy",
-    "slug": "high-energy",
-    "description": "Burn some steam",
-    "mood_group": "energy"
+    "title": "Calm day",
+    "slug": "calm-day",
+    "description": "Lower-stress outings and gentle activities",
+    "mood_group": "calm"
   },
   {
-    "title": "Pram Friendly",
-    "slug": "pram-friendly",
-    "description": "Easy to roll",
-    "mood_group": "access"
+    "title": "Something different",
+    "slug": "something-different",
+    "description": "Fresh ideas beyond the usual playground or shopping centre",
+    "mood_group": "discovery"
   },
   {
-    "title": "Coffee Nearby",
-    "slug": "coffee-nearby",
-    "description": "Parent fuel",
-    "mood_group": "amenities"
+    "title": "Worth the drive",
+    "slug": "worth-the-drive",
+    "description": "Good enough to travel a bit further for",
+    "mood_group": "adventure"
   },
   {
-    "title": "Toddler Friendly",
+    "title": "Quick outing",
+    "slug": "quick-outing",
+    "description": "Good when you only have an hour or two",
+    "mood_group": "convenience"
+  },
+  {
+    "title": "Low cost",
+    "slug": "low-cost",
+    "description": "Cheap or free ideas for families",
+    "mood_group": "budget"
+  },
+  {
+    "title": "Toddler-friendly",
     "slug": "toddler-friendly",
-    "description": "Safe for little ones",
+    "description": "Good for younger kids and under-5s",
     "mood_group": "age"
   },
   {
-    "title": "Teens",
-    "slug": "teens",
-    "description": "Older kids",
+    "title": "Teen-friendly",
+    "slug": "teen-friendly",
+    "description": "Better suited to older kids and teens",
     "mood_group": "age"
-  },
-  {
-    "title": "Quick Stop",
-    "slug": "quick-stop",
-    "description": "Under an hour",
-    "mood_group": "duration"
-  },
-  {
-    "title": "Half Day",
-    "slug": "half-day",
-    "description": "A few hours",
-    "mood_group": "duration"
-  },
-  {
-    "title": "Full Day",
-    "slug": "full-day",
-    "description": "Make a day of it",
-    "mood_group": "duration"
-  },
-  {
-    "title": "Cheap",
-    "slug": "cheap",
-    "description": "Budget friendly",
-    "mood_group": "cost"
   }
 ]

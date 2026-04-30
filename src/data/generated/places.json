@@ -8,29 +8,42 @@
     "state": "QLD",
     "categories": [
       "free",
-      "beaches-rockpools"
+      "beaches-rockpools",
+      "water-play"
     ],
     "discovery_tags": [
-      "pram-friendly",
-      "coffee-nearby"
+      "mini-adventure",
+      "low-cost",
+      "hidden-gem"
     ],
-    "summary": "Great little rockpools to explore at low tide.",
-    "why_we_like_it": "It's free scenic and kids love finding crabs.",
-    "good_to_know": "Check the tide times before you go.",
-    "parent_tip": "Grab a coffee from the kiosk first.",
-    "best_for": "Toddlers and primary kids.",
-    "what_to_bring": "Sunscreen, hats, reef shoes.",
-    "safety_notes": "Rocks can be slippery.",
-    "editorial_pick": false,
-    "local_gem": false,
+    "summary": "Rockpools and coastal exploring for families near Burleigh Headland.",
+    "why_we_like_it": "It feels like a small adventure without needing to plan a big day out.",
+    "good_to_know": "Best at low tide. Bring reef shoes and check conditions.",
+    "parent_tip": "Pair it with a beach walk and bakery stop.",
+    "best_for": "Kids who like exploring, shells and shallow water.",
+    "what_to_bring": "Hat, water, reef shoes, towel, sunscreen.",
+    "safety_notes": "Watch slippery rocks and surf conditions.",
+    "address": "Burleigh Heads QLD",
+    "latitude": "-28.0896",
+    "longitude": "153.4553",
+    "price": "Free",
+    "hours": "Open daily",
+    "age": "All ages",
+    "website": "https://example.com",
+    "maps_url": "https://maps.google.com",
+    "image_alt": "Kids exploring Burleigh Heads rockpools",
+    "editorial_pick": true,
+    "local_gem": true,
     "mainstream": false,
+    "source_type": "manual",
+    "source_url": "https://example.com",
+    "last_verified_at": "2026-04-29",
     "features": [
-      "rainy_day",
       "cafe"
     ]
   },
   {
-    "status": "published",
+    "status": "approved",
     "title": "South Bank Parklands",
     "slug": "south-bank-parklands",
     "city": "brisbane",
@@ -38,51 +51,89 @@
     "state": "QLD",
     "categories": [
       "free",
-      "playgrounds",
-      "water-play"
+      "water-play",
+      "playgrounds"
     ],
     "discovery_tags": [
-      "pram-friendly",
-      "coffee-nearby",
-      "full-day"
+      "burn-energy",
+      "quick-outing",
+      "low-cost"
     ],
-    "summary": "Huge parklands with multiple playgrounds and a massive man-made beach.",
-    "editorial_pick": false,
+    "summary": "A classic Brisbane family spot with water play, lawns and playgrounds. Super fun.",
+    "why_we_like_it": "There is enough variety for a short visit or a half-day outing.",
+    "good_to_know": "Can get busy on weekends. Pack swimmers.",
+    "parent_tip": "Go early and combine water play with a picnic.",
+    "best_for": "Families wanting an easy city outing.",
+    "what_to_bring": "Swimmers, towel, picnic rug, sunscreen.",
+    "safety_notes": "Supervise closely around water.",
+    "address": "South Brisbane QLD",
+    "latitude": "-27.4788",
+    "longitude": "153.022",
+    "price": "Free",
+    "hours": "Open daily",
+    "age": "All ages",
+    "website": "https://example.com",
+    "maps_url": "https://maps.google.com",
+    "image_alt": "South Bank water play area",
+    "editorial_pick": true,
     "local_gem": false,
-    "mainstream": false,
+    "mainstream": true,
+    "source_type": "manual",
+    "source_url": "https://example.com",
+    "last_verified_at": "2026-04-29",
     "features": [
-      "rainy_day",
       "pram_friendly",
       "toilets",
-      "parking_easy",
-      "dog_friendly"
+      "shade",
+      "cafe",
+      "wheelchair_accessible"
     ]
   },
   {
-    "status": "published",
-    "title": "Broadwater Parklands",
-    "slug": "broadwater-parklands",
-    "city": "gold-coast",
-    "suburb": "Southport",
+    "status": "approved",
+    "title": "South Bank Swimming Pool",
+    "slug": "south-bank-swimming-pool",
+    "city": "brisbane",
+    "suburb": "South Brisbane",
     "state": "QLD",
     "categories": [
       "free",
-      "playgrounds",
-      "water-play"
+      "water-play",
+      "playgrounds"
     ],
     "discovery_tags": [
-      "pram-friendly",
-      "half-day"
+      "burn-energy",
+      "quick-outing",
+      "low-cost"
     ],
-    "summary": "Massive park with a monorail jumping pillow and water play area.",
-    "editorial_pick": false,
+    "summary": "A classic Brisbane family spot with water play, lawns and playgrounds. Super fun.",
+    "why_we_like_it": "There is enough variety for a short visit or a half-day outing.",
+    "good_to_know": "Can get busy on weekends. Pack swimmers.",
+    "parent_tip": "Go early and combine water play with a picnic.",
+    "best_for": "Families wanting an easy city outing.",
+    "what_to_bring": "Swimmers, towel, picnic rug, sunscreen.",
+    "safety_notes": "Supervise closely around water.",
+    "address": "South Brisbane QLD",
+    "latitude": "-27.4788",
+    "longitude": "153.022",
+    "price": "Free",
+    "hours": "Open daily",
+    "age": "All ages",
+    "website": "https://example.com",
+    "maps_url": "https://maps.google.com",
+    "image_alt": "South Bank water play area",
+    "editorial_pick": true,
     "local_gem": false,
-    "mainstream": false,
+    "mainstream": true,
+    "source_type": "manual",
+    "source_url": "https://example.com",
+    "last_verified_at": "2026-04-29",
     "features": [
-      "rainy_day",
       "pram_friendly",
       "toilets",
-      "shade"
+      "shade",
+      "cafe",
+      "wheelchair_accessible"
     ]
   }
 ]
