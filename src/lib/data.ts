@@ -28,6 +28,34 @@ const eventsData = loadData('events');
 const ideasData = loadData('ideas');
 const guidesData = loadData('guides');
 
+
+
+function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+export const getNearbyCities = (citySlug: string, maxRadiusKm = 200) => {
+  const targetCity = getCityBySlug(citySlug);
+  if (!targetCity || !targetCity.latitude || !targetCity.longitude) return [];
+
+  const allCities = getCities().filter((c: any) => c.slug !== citySlug && c.latitude && c.longitude);
+  
+  const nearby = allCities.map((c: any) => {
+    const distance = getDistance(targetCity.latitude, targetCity.longitude, c.latitude, c.longitude);
+    return { ...c, distance };
+  }).filter((c: any) => c.distance <= maxRadiusKm);
+
+  nearby.sort((a: any, b: any) => a.distance - b.distance);
+  return nearby;
+};
+
 export const getCities = () => citiesData;
 export const getCityBySlug = (slug: string) => citiesData.find((c: any) => c.slug === slug);
 export const getCategories = () => categoriesData;

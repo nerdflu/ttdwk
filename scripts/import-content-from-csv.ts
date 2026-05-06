@@ -208,7 +208,8 @@ const processDataset = (filename: string, typeName: string, requiredFields: stri
 const run = () => {
   cities = processDataset('cities.csv', 'City', ['title', 'slug'], r => ({
     ...r,
-    nearby_regions: parseArray(r.nearby_regions)
+    latitude: parseFloat(r.latitude) || 0,
+    longitude: parseFloat(r.longitude) || 0
   }));
 
   categories = processDataset('categories.csv', 'Category', ['title', 'slug'], r => r);

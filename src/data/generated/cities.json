@@ -6,12 +6,10 @@
     "state": "QLD",
     "region": "South East Queensland",
     "description": "Family beaches, rockpools, wildlife parks, playgrounds, rainforest walks and little adventures.",
-    "nearby_regions": [
-      "brisbane",
-      "sunshine-coast",
-      "byron-bay"
-    ],
-    "status": "published"
+    "nearby_regions": "brisbane,sunshine-coast,byron-bay",
+    "status": "published",
+    "latitude": 0,
+    "longitude": 0
   },
   {
     "title": "Brisbane",
@@ -20,12 +18,10 @@
     "state": "QLD",
     "region": "South East Queensland",
     "description": "Parks, museums, libraries, river walks, wildlife spots, events and day trips for families.",
-    "nearby_regions": [
-      "gold-coast",
-      "sunshine-coast",
-      "ipswich"
-    ],
-    "status": "published"
+    "nearby_regions": "gold-coast,sunshine-coast,ipswich",
+    "status": "published",
+    "latitude": 0,
+    "longitude": 0
   },
   {
     "title": "Sydney",
@@ -34,11 +30,9 @@
     "state": "NSW",
     "region": "Greater Sydney",
     "description": "Museums, harbour adventures, beaches, playgrounds, ferries and family-friendly events.",
-    "nearby_regions": [
-      "central-coast",
-      "wollongong",
-      "blue-mountains"
-    ],
-    "status": "published"
+    "nearby_regions": "central-coast,wollongong,blue-mountains",
+    "status": "published",
+    "latitude": 0,
+    "longitude": 0
   }
 ]

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CityContextNav from './CityContextNav.astro';
-import { getCityBySlug, getCities } from '../lib/data';
+import { getCityBySlug, getCities, getNearbyCities } from '../lib/data';
 
 export interface Props {
   citySlug?: string;
@@ -13,6 +13,7 @@ export interface Props {
 const { citySlug, title, description, jsonLd } = Astro.props;
 const city = citySlug ? getCityBySlug(citySlug) : null;
 const allCities = getCities();
+const nearbyCities = citySlug ? getNearbyCities(citySlug) : [];
 ---
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <div class="city-shell">
@@ -47,14 +48,16 @@ const allCities = getCities();
         <h3>Weekend Digest</h3>
         <p>Get the best ideas in your inbox.</p>
       </div>
-      <div class="nearby-regions">
-        <h3>Nearby Regions</h3>
-        <ul>
-          {city?.nearby_regions?.map((region: string) => (
-            <li><a href={"/" + region + "/"}>{region}</a></li>
-          ))}
-        </ul>
-      </div>
+      {nearbyCities.length > 0 && (
+        <div class='nearby-regions'>
+          <h3>Nearby Regions</h3>
+          <ul>
+            {nearbyCities.map((c: any) => (
+              <li><a href={'/' + c.slug + '/'}>{c.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
     </aside>
   </div>
 </BaseLayout>
