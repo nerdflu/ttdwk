@@ -16,31 +16,49 @@ export function getStaticPaths() {
 
 const { city } = Astro.params;
 const cityData = getCityBySlug(city as string);
-const events = getUpcomingEventsForCity(city as string);
-const title = `Kids events in ${cityData?.title || city}`;
+const allEvents = getUpcomingEventsForCity(city as string);
+
+const title = 'Kids events in ' + (cityData?.title || city);
 const breadcrumbs = [
-  { label: "Home", href: "/" },
-  { label: cityData?.title || (city as string), href: `/${city}/` },
-  { label: "Events" }
+  { label: 'Home', href: '/' },
+  { label: cityData?.title || (city as string), href: '/' + city + '/' },
+  { label: 'Events' }
 ];
 
-const visibleItems = events.map(item => ({
+const visibleItems = allEvents.map((item: any) => ({
   name: item.title,
-  url: `/${city}/events/${item.slug}/`
+  url: item.booking_url || item.source_url || ''
 }));
 
 const jsonLd = [
-  collectionPageSchema(title, "Find the best upcoming family events.", `/${city}/events/`),
+  collectionPageSchema(title, 'Find the best upcoming family events.', '/' + city + '/events/'),
   itemListSchema(visibleItems),
   breadcrumbSchema(breadcrumbs)
 ];
 ---
-<CityShell citySlug={city as string} title={title} description="Find the best upcoming family events." jsonLd={jsonLd}>
+<CityShell citySlug={city as string} title={title} description='Find the best upcoming family events.' jsonLd={jsonLd}>
   <Breadcrumbs items={breadcrumbs} />
   <h1>Upcoming Events</h1>
-  <ul>
-    {events.map(e => (
-      <li><a href={`/${city}/events/${e.slug}/`}>{e.title}</a> ({e.start_date})</li>
-    ))}
-  </ul>
+  <p class='disclaimer' style='font-style: italic; color: #666; margin-bottom: 20px;'>Event details can change. Check the official source before you go.</p>
+  
+  {allEvents.length > 0 ? (
+    <div class='events-list'>
+      {allEvents.map((e: any) => {
+        const link = e.booking_url || e.source_url;
+        return (
+          <div class='event-card' style='border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 8px;'>
+            <h2 style='margin-top: 0; margin-bottom: 5px;'>{e.title}</h2>
+            <p class='meta' style='color: #666; margin-bottom: 10px;'>
+              <strong>{e.start_date}</strong> {e.start_time ? 'at ' + e.start_time : ''}
+              {e.venue ? ' - ' + e.venue : (e.suburb ? ' - ' + e.suburb : '')}
+            </p>
+            {e.summary && <p class='summary' style='margin-bottom: 15px;'>{e.summary}</p>}
+            {link && <a href={link} target='_blank' rel='noopener noreferrer' class='btn' style='display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;'>Official details</a>}
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    <p>No upcoming events right now.</p>
+  )}
 </CityShell>

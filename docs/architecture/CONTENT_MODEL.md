@@ -5,7 +5,7 @@
 - **Category**: Broad filtering bucket (e.g., free, rainy-days). Used to generate SEO landing pages.
 - **Discovery Tag**: Mood or logistical filter (e.g., low-energy, pram-friendly).
 - **Place**: A permanent location (e.g., park, museum).
-- **Event**: A time-bound activity.
+- **Event**: A time-bound activity. Events are lightweight external listings. We intentionally avoid generating internal event pages and instead push users to the official source. They are used for freshness and usefulness rather than mass page generation.
 - **Idea**: A mini-adventure or suggested itinerary combining places/activities.
 - **Guide**: A curated collection of things to do (e.g., "Top 10 Free Things").
 

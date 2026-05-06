@@ -232,13 +232,20 @@ const run = () => {
     };
   });
 
-  processDataset('events.csv', 'Event', ['title', 'slug', 'city', 'start_date'], r => ({
-    ...r,
-    categories: parseArray(r.categories),
-    discovery_tags: parseArray(r.discovery_tags),
-    is_free: parseBool(r.is_free),
-    booking_required: parseBool(r.booking_required)
-  }));
+  processDataset('events.csv', 'Event', ['title', 'slug', 'city'], r => {
+    const event_kind = ['one-off', 'recurring'].includes(r.event_kind) ? r.event_kind : 'one-off';
+    let priority = parseInt(r.priority, 10);
+    if (isNaN(priority)) priority = 50;
+    priority = Math.max(0, Math.min(100, priority));
+    
+    return {
+      ...r,
+      event_kind,
+      priority,
+      categories: [],
+      discovery_tags: []
+    };
+  });
 
   processDataset('ideas.csv', 'Idea', ['title', 'slug', 'city'], r => ({
     ...r,

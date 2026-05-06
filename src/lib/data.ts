@@ -56,8 +56,11 @@ export const getUpcomingEventsForCity = (citySlug: string) => {
 export const getWeekendEventsForCity = (citySlug: string) => {
   const upcoming = getUpcomingEventsForCity(citySlug);
   const city = getCityBySlug(citySlug);
-  return upcoming.filter((e: any) => isEventHappeningThisWeekend(e, city?.timezone));
+  // Sort is already done in getUpcomingEventsForCity, but we sort again by priority then date if we want.
+  // Right now getUpcomingEventsForCity sorts by date. Let's just filter.
+  return upcoming.filter((e: any) => isEventHappeningThisWeekend(e, city?.timezone) && (e.priority === undefined || e.priority >= 50));
 };
+
 
 export const getAvailableCategoriesForCity = (citySlug: string) => {
   const places = getPlacesForCity(citySlug);
