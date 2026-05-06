@@ -5,8 +5,13 @@
     "preposition": "on the",
     "state": "QLD",
     "region": "South East Queensland",
-    "description": "Family fun on the Gold Coast",
-    "nearby_regions": ["brisbane", "sunshine-coast"]
+    "description": "Family beaches, rockpools, wildlife parks, playgrounds, rainforest walks and little adventures.",
+    "nearby_regions": [
+      "brisbane",
+      "sunshine-coast",
+      "byron-bay"
+    ],
+    "status": "published"
   },
   {
     "title": "Brisbane",
@@ -14,8 +19,13 @@
     "preposition": "in",
     "state": "QLD",
     "region": "South East Queensland",
-    "description": "Explore Brisbane with kids",
-    "nearby_regions": ["gold-coast", "sunshine-coast"]
+    "description": "Parks, museums, libraries, river walks, wildlife spots, events and day trips for families.",
+    "nearby_regions": [
+      "gold-coast",
+      "sunshine-coast",
+      "ipswich"
+    ],
+    "status": "published"
   },
   {
     "title": "Sydney",
@@ -23,7 +33,12 @@
     "preposition": "in",
     "state": "NSW",
     "region": "Greater Sydney",
-    "description": "Sydney's best kid-friendly spots",
-    "nearby_regions": ["central-coast"]
+    "description": "Museums, harbour adventures, beaches, playgrounds, ferries and family-friendly events.",
+    "nearby_regions": [
+      "central-coast",
+      "wollongong",
+      "blue-mountains"
+    ],
+    "status": "published"
   }
 ]

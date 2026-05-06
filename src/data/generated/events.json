@@ -16,10 +16,6 @@
     "booking_required": true,
     "booking_url": "https://example.com/book",
     "source_url": "https://example.com",
-    "categories": [
-      "events",
-      "hidden-gems"
-    ],
     "discovery_tags": [
       "mini-adventure",
       "hidden-gem"
@@ -51,9 +47,8 @@
     "booking_url": "https://example.com",
     "source_url": "https://example.com",
     "categories": [
-      "events",
       "free",
-      "rainy-day"
+      "rainy-days"
     ],
     "discovery_tags": [
       "calm-day",

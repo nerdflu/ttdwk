@@ -11,6 +11,62 @@ if (!fs.existsSync(OUT_DIR)) {
 }
 
 // Helpers
+const mapCategory = (cat: string): string | null => {
+    switch (cat.trim()) {
+        case 'indoor':
+        case 'indoor-play':
+        case 'museums-science':
+        case 'museums-learning':
+        case 'libraries':
+            return 'indoors';
+        case 'outdoor':
+        case 'nature-walks':
+        case 'nature-adventures':
+        case 'playgrounds':
+        case 'playgrounds-parks':
+            return 'outdoors';
+        case 'beaches-rockpools':
+        case 'swimming-holes':
+        case 'water-play':
+            return 'hot-days'; 
+        case 'fishing-spots':
+            return 'outdoors';
+        case 'rainy-day':
+            return 'rainy-days';
+        case 'hot-day':
+            return 'hot-days';
+        case 'school-holiday':
+            return 'school-holidays';
+        case 'free':
+            return 'free';
+        case 'hidden-gems':
+        case 'events':
+            return null; // removed from categories
+        default:
+            return cat.trim();
+    }
+};
+
+const mapCategories = (cats: string[], tags: string[] = []) => {
+    let newCats = new Set<string>();
+    let newTags = new Set<string>(tags);
+
+    cats.forEach(cat => {
+        if (cat === 'hidden-gems') {
+            newTags.add('hidden-gem');
+        } else if (cat === 'events') {
+            // drop
+        } else {
+            const mapped = mapCategory(cat);
+            if (mapped) newCats.add(mapped);
+            if (cat === 'beaches-rockpools' || cat === 'swimming-holes' || cat === 'water-play') {
+                newCats.add('outdoors'); // Also add to outdoors
+            }
+        }
+    });
+    return { categories: Array.from(newCats), discovery_tags: Array.from(newTags) };
+};
+
 const parseBool = (val: string): boolean => {
   if (!val) return false;
   const lower = val.toLowerCase().trim();
@@ -111,14 +167,24 @@ const processDataset = (filename: string, typeName: string, requiredFields: stri
       logError(typeName, row.slug, `Referenced city not found: ${row.city}`);
     }
     
-    const cats = parseArray(row.categories || '');
+    const origCats = parseArray(row.categories || '');
+    const origTags = parseArray(row.discovery_tags || '');
+    const mapped = mapCategories(origCats, origTags);
+    const cats = mapped.categories;
+    const dTags = mapped.discovery_tags;
+    
+    // update row for processor
+    row.categories = cats.join(',');
+    if (row.discovery_tags !== undefined) {
+      row.discovery_tags = dTags.join(',');
+    }
     cats.forEach(c => {
       if (categories.length > 0 && !categories.find(cat => cat.slug === c)) {
         logError(typeName, row.slug, `Referenced category not found: ${c}`);
       }
     });
 
-    const dTags = parseArray(row.discovery_tags || '');
+    // discovery tags already computed
     dTags.forEach(t => {
       if (tags.length > 0 && !tags.find(tag => tag.slug === t)) {
         logError(typeName, row.slug, `Referenced discovery tag not found: ${t}`);

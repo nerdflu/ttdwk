@@ -2,7 +2,7 @@
 
 ## Entities
 - **City**: The main geographic boundary for routing. Also defines the `timezone` used for accurate event expiration and weekend window logic.
-- **Category**: Broad filtering bucket (e.g., free, rainy-day). Used to generate SEO landing pages.
+- **Category**: Broad filtering bucket (e.g., free, rainy-days). Used to generate SEO landing pages.
 - **Discovery Tag**: Mood or logistical filter (e.g., low-energy, pram-friendly).
 - **Place**: A permanent location (e.g., park, museum).
 - **Event**: A time-bound activity.
