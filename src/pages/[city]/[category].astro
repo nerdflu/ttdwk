@@ -26,30 +26,29 @@ const catData = getCategoryBySlug(category as string);
 const title = generateCategorySeoTitle(city as string, category as string);
 const description = catData?.description || title;
 
-const places = getPlacesForCity(city as string).filter(p => p.categories?.includes(category as string));
-const events = getEventsForCity(city as string).filter(e => e.categories?.includes(category as string));
-const ideas = getIdeasForCity(city as string).filter(i => i.categories?.includes(category as string));
-
+const places = getPlacesForCity(city as string).filter((p: any) => p.categories?.includes(category as string));
+const events = getEventsForCity(city as string).filter((e: any) => e.categories?.includes(category as string));
+const ideas = getIdeasForCity(city as string).filter((i: any) => i.categories?.includes(category as string));
 
 const breadcrumbs = [
-  { label: "Home", href: "/" },
-  { label: cityData?.title || (city as string), href: `/${city}/` },
+  { label: 'Home', href: '/' },
+  { label: cityData?.title || (city as string), href: '/' + city + '/' },
   { label: catData?.title || (category as string) }
 ];
 
 const visibleItems = [...events, ...places, ...ideas].map(item => {
-  let subpath = "places";
-  if (item.start_date) subpath = "events";
-  else if (item.steps) subpath = "ideas";
+  let subpath = 'places';
+  if (item.start_date) subpath = 'events';
+  else if (item.steps) subpath = 'ideas';
   
   return {
     name: item.title,
-    url: `/${city}/${subpath}/${item.slug}/`
+    url: subpath === 'events' ? (item.booking_url || item.source_url || '') : '/' + city + '/' + subpath + '/' + item.slug + '/'
   };
 });
 
 const jsonLd = [
-  collectionPageSchema(title, description, `/${city}/${category}/`),
+  collectionPageSchema(title, description, '/' + city + '/' + category + '/'),
   itemListSchema(visibleItems),
   breadcrumbSchema(breadcrumbs)
 ];
@@ -58,7 +57,7 @@ const jsonLd = [
 <CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={[
     { label: 'Home', href: '/' },
-    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: cityData?.title || (city as string), href: '/' + city + '/' },
     { label: catData?.title || (category as string) }
   ]} />
 
@@ -67,9 +66,10 @@ const jsonLd = [
   
   <section>
     <ul>
-      {places.map(p => <li><a href={`/${city}/places/${p.slug}/`}>Place: {p.title}</a></li>)}
-      {events.map(e => <li><a href={`/${city}/events/${e.slug}/`}>Event: {e.title}</a></li>)}
-      {ideas.map(i => <li><a href={`/${city}/ideas/${i.slug}/`}>Idea: {i.title}</a></li>)}
+      {places.map((p: any) => <li><a href={'/' + city + '/places/' + p.slug + '/'}>Place: {p.title}</a></li>)}
+      {events.map((e: any) => <li><strong>Event: {e.title}</strong></li>)}
+      {ideas.map((i: any) => <li><a href={'/' + city + '/ideas/' + i.slug + '/'}>Idea: {i.title}</a></li>)}
     </ul>
+    {events.length > 0 && <p><a href={'/' + city + '/events/'}>See all events in {cityData?.title || city} &rarr;</a></p>}
   </section>
 </CityShell>

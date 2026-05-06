@@ -29,13 +29,13 @@ const breadcrumbs = [
 
 const visibleItems = [...events, ...places, ...ideas, ...guides].map(item => {
   let subpath = "places";
-  if (item.categories?.includes("events") || item.start_date) subpath = "events";
+  if (item.start_date) subpath = "events";
   else if (item.related_place_slugs && item.steps) subpath = "ideas";
   else if (item.related_place_slugs && !item.steps) subpath = "guides";
   
   return {
     name: item.title,
-    url: `/${city}/${subpath}/${item.slug}/`
+    url: subpath === "events" ? (item.booking_url || item.source_url || "") : `/${city}/${subpath}/${item.slug}/`
   };
 });
 
@@ -59,11 +59,14 @@ const jsonLd = [
     <section>
       <h2>Upcoming Events</h2>
       <ul>
-        {events.map(e => (
-          <li><a href={`/${city}/events/${e.slug}/`}>{e.title}</a></li>
+        {events.map((e: any) => (
+          <li>
+            <strong>{e.title}</strong>
+            {e.start_date ? ' - ' + e.start_date : ''}
+          </li>
         ))}
       </ul>
-      <a href={`/${city}/events/`}>All events &rarr;</a>
+      <a href={'/' + city + '/events/'}>See all upcoming events &rarr;</a>
     </section>
   )}
 
