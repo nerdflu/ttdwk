@@ -75,7 +75,6 @@ export const getAvailableCategoriesForCity = (citySlug: string) => {
 
 export const getCityNavItems = (citySlug: string) => {
   const items = [];
-  items.push({ label: 'Overview', href: `/${citySlug}/` });
   
   if (getUpcomingEventsForCity(citySlug).length > 0) {
     items.push({ label: 'Events', href: `/${citySlug}/events/` });

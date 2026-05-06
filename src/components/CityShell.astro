@@ -19,9 +19,12 @@ const allCities = getCities();
     <aside class="left-rail">
       <div class="brand"><a href="/">ThingsToDoWithKids</a></div>
       <div class="city-selector">
+        <a href={city ? `/${city.slug}/` : "/"} id="city-selector-link" class="city-name-link">
+          <strong id="city-selector-label">{city?.title || 'Choose city'}</strong>
+        </a>
         <details class="city-dropdown">
-          <summary>
-            <strong id="city-selector-label">{city?.title || 'Choose city'} &#9660;</strong>
+          <summary aria-label="Switch city">
+            &#9660;
           </summary>
           <ul class="city-dropdown-list">
             {allCities.map((c: any) => (
@@ -64,13 +67,17 @@ const allCities = getCities();
     } else {
       // Global page: check localStorage and update selector
       const savedSlug = localStorage.getItem('ttdwk:selectedCity');
-      if (savedSlug) {
+      if (savedSlug ) {
         const link = document.querySelector('a.city-link[data-slug="' + savedSlug + '"]');
         if (link) {
           const title = link.getAttribute('data-title');
           const label = document.getElementById('city-selector-label');
+          const headerLink = document.getElementById('city-selector-link');
           if (label && title) {
-            label.innerHTML = title + ' &#9660;';
+            label.innerText = title;
+          }
+          if (headerLink) {
+            headerLink.setAttribute('href', '/' + savedSlug + '/');
           }
         }
       }
@@ -86,6 +93,14 @@ const allCities = getCities();
         }
       });
     });
+    
+    // Close details when clicking outside
+    document.addEventListener('click', function(event) {
+      const details = document.querySelector('.city-dropdown');
+      if (details && details.hasAttribute('open') && !details.contains(event.target)) {
+        details.removeAttribute('open');
+      }
+    });
   })();
 </script>
 
@@ -99,13 +114,37 @@ const allCities = getCities();
   .center-column { flex: 1; padding: 20px; }
   .right-rail { width: 300px; padding: 20px; }
   
+  .brand a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .city-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .city-name-link {
+    text-decoration: none;
+    color: inherit;
+    font-size: 1.1em;
+  }
+  .city-name-link:hover {
+    text-decoration: underline;
+  }
+  
   .city-dropdown {
     position: relative;
-    margin: 15px 0;
+    margin-left: 8px;
   }
   .city-dropdown summary {
     cursor: pointer;
     list-style: none;
+    padding: 2px 5px;
+    user-select: none;
   }
   .city-dropdown summary::-webkit-details-marker {
     display: none;
@@ -124,7 +163,7 @@ const allCities = getCities();
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
   .city-dropdown-list li {
-    margin-bottom:8px;
+    margin-bottom: 8px;
   }
   .city-dropdown-list li:last-child {
     margin-bottom: 0;
@@ -138,11 +177,6 @@ const allCities = getCities();
   }
   .city-dropdown-list a:hover {
     color: #007bff;
-  }
-  .brand a {
-    text-decoration: none;
-    color: inherit;
-    font-weight: bold;
   }
 
   @media (max-width: 768px) {
