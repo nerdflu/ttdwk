@@ -6,7 +6,7 @@ The goal is a fast, static site built from JSON data, preparing for an automated
 React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 
 ## Route Map
-- `/` - Browse all cities / categories
+- `/` - National homepage and primary place to browse/select cities (the `/cities/` route is deprecated and not used)
 - `/[city]/` - Core city landing hub
 - `/[city]/[category]/` - Category filtering within a city context
 - `/[city]/events/` - All upcoming events for a city
@@ -23,7 +23,8 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 
 ## Navigation Strategy
 - **City-Scoped URLs**: Ensure users always stay inside their selected city environment.
-- **Content-Aware Navigation**: City sidebars (`CityNav`) only show categories/events links if data exists.
+- **Content-Aware Navigation**: Left nav is strictly for city-level browsing. It only shows links (like Overview, Events, This Weekend, or matching Categories) if data exists. Guides are currently not included in the left nav, and will be surfaced via right rails or related content instead.
+- **City Selector**: A dropdown is used to select cities. It lists all cities and includes a "Browse all cities" link that returns to `/`.
 - Empty states are avoided at the routing layer.
 
 ## Future Automation

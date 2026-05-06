@@ -6,7 +6,8 @@ export interface Props {
 }
 
 const { citySlug } = Astro.props;
-const navItems = getCityNavItems(citySlug);
+const navItems = citySlug ? getCityNavItems(citySlug) : [];
+
 ---
 <nav class="city-nav">
   <ul>

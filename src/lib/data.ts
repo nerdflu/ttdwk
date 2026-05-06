@@ -75,7 +75,7 @@ export const getAvailableCategoriesForCity = (citySlug: string) => {
 
 export const getCityNavItems = (citySlug: string) => {
   const items = [];
-  items.push({ label: 'Things to do', href: `/${citySlug}/` });
+  items.push({ label: 'Overview', href: `/${citySlug}/` });
   
   if (getUpcomingEventsForCity(citySlug).length > 0) {
     items.push({ label: 'Events', href: `/${citySlug}/events/` });
@@ -89,9 +89,6 @@ export const getCityNavItems = (citySlug: string) => {
     items.push({ label: cat.title, href: `/${citySlug}/${cat.slug}/` });
   });
 
-  if (getGuidesForCity(citySlug).length > 0) {
-    items.push({ label: 'Guides', href: `/${citySlug}/guides/` });
-  }
   
   return items;
 };

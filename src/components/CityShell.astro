@@ -1,27 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CityContextNav from './CityContextNav.astro';
-import { getCityBySlug } from '../lib/data';
+import { getCityBySlug, getCities } from '../lib/data';
 
 export interface Props {
-  citySlug: string;
+  citySlug?: string;
   title: string;
   description: string;
   jsonLd?: any;
 }
 
 const { citySlug, title, description, jsonLd } = Astro.props;
-const city = getCityBySlug(citySlug);
+const city = citySlug ? getCityBySlug(citySlug) : null;
+const allCities = getCities();
 ---
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <div class="city-shell">
     <aside class="left-rail">
-      <div class="brand">ThingsToDoWithKids</div>
+      <div class="brand"><a href="/">ThingsToDoWithKids</a></div>
       <div class="city-selector">
-        <strong>{city?.title} &#9660;</strong>
+        <details class="city-dropdown">
+          <summary>
+            <strong id="city-selector-label">{city?.title || 'Choose city'} &#9660;</strong>
+          </summary>
+          <ul class="city-dropdown-list">
+            {allCities.map((c: any) => (
+              <li><a href={"/" + c.slug + "/"} class="city-link" data-slug={c.slug} data-title={c.title}>{c.title}</a></li>
+            ))}
+            <li><a href="/">Browse all cities</a></li>
+          </ul>
+        </details>
       </div>
       <CityContextNav citySlug={citySlug} />
-      <a href="/" class="browse-all">Browse all cities</a>
       <button class="suggest-cta">Suggest a local gem</button>
     </aside>
     
@@ -38,13 +48,46 @@ const city = getCityBySlug(citySlug);
         <h3>Nearby Regions</h3>
         <ul>
           {city?.nearby_regions?.map((region: string) => (
-            <li><a href={`/${region}/`}>{region}</a></li>
+            <li><a href={"/" + region + "/"}>{region}</a></li>
           ))}
         </ul>
       </div>
     </aside>
   </div>
 </BaseLayout>
+
+<script define:vars={{ currentCitySlug: citySlug }}>
+  (function() {
+    // Save selected city on page load if we are on a city page
+    if (currentCitySlug) {
+      localStorage.setItem('ttdwk:selectedCity', currentCitySlug);
+    } else {
+      // Global page: check localStorage and update selector
+      const savedSlug = localStorage.getItem('ttdwk:selectedCity');
+      if (savedSlug) {
+        const link = document.querySelector('a.city-link[data-slug="' + savedSlug + '"]');
+        if (link) {
+          const title = link.getAttribute('data-title');
+          const label = document.getElementById('city-selector-label');
+          if (label && title) {
+            label.innerHTML = title + ' &#9660;';
+          }
+        }
+      }
+    }
+
+    // Listen for clicks on city links
+    const cityLinks = document.querySelectorAll('.city-link');
+    cityLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const slug = e.currentTarget.dataset.slug;
+        if (slug) {
+          localStorage.setItem('ttdwk:selectedCity', slug);
+        }
+      });
+    });
+  })();
+</script>
 
 <style>
   .city-shell {
@@ -56,6 +99,52 @@ const city = getCityBySlug(citySlug);
   .center-column { flex: 1; padding: 20px; }
   .right-rail { width: 300px; padding: 20px; }
   
+  .city-dropdown {
+    position: relative;
+    margin: 15px 0;
+  }
+  .city-dropdown summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .city-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+  .city-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style: none;
+    margin: 5px 0 0;
+    z-index: 100;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .city-dropdown-list li {
+    margin-bottom:8px;
+  }
+  .city-dropdown-list li:last-child {
+    margin-bottom: 0;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+  }
+  .city-dropdown-list a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+  }
+  .city-dropdown-list a:hover {
+    color: #007bff;
+  }
+  .brand a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+  }
+
   @media (max-width: 768px) {
     .city-shell { flex-direction: column; }
     .left-rail, .right-rail { width: 100%; }
