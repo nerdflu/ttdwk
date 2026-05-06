@@ -17,7 +17,7 @@ const allCities = getCities();
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <div class="city-shell">
     <aside class="left-rail">
-      <div class="brand"><a href="/">ThingsToDoWithKids</a></div>
+      <div class="brand"><a href={city ? "/" + city.slug + "/" : "/"} id="brand-link">ThingsToDoWithKids</a></div>
       <div class="city-selector">
         <a href={city ? `/${city.slug}/` : "/"} id="city-selector-link" class="city-name-link">
           <strong id="city-selector-label">{city?.title || 'Choose city'}</strong>
@@ -79,6 +79,10 @@ const allCities = getCities();
           if (headerLink) {
             headerLink.setAttribute('href', '/' + savedSlug + '/');
           }
+          const brandLink = document.getElementById('brand-link');
+          if (brandLink) {
+            brandLink.setAttribute('href', '/' + savedSlug + '/');
+          }
         }
       }
     }
@@ -126,6 +130,7 @@ const allCities = getCities();
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    position: relative;
   }
   .city-name-link {
     text-decoration: none;
@@ -137,7 +142,7 @@ const allCities = getCities();
   }
   
   .city-dropdown {
-    position: relative;
+    position: static;
     margin-left: 8px;
   }
   .city-dropdown summary {
