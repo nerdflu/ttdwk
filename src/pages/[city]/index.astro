@@ -1,7 +1,7 @@
 ---
 import CityShell from '../../components/CityShell.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { getCities, getCityBySlug, getPlacesForCity, getEventsForCity, getIdeasForCity, getGuidesForCity } from '../../lib/data';
+import { getCities, getCityBySlug, getAvailableCategoriesForCity, getUpcomingEventsForCity, getWeekendEventsForCity, getIdeasForCity, getGuidesForCity } from '../../lib/data';
 import { generateCitySeoTitle } from '../../lib/seo';
 import { collectionPageSchema, itemListSchema, breadcrumbSchema } from '../../lib/schema';
 
@@ -16,88 +16,103 @@ const cityData = getCityBySlug(city as string);
 const title = generateCitySeoTitle(city as string);
 const description = cityData?.description || title;
 
-const places = getPlacesForCity(city as string);
-const events = getEventsForCity(city as string);
-const ideas = getIdeasForCity(city as string);
-const guides = getGuidesForCity(city as string);
-
+const categories = getAvailableCategoriesForCity(city as string);
+const upcomingEvents = getUpcomingEventsForCity(city as string);
+const weekendEvents = getWeekendEventsForCity(city as string);
+const topIdeas = getIdeasForCity(city as string).slice(0, 4);
+const topGuides = getGuidesForCity(city as string).slice(0, 4);
 
 const breadcrumbs = [
-  { label: "Home", href: "/" },
+  { label: 'Home', href: '/' },
   { label: cityData?.title || (city as string) }
 ];
 
-const visibleItems = [...events, ...places, ...ideas, ...guides].map(item => {
-  let subpath = "places";
-  if (item.start_date) subpath = "events";
-  else if (item.related_place_slugs && item.steps) subpath = "ideas";
-  else if (item.related_place_slugs && !item.steps) subpath = "guides";
-  
+const visibleItems = [...topIdeas, ...topGuides].map(item => {
+  const subpath = item.steps ? 'ideas' : 'guides';
   return {
     name: item.title,
-    url: subpath === "events" ? (item.booking_url || item.source_url || "") : `/${city}/${subpath}/${item.slug}/`
+    url: '/' + city + '/' + subpath + '/' + item.slug + '/'
   };
 });
 
 const jsonLd = [
-  collectionPageSchema(title, description, `/${city}/`),
+  collectionPageSchema(title, description, '/' + city + '/'),
   itemListSchema(visibleItems),
   breadcrumbSchema(breadcrumbs)
 ];
-
 ---
 <CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
-  <Breadcrumbs items={[
-    { label: 'Home', href: '/' },
-    { label: cityData?.title || (city as string) }
-  ]} />
+  <Breadcrumbs items={breadcrumbs} />
 
   <h1>{title}</h1>
-  <p>{cityData?.description}</p>
+  {cityData?.description && <p class='intro'>{cityData.description}</p>}
   
-  {events.length > 0 && (
-    <section>
-      <h2>Upcoming Events</h2>
-      <ul>
-        {events.map((e: any) => (
-          <li>
-            <strong>{e.title}</strong>
-            {e.start_date ? ' - ' + e.start_date : ''}
-          </li>
-        ))}
+  {upcomingEvents.length > 0 && (
+    <section class='home-module'>
+      <h2>What's on</h2>
+      <p>Fresh things happening around {cityData?.title || city}.</p>
+      <ul class='gateway-links'>
+        {weekendEvents.length > 0 && <li><a href={'/' + city + '/events/this-weekend/'}>This weekend</a></li>}
+        <li><a href={'/' + city + '/events/'}>All upcoming events</a></li>
       </ul>
-      <a href={'/' + city + '/events/'}>See all upcoming events &rarr;</a>
     </section>
   )}
 
-  <section>
-    <h2>Places to explore</h2>
-    <ul>
-      {places.map(p => (
-        <li><a href={`/${city}/places/${p.slug}/`}>{p.title}</a></li>
-      ))}
-    </ul>
-  </section>
+  {categories.length > 0 && (
+    <section class='home-module'>
+      <h2>Explore by mood</h2>
+      <ul class='gateway-links'>
+        {categories.map((c: any) => (
+          <li><a href={'/' + city + '/' + c.slug + '/'}>{c.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
   
-  {ideas.length > 0 && (
-    <section>
+  {topIdeas.length > 0 && (
+    <section class='home-module'>
       <h2>Little Adventures</h2>
       <ul>
-        {ideas.map(i => (
-          <li><a href={`/${city}/ideas/${i.slug}/`}>{i.title}</a></li>
+        {topIdeas.map((i: any) => (
+          <li><a href={'/' + city + '/ideas/' + i.slug + '/'}>{i.title}</a></li>
         ))}
       </ul>
     </section>
   )}
 
-  {guides.length > 0 && (
-    <section>
-      <h2>Guides</h2>
+  {topGuides.length > 0 && (
+    <section class='home-module'>
+      <h2>Local Guides</h2>
       <ul>
-        {guides.map(g => (
-          <li><a href={`/${city}/guides/${g.slug}/`}>{g.title}</a></li>
+        {topGuides.map((g: any) => (
+          <li><a href={'/' + city + '/guides/' + g.slug + '/'}>{g.title}</a></li>
         ))}
       </ul>
     </section>
   )}
 </CityShell>
+
+<style>
+  .home-module {
+    margin-top: 40px;
+  }
+  .gateway-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .gateway-links li a {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+  .gateway-links li a:hover {
+    background: #e0e0e0;
+  }
+</style>
