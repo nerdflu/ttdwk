@@ -12,7 +12,6 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 - `/[city]/events/` - All upcoming events for a city
 - `/[city]/events/this-weekend/` - Events happening this weekend
 - `/[city]/places/[slug]/` - Place detail page
-- `/[city]/events/[slug]/` - Event detail page
 - `/[city]/ideas/[slug]/` - Idea/itinerary detail page
 - `/[city]/guides/[slug]/` - Curated guide detail page
 
@@ -35,5 +34,5 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 
 ## Phase 3: Hardening & Event Logic
 - **Local Date Handling**: Event dates are evaluated against the `Australia/Sydney` timezone at build-time.
-- **Dynamic Routing**: Event routes (`/events/`, `/events/this-weekend/`, and individual detail pages) are strictly filtered so that expired events are dropped, and empty event hubs are skipped entirely during the static build.
+- **Dynamic Routing**: Event routes (`/events/`, `/events/this-weekend/`, ) are strictly filtered so that expired events are dropped, and empty event hubs are skipped entirely during the static build.
 - **Production Safety**: A global `noindex` and `robots.txt` disallow strategy is in place until the site is ready for a public launch to prevent search engines from crawling test data.
