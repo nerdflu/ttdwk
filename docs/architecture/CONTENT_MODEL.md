@@ -4,7 +4,7 @@
 - **City**: The main geographic boundary for routing. Also defines the `timezone` used for accurate event expiration and weekend window logic.
 - **Category**: Broad filtering bucket (e.g., free, rainy-days). Used to generate SEO landing pages.
 - **Discovery Tag**: Mood or logistical filter (e.g., low-energy, pram-friendly).
-- **Place**: A permanent location (e.g., park, museum).
+- **Place**: A permanent location (e.g., park, museum). Most places are displayed as rich cards on category/list pages rather than having their own internal pages. Only approved/published places with `has_page = yes` trigger route generation (`/[city]/places/[slug]/`). Place cards combine fields to serve enough context locally and utilize external fallback links.
 - **Event**: A time-bound activity. Events are lightweight external listings. We intentionally avoid generating internal event pages and instead push users to the official source. They are used for freshness and usefulness rather than mass page generation.
 - **Idea**: A mini-adventure or suggested itinerary combining places/activities.
 - **Guide**: A curated collection of things to do (e.g., "Top 10 Free Things").

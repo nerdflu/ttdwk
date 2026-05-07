@@ -216,6 +216,7 @@ const run = () => {
   tags = processDataset('discovery-tags.csv', 'DiscoveryTag', ['title', 'slug'], r => r);
 
   processDataset('places.csv', 'Place', ['title', 'slug', 'city'], r => {
+    r.has_page = parseBool(r.has_page) ? 'yes' : 'no';
     const featuresList = ['rainy_day', 'pram_friendly', 'toilets', 'shade', 'parking_easy', 'cafe', 'dog_friendly', 'wheelchair_accessible'];
     const features = featuresList.filter(f => parseBool(r[f]));
     
