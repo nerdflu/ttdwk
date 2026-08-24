@@ -1,8 +1,10 @@
 ---
+import ExternalLink from '../../components/ExternalLink.astro';
 import CityShell from '../../components/CityShell.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCities, getCityBySlug, getAvailableCategoriesForCity, getPlacesForCity, getEventsForCity, getIdeasForCity, getCategoryBySlug } from '../../lib/data';
 import { generateCategorySeoTitle } from '../../lib/seo';
+import { collectionPageSchema, itemListSchema, breadcrumbSchema } from '../../lib/schema';
 
 export function getStaticPaths() {
   const paths: { params: { city: string, category: string } }[] = [];
@@ -25,33 +27,156 @@ const catData = getCategoryBySlug(category as string);
 const title = generateCategorySeoTitle(city as string, category as string);
 const description = catData?.description || title;
 
-const places = getPlacesForCity(city as string).filter(p => p.categories?.includes(category as string));
-const events = getEventsForCity(city as string).filter(e => e.categories?.includes(category as string));
-const ideas = getIdeasForCity(city as string).filter(i => i.categories?.includes(category as string));
+const places = getPlacesForCity(city as string).filter((p: any) => p.categories?.includes(category as string));
+const events = getEventsForCity(city as string).filter((e: any) => e.categories?.includes(category as string));
+const ideas = getIdeasForCity(city as string).filter((i: any) => i.categories?.includes(category as string));
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": title,
-  "description": description,
-  "url": `https://thingstodowithkids.com.au/${city}/${category}/`
-};
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: cityData?.title || (city as string), href: '/' + city + '/' },
+  { label: catData?.title || (category as string) }
+];
+
+const visibleItems = [...events, ...places, ...ideas].map(item => {
+  let subpath = 'places';
+  if (item.start_date) subpath = 'events';
+  else if (item.steps) subpath = 'ideas';
+  
+  let itemUrl = '/' + city + '/' + subpath + '/' + item.slug + '/';
+  if (subpath === 'events') {
+    itemUrl = item.booking_url || item.source_url || '';
+  } else if (subpath === 'places' && item.has_page !== 'yes') {
+    itemUrl = item.affiliate_url || item.booking_url || item.website || item.maps_url || '';
+  }
+  
+  return {
+    name: item.title,
+    url: itemUrl
+  };
+});
+
+const jsonLd = [
+  collectionPageSchema(title, description, '/' + city + '/' + category + '/'),
+  itemListSchema(visibleItems),
+  breadcrumbSchema(breadcrumbs)
+];
+
 ---
 <CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={[
     { label: 'Home', href: '/' },
-    { label: cityData?.title || (city as string), href: `/${city}/` },
+    { label: cityData?.title || (city as string), href: '/' + city + '/' },
     { label: catData?.title || (category as string) }
   ]} />
 
   <h1>{title}</h1>
   <p>{catData?.description}</p>
   
-  <section>
-    <ul>
-      {places.map(p => <li><a href={`/${city}/places/${p.slug}/`}>Place: {p.title}</a></li>)}
-      {events.map(e => <li><a href={`/${city}/events/${e.slug}/`}>Event: {e.title}</a></li>)}
-      {ideas.map(i => <li><a href={`/${city}/ideas/${i.slug}/`}>Idea: {i.title}</a></li>)}
-    </ul>
-  </section>
+  <div class='discovery-list'>
+    {places.map((p: any) => {
+      const link = p.affiliate_url || p.booking_url || p.website || p.maps_url;
+      const linkLabel = p.affiliate_url || p.booking_url ? 'Book / details' : p.website ? 'Official site' : 'View on map';
+      const notes = [p.summary, p.why_we_like_it, p.good_to_know, p.parent_tip].filter(Boolean).join(' ');
+      return (
+        <div class='discovery-card'>
+          <span class='badge badge-place'>Place</span>
+          <h2>{p.has_page === 'yes' ? <a href={'/' + city + '/places/' + p.slug + '/'}>{p.title}</a> : p.title}</h2>
+          {p.suburb && <p class='meta'>{p.suburb}</p>}
+          {notes && <p class='notes'>{notes}</p>}
+          {p.has_page !== 'yes' && link && (
+            <ExternalLink href={link} class='btn-external'>{linkLabel}</ExternalLink>
+          )}
+        </div>
+      );
+    })}
+
+    {ideas.map((i: any) => (
+      <div class='discovery-card'>
+        <span class='badge badge-idea'>Idea</span>
+        <h2><a href={'/' + city + '/ideas/' + i.slug + '/'}>{i.title}</a></h2>
+        {i.estimated_duration && <p class='meta'>{i.estimated_duration}{i.estimated_cost ? ' • ' + i.estimated_cost : ''}</p>}
+        {i.summary && <p class='notes'>{i.summary}</p>}
+        <a href={'/' + city + '/ideas/' + i.slug + '/'} class='btn-internal'>Read guide</a>
+      </div>
+    ))}
+    
+    {events.length > 0 && (
+      <div class='discovery-card'>
+        <span class='badge badge-event'>Events</span>
+        <h2>There are {events.length} events happening here!</h2>
+        <p class='notes'>Check out our local events calendar for family-friendly happenings.</p>
+        <a href={'/' + city + '/events/'} class='btn-internal'>See events in {cityData?.title || city}</a>
+      </div>
+    )}
+  </div>
+
+  <style>
+    .discovery-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .discovery-card {
+      border: 1px solid #eee;
+      padding: 20px;
+      border-radius: 8px;
+      background: #fafafa;
+      position: relative;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .badge-place { background: #e0f2fe; color: #0269a4; }
+    .badge-idea { background: #fef3c7; color: #b45309; }
+    .badge-event { background: #fce7f3; color: #be185d; }
+    .discovery-card h2 {
+      margin: 0 0 5px 0;
+      font-size: 1.3em;
+    }
+    .discovery-card h2 a {
+      text-decoration: none;
+      color: #333;
+    }
+    .discovery-card h2 a:hover {
+      text-decoration: underline;
+    }
+    .meta {
+      font-size: 0.9em;
+      color: #666;
+      margin: 0 0 10px 0;
+    }
+    .notes {
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+    .btn-external, .btn-internal {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .btn-external {
+      background: #fff;
+      border: 1px solid #ccc;
+      color: #333;
+    }
+    .btn-external:hover {
+      background: #f0f0f0;
+    }
+    .btn-internal {
+      background: #007bff;
+      color: #fff;
+    }
+    .btn-internal:hover {
+      background: #0056b3;
+    }
+  </style>
 </CityShell>

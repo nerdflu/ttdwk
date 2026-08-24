@@ -11,6 +11,62 @@ if (!fs.existsSync(OUT_DIR)) {
 }
 
 // Helpers
+const mapCategory = (cat: string): string | null => {
+    switch (cat.trim()) {
+        case 'indoor':
+        case 'indoor-play':
+        case 'museums-science':
+        case 'museums-learning':
+        case 'libraries':
+            return 'indoors';
+        case 'outdoor':
+        case 'nature-walks':
+        case 'nature-adventures':
+        case 'playgrounds':
+        case 'playgrounds-parks':
+            return 'outdoors';
+        case 'beaches-rockpools':
+        case 'swimming-holes':
+        case 'water-play':
+            return 'hot-days'; 
+        case 'fishing-spots':
+            return 'outdoors';
+        case 'rainy-day':
+            return 'rainy-days';
+        case 'hot-day':
+            return 'hot-days';
+        case 'school-holiday':
+            return 'school-holidays';
+        case 'free':
+            return 'free';
+        case 'hidden-gems':
+        case 'events':
+            return null; // removed from categories
+        default:
+            return cat.trim();
+    }
+};
+
+const mapCategories = (cats: string[], tags: string[] = []) => {
+    let newCats = new Set<string>();
+    let newTags = new Set<string>(tags);
+
+    cats.forEach(cat => {
+        if (cat === 'hidden-gems') {
+            newTags.add('hidden-gem');
+        } else if (cat === 'events') {
+            // drop
+        } else {
+            const mapped = mapCategory(cat);
+            if (mapped) newCats.add(mapped);
+            if (cat === 'beaches-rockpools' || cat === 'swimming-holes' || cat === 'water-play') {
+                newCats.add('outdoors'); // Also add to outdoors
+            }
+        }
+    });
+    return { categories: Array.from(newCats), discovery_tags: Array.from(newTags) };
+};
+
 const parseBool = (val: string): boolean => {
   if (!val) return false;
   const lower = val.toLowerCase().trim();
@@ -84,6 +140,20 @@ const processDataset = (filename: string, typeName: string, requiredFields: stri
     }
 
     checkRequired(row, typeName, requiredFields);
+    // Date validation for events
+    if (typeName === "Event") {
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (row.start_date && !dateRegex.test(row.start_date)) {
+        logError(typeName, row.slug || "Unknown", `Invalid start_date format, must be YYYY-MM-DD: ${row.start_date}`);
+      }
+      if (row.end_date && !dateRegex.test(row.end_date)) {
+        logError(typeName, row.slug || "Unknown", `Invalid end_date format, must be YYYY-MM-DD: ${row.end_date}`);
+      }
+      if (row.start_date && row.end_date && row.end_date < row.start_date) {
+        logError(typeName, row.slug || "Unknown", `end_date cannot be before start_date`);
+      }
+    }
+
 
     if (row.slug) {
       if (seenSlugs.has(row.slug)) {
@@ -97,14 +167,24 @@ const processDataset = (filename: string, typeName: string, requiredFields: stri
       logError(typeName, row.slug, `Referenced city not found: ${row.city}`);
     }
     
-    const cats = parseArray(row.categories || '');
+    const origCats = parseArray(row.categories || '');
+    const origTags = parseArray(row.discovery_tags || '');
+    const mapped = mapCategories(origCats, origTags);
+    const cats = mapped.categories;
+    const dTags = mapped.discovery_tags;
+    
+    // update row for processor
+    row.categories = cats.join(',');
+    if (row.discovery_tags !== undefined) {
+      row.discovery_tags = dTags.join(',');
+    }
     cats.forEach(c => {
       if (categories.length > 0 && !categories.find(cat => cat.slug === c)) {
         logError(typeName, row.slug, `Referenced category not found: ${c}`);
       }
     });
 
-    const dTags = parseArray(row.discovery_tags || '');
+    // discovery tags already computed
     dTags.forEach(t => {
       if (tags.length > 0 && !tags.find(tag => tag.slug === t)) {
         logError(typeName, row.slug, `Referenced discovery tag not found: ${t}`);
@@ -128,13 +208,15 @@ const processDataset = (filename: string, typeName: string, requiredFields: stri
 const run = () => {
   cities = processDataset('cities.csv', 'City', ['title', 'slug'], r => ({
     ...r,
-    nearby_regions: parseArray(r.nearby_regions)
+    latitude: parseFloat(r.latitude) || 0,
+    longitude: parseFloat(r.longitude) || 0
   }));
 
   categories = processDataset('categories.csv', 'Category', ['title', 'slug'], r => r);
   tags = processDataset('discovery-tags.csv', 'DiscoveryTag', ['title', 'slug'], r => r);
 
   processDataset('places.csv', 'Place', ['title', 'slug', 'city'], r => {
+    r.has_page = parseBool(r.has_page) ? 'yes' : 'no';
     const featuresList = ['rainy_day', 'pram_friendly', 'toilets', 'shade', 'parking_easy', 'cafe', 'dog_friendly', 'wheelchair_accessible'];
     const features = featuresList.filter(f => parseBool(r[f]));
     
@@ -152,13 +234,20 @@ const run = () => {
     };
   });
 
-  processDataset('events.csv', 'Event', ['title', 'slug', 'city', 'start_date'], r => ({
-    ...r,
-    categories: parseArray(r.categories),
-    discovery_tags: parseArray(r.discovery_tags),
-    is_free: parseBool(r.is_free),
-    booking_required: parseBool(r.booking_required)
-  }));
+  processDataset('events.csv', 'Event', ['title', 'slug', 'city'], r => {
+    const event_kind = ['one-off', 'recurring'].includes(r.event_kind) ? r.event_kind : 'one-off';
+    let priority = parseInt(r.priority, 10);
+    if (isNaN(priority)) priority = 50;
+    priority = Math.max(0, Math.min(100, priority));
+    
+    return {
+      ...r,
+      event_kind,
+      priority,
+      categories: [],
+      discovery_tags: []
+    };
+  });
 
   processDataset('ideas.csv', 'Idea', ['title', 'slug', 'city'], r => ({
     ...r,

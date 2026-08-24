@@ -3,6 +3,7 @@ import CityShell from '../../../components/CityShell.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import RelatedLinks from '../../../components/RelatedLinks.astro';
 import { getApprovedPlaces, getCityBySlug } from '../../../lib/data';
+import { placeSchema, breadcrumbSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
   return getApprovedPlaces().map(place => ({
@@ -17,26 +18,20 @@ const cityData = getCityBySlug(city as string);
 const title = `${place.title} with kids`;
 const description = place.summary;
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Place",
-  "name": place.title,
-  "description": place.summary,
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": place.suburb,
-    "addressRegion": place.state,
-    "addressCountry": "AU"
-  }
-};
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: cityData?.title || (city as string), href: `/${city}/` },
+  { label: 'Places' },
+  { label: place.title }
+];
+
+const jsonLd = [
+  placeSchema(place, cityData),
+  breadcrumbSchema(breadcrumbs)
+];
 ---
 <CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
-  <Breadcrumbs items={[
-    { label: 'Home', href: '/' },
-    { label: cityData?.title || (city as string), href: `/${city}/` },
-    { label: 'Places' },
-    { label: place.title }
-  ]} />
+  <Breadcrumbs items={breadcrumbs} />
   
   <h1>{place.title}</h1>
   <p class="summary">{place.summary}</p>

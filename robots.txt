@@ -1,5 +1,3 @@
 User-agent: *
-Allow: /
-Sitemap: https://thingstodowithkids.com.au/sitemap.xml
-
-
+Disallow: /
+# Site is in pre-launch mode. This blocks all crawling.

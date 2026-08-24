@@ -12,18 +12,10 @@
     "start_time": "10:00",
     "end_time": "11:00",
     "price": "Included with entry",
-    "is_free": false,
-    "booking_required": true,
+    "is_free": "no",
+    "booking_required": "yes",
     "booking_url": "https://example.com/book",
     "source_url": "https://example.com",
-    "categories": [
-      "events",
-      "hidden-gems"
-    ],
-    "discovery_tags": [
-      "mini-adventure",
-      "hidden-gem"
-    ],
     "age_range": "4-12",
     "summary": "A family-friendly wildlife talk for curious kids. Don't miss out!",
     "why_we_like_it": "Good mix of learning and excitement without feeling too formal.",
@@ -31,7 +23,9 @@
     "source_type": "manual",
     "last_verified_at": "2026-04-29",
     "duplicate_key": "kids-wildlife-talk-2026-05-16-currumbin-wildlife-sanctuary",
-    "confidence_score": "85"
+    "confidence_score": "85",
+    "event_kind": "one-off",
+    "priority": 50
   },
   {
     "status": "approved",
@@ -46,20 +40,10 @@
     "start_time": "09:30",
     "end_time": "10:15",
     "price": "Free",
-    "is_free": true,
-    "booking_required": false,
+    "is_free": "yes",
+    "booking_required": "no",
     "booking_url": "https://example.com",
     "source_url": "https://example.com",
-    "categories": [
-      "events",
-      "free",
-      "rainy-day"
-    ],
-    "discovery_tags": [
-      "calm-day",
-      "toddler-friendly",
-      "low-cost"
-    ],
     "age_range": "0-5",
     "summary": "Songs, stories and a gentle indoor outing for little kids.",
     "why_we_like_it": "Easy, free and perfect for a low-energy morning.",
@@ -67,6 +51,8 @@
     "source_type": "manual",
     "last_verified_at": "2026-04-29",
     "duplicate_key": "free-library-storytime-2026-05-17-west-end-library",
-    "confidence_score": "90"
+    "confidence_score": "90",
+    "event_kind": "one-off",
+    "priority": 50
   }
 ]

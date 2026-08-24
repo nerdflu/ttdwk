@@ -2,81 +2,49 @@
   {
     "title": "Free",
     "slug": "free",
-    "description": "Free or low-cost family-friendly places and ideas",
-    "group": "cost",
+    "description": "Free and low-cost ideas, places and little adventures for families.",
+    "group": "budget",
     "seo_title_pattern": "Free things to do with kids {preposition} {city}",
-    "seo_description_pattern": "Explore free family-friendly places, events and little adventures for kids {preposition} {city}."
+    "seo_description_pattern": "Find free and low-cost things to do with kids {preposition} {city}, including easy outings, local spots and little adventures."
   },
   {
-    "title": "Rainy day",
-    "slug": "rainy-day",
-    "description": "Indoor or weather-safe ideas",
+    "title": "Indoors",
+    "slug": "indoors",
+    "description": "Indoor ideas for rainy days, hot days or low-effort outings.",
+    "group": "weather",
+    "seo_title_pattern": "Indoor things to do with kids {preposition} {city}",
+    "seo_description_pattern": "Find indoor things to do with kids {preposition} {city}, from libraries and museums to workshops, play spaces and easy weather-safe ideas."
+  },
+  {
+    "title": "Outdoors",
+    "slug": "outdoors",
+    "description": "Outdoor places, parks, nature spots and little adventures.",
+    "group": "outdoors",
+    "seo_title_pattern": "Outdoor things to do with kids {preposition} {city}",
+    "seo_description_pattern": "Find outdoor things to do with kids {preposition} {city}, including parks, walks, beaches, nature spots and easy little adventures."
+  },
+  {
+    "title": "Rainy Days",
+    "slug": "rainy-days",
+    "description": "Weather-safe ideas for wet days when you still need to get out.",
     "group": "weather",
     "seo_title_pattern": "Rainy day things to do with kids {preposition} {city}",
-    "seo_description_pattern": "Find indoor play, museums, libraries and rainy day ideas for kids {preposition} {city}."
+    "seo_description_pattern": "Find rainy day things to do with kids {preposition} {city}, including indoor ideas, local favourites and easy ways to get out despite the weather."
   },
   {
-    "title": "Playgrounds",
-    "slug": "playgrounds",
-    "description": "Playgrounds and parks for families",
-    "group": "outdoor",
-    "seo_title_pattern": "Best playgrounds for kids {preposition} {city}",
-    "seo_description_pattern": "Find playgrounds, parks and family-friendly outdoor spaces {preposition} {city}."
+    "title": "Hot Days",
+    "slug": "hot-days",
+    "description": "Ideas for hot days: water, shade, air-con and low-effort escapes.",
+    "group": "weather",
+    "seo_title_pattern": "Hot day things to do with kids {preposition} {city}",
+    "seo_description_pattern": "Find hot day things to do with kids {preposition} {city}, including water play, shady spots, air-conditioned escapes and easy family outings."
   },
   {
-    "title": "Water play",
-    "slug": "water-play",
-    "description": "Splash parks, pools, lagoons and calm water spots",
-    "group": "water",
-    "seo_title_pattern": "Water play for kids {preposition} {city}",
-    "seo_description_pattern": "Find splash parks, pools, rockpools and water play ideas for kids {preposition} {city}."
-  },
-  {
-    "title": "Beaches & rockpools",
-    "slug": "beaches-rockpools",
-    "description": "Beaches, bays and rockpools for family exploring",
-    "group": "water",
-    "seo_title_pattern": "Beaches and rockpools for kids {preposition} {city}",
-    "seo_description_pattern": "Explore family-friendly beaches, bays and rockpools {preposition} {city}."
-  },
-  {
-    "title": "Museums & science",
-    "slug": "museums-science",
-    "description": "Museums, galleries and hands-on science spots",
-    "group": "indoor",
-    "seo_title_pattern": "Museums and science for kids {preposition} {city}",
-    "seo_description_pattern": "Find museums, science centres and hands-on learning ideas for kids {preposition} {city}."
-  },
-  {
-    "title": "Nature walks",
-    "slug": "nature-walks",
-    "description": "Short walks, lookouts and kid-friendly trails",
-    "group": "nature",
-    "seo_title_pattern": "Nature walks with kids {preposition} {city}",
-    "seo_description_pattern": "Find kid-friendly walks, lookouts and nature trails {preposition} {city}."
-  },
-  {
-    "title": "Fishing spots",
-    "slug": "fishing-spots",
-    "description": "Beginner-friendly fishing spots and calm waterways",
-    "group": "water",
-    "seo_title_pattern": "Fishing spots for kids {preposition} {city}",
-    "seo_description_pattern": "Find beginner-friendly family fishing spots and calm waterways {preposition} {city}."
-  },
-  {
-    "title": "Events",
-    "slug": "events",
-    "description": "Family-friendly things happening soon",
-    "group": "events",
-    "seo_title_pattern": "Kids events {preposition} {city}",
-    "seo_description_pattern": "Find family-friendly events, workshops and things happening soon {preposition} {city}."
-  },
-  {
-    "title": "Hidden gems",
-    "slug": "hidden-gems",
-    "description": "Less obvious local gems and alternative ideas",
-    "group": "discovery",
-    "seo_title_pattern": "Hidden gems for kids {preposition} {city}",
-    "seo_description_pattern": "Discover local gems and alternative family-friendly ideas {preposition} {city}."
+    "title": "School Holidays",
+    "slug": "school-holidays",
+    "description": "School holiday ideas, events, outings and mini adventures.",
+    "group": "seasonal",
+    "seo_title_pattern": "School holiday things to do with kids {preposition} {city}",
+    "seo_description_pattern": "Find school holiday things to do with kids {preposition} {city}, including events, activities, free ideas and little adventures for families."
   }
 ]

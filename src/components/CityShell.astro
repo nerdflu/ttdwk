@@ -1,27 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CityContextNav from './CityContextNav.astro';
-import { getCityBySlug } from '../lib/data';
+import { getCityBySlug, getCities, getNearbyCities } from '../lib/data';
 
 export interface Props {
-  citySlug: string;
+  citySlug?: string;
   title: string;
   description: string;
   jsonLd?: any;
 }
 
 const { citySlug, title, description, jsonLd } = Astro.props;
-const city = getCityBySlug(citySlug);
+const city = citySlug ? getCityBySlug(citySlug) : null;
+const allCities = getCities();
+const nearbyCities = citySlug ? getNearbyCities(citySlug) : [];
 ---
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <div class="city-shell">
     <aside class="left-rail">
-      <div class="brand">ThingsToDoWithKids</div>
+      <div class="brand"><a href={city ? "/" + city.slug + "/" : "/"} id="brand-link">ThingsToDoWithKids</a></div>
       <div class="city-selector">
-        <strong>{city?.title} &#9660;</strong>
+        <a href={city ? `/${city.slug}/` : "/"} id="city-selector-link" class="city-name-link">
+          <strong id="city-selector-label">{city?.title || 'Choose city'}</strong>
+        </a>
+        <details class="city-dropdown">
+          <summary aria-label="Switch city">
+            &#9660;
+          </summary>
+          <ul class="city-dropdown-list">
+            {allCities.map((c: any) => (
+              <li><a href={"/" + c.slug + "/"} class="city-link" data-slug={c.slug} data-title={c.title}>{c.title}</a></li>
+            ))}
+            <li><a href="/">Browse all cities</a></li>
+          </ul>
+        </details>
       </div>
       <CityContextNav citySlug={citySlug} />
-      <a href="/cities/" class="browse-all">Browse all cities</a>
       <button class="suggest-cta">Suggest a local gem</button>
     </aside>
     
@@ -34,17 +48,68 @@ const city = getCityBySlug(citySlug);
         <h3>Weekend Digest</h3>
         <p>Get the best ideas in your inbox.</p>
       </div>
-      <div class="nearby-regions">
-        <h3>Nearby Regions</h3>
-        <ul>
-          {city?.nearby_regions?.map((region: string) => (
-            <li><a href={`/${region}/`}>{region}</a></li>
-          ))}
-        </ul>
-      </div>
+      {nearbyCities.length > 0 && (
+        <div class='nearby-regions'>
+          <h3>Nearby Regions</h3>
+          <ul>
+            {nearbyCities.map((c: any) => (
+              <li><a href={'/' + c.slug + '/'}>{c.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
     </aside>
   </div>
 </BaseLayout>
+
+<script define:vars={{ currentCitySlug: citySlug }}>
+  (function() {
+    // Save selected city on page load if we are on a city page
+    if (currentCitySlug) {
+      localStorage.setItem('ttdwk:selectedCity', currentCitySlug);
+    } else {
+      // Global page: check localStorage and update selector
+      const savedSlug = localStorage.getItem('ttdwk:selectedCity');
+      if (savedSlug ) {
+        const link = document.querySelector('a.city-link[data-slug="' + savedSlug + '"]');
+        if (link) {
+          const title = link.getAttribute('data-title');
+          const label = document.getElementById('city-selector-label');
+          const headerLink = document.getElementById('city-selector-link');
+          if (label && title) {
+            label.innerText = title;
+          }
+          if (headerLink) {
+            headerLink.setAttribute('href', '/' + savedSlug + '/');
+          }
+          const brandLink = document.getElementById('brand-link');
+          if (brandLink) {
+            brandLink.setAttribute('href', '/' + savedSlug + '/');
+          }
+        }
+      }
+    }
+
+    // Listen for clicks on city links
+    const cityLinks = document.querySelectorAll('.city-link');
+    cityLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const slug = e.currentTarget.dataset.slug;
+        if (slug) {
+          localStorage.setItem('ttdwk:selectedCity', slug);
+        }
+      });
+    });
+    
+    // Close details when clicking outside
+    document.addEventListener('click', function(event) {
+      const details = document.querySelector('.city-dropdown');
+      if (details && details.hasAttribute('open') && !details.contains(event.target)) {
+        details.removeAttribute('open');
+      }
+    });
+  })();
+</script>
 
 <style>
   .city-shell {
@@ -56,6 +121,72 @@ const city = getCityBySlug(citySlug);
   .center-column { flex: 1; padding: 20px; }
   .right-rail { width: 300px; padding: 20px; }
   
+  .brand a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .city-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .city-name-link {
+    text-decoration: none;
+    color: inherit;
+    font-size: 1.1em;
+  }
+  .city-name-link:hover {
+    text-decoration: underline;
+  }
+  
+  .city-dropdown {
+    position: static;
+    margin-left: 8px;
+  }
+  .city-dropdown summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 2px 5px;
+    user-select: none;
+  }
+  .city-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+  .city-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style: none;
+    margin: 5px 0 0;
+    z-index: 100;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .city-dropdown-list li {
+    margin-bottom: 8px;
+  }
+  .city-dropdown-list li:last-child {
+    margin-bottom: 0;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+  }
+  .city-dropdown-list a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+  }
+  .city-dropdown-list a:hover {
+    color: #007bff;
+  }
+
   @media (max-width: 768px) {
     .city-shell { flex-direction: column; }
     .left-rail, .right-rail { width: 100%; }

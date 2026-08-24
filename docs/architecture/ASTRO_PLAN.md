@@ -6,13 +6,12 @@ The goal is a fast, static site built from JSON data, preparing for an automated
 React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 
 ## Route Map
-- `/` - Browse all cities / categories
+- `/` - National homepage and primary place to browse/select cities (the `/cities/` route is deprecated and not used)
 - `/[city]/` - Core city landing hub
 - `/[city]/[category]/` - Category filtering within a city context
 - `/[city]/events/` - All upcoming events for a city
 - `/[city]/events/this-weekend/` - Events happening this weekend
 - `/[city]/places/[slug]/` - Place detail page
-- `/[city]/events/[slug]/` - Event detail page
 - `/[city]/ideas/[slug]/` - Idea/itinerary detail page
 - `/[city]/guides/[slug]/` - Curated guide detail page
 
@@ -23,7 +22,8 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 
 ## Navigation Strategy
 - **City-Scoped URLs**: Ensure users always stay inside their selected city environment.
-- **Content-Aware Navigation**: City sidebars (`CityNav`) only show categories/events links if data exists.
+- **Content-Aware Navigation**: Left nav is strictly for city-level browsing. It only shows links (like Overview, Events, This Weekend, or matching Categories) if data exists. Guides are currently not included in the left nav, and will be surfaced via right rails or related content instead.
+- **City Selector**: A dropdown is used to select cities. It lists all cities and includes a "Browse all cities" link that returns to `/`.
 - Empty states are avoided at the routing layer.
 
 ## Future Automation
@@ -31,3 +31,8 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 - Scrapers, user submissions, and emails will populate "pending" rows in the sheet.
 - After human approval, a GitHub Action will export the sheet to `src/data/` JSON and trigger a build.
 - **Note:** The public site will never call Google Sheets at runtime.
+
+## Phase 3: Hardening & Event Logic
+- **Local Date Handling**: Event dates are evaluated against the `Australia/Sydney` timezone at build-time.
+- **Dynamic Routing**: Event routes (`/events/`, `/events/this-weekend/`, ) are strictly filtered so that expired events are dropped, and empty event hubs are skipped entirely during the static build.
+- **Production Safety**: A global `noindex` and `robots.txt` disallow strategy is in place until the site is ready for a public launch to prevent search engines from crawling test data.
