@@ -1,0 +1,193 @@
+---
+import ExternalLink from './ExternalLink.astro';
+import { formatEventDate, ideaFacts, placeCopy, placeFacts } from '../lib/presentation';
+
+interface Props {
+  kind: 'place' | 'idea' | 'event';
+  item: any;
+  citySlug: string;
+  categoryLabel?: string;
+}
+
+const { kind, item, citySlug, categoryLabel } = Astro.props;
+
+const placeHref = kind === 'place' && item.has_page === 'yes'
+  ? `/${citySlug}/places/${item.slug}/`
+  : undefined;
+const ideaHref = kind === 'idea' ? `/${citySlug}/ideas/${item.slug}/` : undefined;
+const eventHref = kind === 'event' ? (item.booking_url || item.source_url) : undefined;
+const website = kind === 'place' ? item.website : undefined;
+const mapsUrl = kind === 'place' ? item.maps_url : undefined;
+
+const kicker = kind === 'event'
+  ? [formatEventDate(item.start_date), item.suburb].filter(Boolean).join(' · ')
+  : kind === 'idea'
+    ? ''
+    : [item.suburb, categoryLabel].filter(Boolean).join(' · ');
+
+const facts = kind === 'place' ? placeFacts(item) : kind === 'idea' ? ideaFacts(item) : [
+  item.is_free ? 'Free' : item.price,
+  item.age_range,
+  item.booking_required ? 'Booking required' : '',
+].filter(Boolean).slice(0, 4);
+
+const copy = kind === 'place' ? placeCopy(item) : item.summary;
+const headingHref = placeHref || ideaHref;
+const rowId = kind === 'place' || kind === 'idea' ? item.slug : undefined;
+---
+
+<article class:list={['discovery-row', `is-${kind}`]} id={rowId}>
+  <div class="media" aria-hidden="true">
+    <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" fill="currentColor" class="media-fill" />
+      <circle cx="112" cy="38" r="22" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
+      <circle cx="112" cy="38" r="11" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
+      <path d="M12 96c18-18 36-18 54 0s36 18 54 0 36-18 52 0" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
+    </svg>
+    {categoryLabel && <span class="media-label">{categoryLabel}</span>}
+  </div>
+
+  <div class="body">
+    <h2>
+      {headingHref ? <a href={headingHref}>{item.title}</a> : item.title}
+    </h2>
+    {kicker && <p class="meta">{kicker}</p>}
+    {copy && <p class="copy">{copy}</p>}
+    {facts.length > 0 && (
+      <ul class="facts">
+        {facts.map((fact) => <li>{fact}</li>)}
+      </ul>
+    )}
+    <p class="actions">
+      {kind === 'place' && website && <ExternalLink href={website}>Official site</ExternalLink>}
+      {kind === 'place' && mapsUrl && <ExternalLink href={mapsUrl}>Map</ExternalLink>}
+      {kind === 'idea' && ideaHref && <a href={ideaHref}>Read guide</a>}
+      {kind === 'event' && eventHref && <ExternalLink href={eventHref}>Event details</ExternalLink>}
+    </p>
+  </div>
+</article>
+
+<style>
+  .discovery-row {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .discovery-row:first-of-type {
+    padding-top: 0;
+  }
+
+  .media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-large);
+    overflow: hidden;
+    color: var(--color-accent-eucalyptus);
+    background: var(--color-accent-sand);
+  }
+
+  .media-fill {
+    color: var(--color-accent-sand);
+  }
+
+  .media-mark {
+    color: var(--color-accent-eucalyptus);
+    opacity: 0.55;
+  }
+
+  .media-label {
+    position: absolute;
+    left: var(--space-3);
+    bottom: var(--space-3);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-surface-canvas) 88%, transparent);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--font-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .meta {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--font-leading-heading);
+    letter-spacing: var(--font-tracking-tight);
+    max-width: 22ch;
+  }
+
+  h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h2 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .copy {
+    margin: var(--space-3) 0 0;
+    max-width: 62ch;
+    color: var(--color-text-secondary);
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .facts li {
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-soft);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+  }
+
+  .actions a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    text-underline-offset: 0.18em;
+  }
+
+  .actions a:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 48rem) {
+    .discovery-row {
+      grid-template-columns: 11.5rem minmax(0, 1fr);
+      gap: var(--space-5);
+      align-items: start;
+    }
+  }
+</style>

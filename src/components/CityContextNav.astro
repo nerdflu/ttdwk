@@ -3,23 +3,75 @@ import { getCityNavItems } from '../lib/data';
 
 export interface Props {
   citySlug: string;
+  currentPath?: string;
 }
 
-const { citySlug } = Astro.props;
+const { citySlug, currentPath = '' } = Astro.props;
 const navItems = citySlug ? getCityNavItems(citySlug) : [];
-
+const normalised = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
 ---
-<nav class="city-nav">
+<nav class="city-nav" aria-label="City sections">
   <ul>
-    {navItems.map(item => (
-      <li><a href={item.href}>{item.label}</a></li>
-    ))}
+    {navItems.map(item => {
+      const active = normalised === item.href || normalised.startsWith(item.href);
+      return (
+        <li>
+          <a href={item.href} aria-current={active ? 'page' : undefined}>{item.label}</a>
+        </li>
+      );
+    })}
   </ul>
 </nav>
 
 <style>
-  .city-nav ul { list-style: none; padding: 0; }
-  .city-nav li { margin-bottom: 10px; }
-  .city-nav a { text-decoration: none; color: #333; }
-  .city-nav a:hover { color: #007bff; }
+  .city-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .city-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--radius-pill);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-medium);
+    background: var(--color-surface-canvas);
+    box-shadow: var(--shadow-keyline);
+  }
+
+  .city-nav a:hover {
+    background: var(--color-surface-soft);
+  }
+
+  .city-nav a[aria-current="page"] {
+    background: var(--color-surface-dark);
+    color: var(--color-text-inverse);
+    box-shadow: none;
+  }
+
+  @media (min-width: 64rem) {
+    .city-nav ul {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .city-nav a {
+      width: 100%;
+      background: transparent;
+      box-shadow: none;
+      padding: 0.45rem 0.65rem;
+    }
+
+    .city-nav a[aria-current="page"] {
+      background: var(--color-surface-dark);
+    }
+  }
 </style>

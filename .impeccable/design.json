@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-24T11:56:00.000Z",
+  "title": "Design System: Things To Do With Kids",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "primary", "displayName": "Ink", "canonical": "#1C1915" },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#F6F1EA" },
+      "sand": { "role": "neutral", "displayName": "Sand", "canonical": "#E7DCC7" },
+      "warm-grey": { "role": "neutral", "displayName": "Warm Grey", "canonical": "#8A8178" },
+      "line": { "role": "neutral", "displayName": "Line", "canonical": "#D9D0C5" },
+      "eucalyptus": { "role": "secondary", "displayName": "Eucalyptus", "canonical": "#2F6B57" },
+      "coast": { "role": "tertiary", "displayName": "Coast", "canonical": "#3E6D8A" },
+      "clay": { "role": "accent", "displayName": "Clay", "canonical": "#C46A48" },
+      "sun": { "role": "accent", "displayName": "Sun", "canonical": "#E2B15A" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero and city-page headlines. Fraunces, tight tracking, short lines." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles and collection names." },
+      "title": { "displayName": "Title", "purpose": "Card, row, and module titles. Plus Jakarta Sans semibold." },
+      "body": { "displayName": "Body", "purpose": "Editorial descriptions and parent-useful copy." },
+      "label": { "displayName": "Label", "purpose": "Metadata, chips, breadcrumbs, and controls. Plus Jakarta Sans medium." }
+    },
+    "shadows": [
+      { "name": "rest", "value": "0 1px 2px rgba(28, 25, 21, 0.06)", "purpose": "Default card and control rest state." },
+      { "name": "raised", "value": "0 10px 30px rgba(28, 25, 21, 0.08)", "purpose": "Hover lift and featured collections only." }
+    ],
+    "motion": [
+      { "name": "standard", "value": "180ms ease", "purpose": "Hover, focus, and small layout shifts." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "320px" },
+      { "name": "tablet", "value": "768px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "wide", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Dark filled action. Verb-led. One per section.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">View this weekend</button>",
+      "css": ".ds-btn-primary { background: #1C1915; color: #F6F1EA; border: 0; border-radius: 999px; padding: 14px 22px; min-height: 44px; font: 600 0.9375rem/1.2 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.01em; cursor: pointer; transition: transform 180ms ease, background 180ms ease; } .ds-btn-primary:hover { background: #2F6B57; transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #3E6D8A; outline-offset: 3px; } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Paper fill with ink keyline for supporting actions.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">See all upcoming events</button>",
+      "css": ".ds-btn-secondary { background: #F6F1EA; color: #1C1915; border: 1px solid #1C1915; border-radius: 999px; padding: 14px 22px; min-height: 44px; font: 600 0.9375rem/1.2 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: background 180ms ease, transform 180ms ease; } .ds-btn-secondary:hover { background: #E7DCC7; transform: translateY(-1px); } .ds-btn-secondary:focus-visible { outline: 2px solid #3E6D8A; outline-offset: 3px; }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Large rounded location/activity search with visible label.",
+      "html": "<label class=\"ds-search\"><span class=\"ds-search-label\">Search</span><input class=\"ds-search-input\" type=\"search\" placeholder=\"Free playgrounds, rainy day, this weekend\"></label>",
+      "css": ".ds-search { display: grid; gap: 8px; font: 500 0.75rem/1.2 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8178; } .ds-search-label { } .ds-search-input { width: 100%; min-height: 52px; padding: 14px 18px; border: 1px solid #D9D0C5; border-radius: 18px; background: #F6F1EA; color: #1C1915; font: 500 1rem/1.4 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; text-transform: none; letter-spacing: 0; } .ds-search-input:focus-visible { outline: 2px solid #3E6D8A; outline-offset: 2px; border-color: #3E6D8A; }"
+    },
+    {
+      "name": "Collection Card",
+      "kind": "card",
+      "refersTo": "card-collection",
+      "description": "One title, one supporting line, one destination. Whole-card internal link.",
+      "html": "<a class=\"ds-card-collection\" href=\"#\"><span class=\"ds-card-kicker\">Gold Coast</span><strong>This weekend</strong><span>What’s on for kids right now</span></a>",
+      "css": ".ds-card-collection { display: grid; gap: 8px; padding: 24px; background: #E7DCC7; color: #1C1915; text-decoration: none; border-radius: 24px; box-shadow: 0 1px 2px rgba(28, 25, 21, 0.06); min-height: 10rem; font: 400 1rem/1.5 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; } .ds-card-collection strong { font: 600 1.25rem/1.2 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; } .ds-card-kicker { font: 500 0.75rem/1.2 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8178; } .ds-card-collection:hover { box-shadow: 0 10px 30px rgba(28, 25, 21, 0.08); transform: translateY(-2px); } .ds-card-collection:focus-visible { outline: 2px solid #3E6D8A; outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Interactive filter. Not a read-only badge.",
+      "html": "<button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\">Rainy day</button>",
+      "css": ".ds-chip { min-height: 44px; padding: 10px 16px; border: 1px solid #D9D0C5; border-radius: 999px; background: #F6F1EA; color: #1C1915; font: 500 0.875rem/1 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; cursor: pointer; } .ds-chip[aria-pressed=\"true\"] { background: #1C1915; color: #F6F1EA; border-color: #1C1915; } .ds-chip:focus-visible { outline: 2px solid #3E6D8A; outline-offset: 3px; }"
+    },
+    {
+      "name": "Category Chip",
+      "kind": "chip",
+      "refersTo": "chip-category",
+      "description": "Read-only fact. Do not style identically to filter chips.",
+      "html": "<span class=\"ds-badge\">Pram friendly</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; min-height: 32px; padding: 6px 10px; border-radius: 999px; background: rgba(47, 107, 87, 0.12); color: #1C1915; font: 500 0.8125rem/1 \"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Illustrated Australian field guide with the confidence of a polished search product",
+    "overview": "Things To Do With Kids should feel like a warm, modern, mobile-first family discovery guide: useful before decorative, adventurous without cliché, playful without looking childish. Sketch informs spacing, type, rounded structure, and restraint — not its brand, SaaS grids, or monochrome product-demo look.",
+    "keyCharacteristics": [
+      "Useful in ten seconds",
+      "Discovery, not directory",
+      "Parent-operated, kid-spirited",
+      "Local context stays attached",
+      "One clear way forward"
+    ],
+    "rules": [
+      { "name": "Pastel fields, dark ink", "body": "Accent colours are background fields and illustration colours, not interchangeable text colours. Dark ink on pastel; never white text on pastels by default.", "section": "colors" },
+      { "name": "One accent per section", "body": "Use one dominant accent per section and no more than three visible accent families in a viewport.", "section": "colors" },
+      { "name": "Sentence case", "body": "Use sentence case. Avoid title case across navigation and headings. Uppercase only for very short date, category, or eyebrow labels.", "section": "typography" },
+      { "name": "No equal-card grids", "body": "Do not default to three equal cards. Mix a strong lead item with smaller supporting paths, or use a deliberate list.", "section": "layout" }
+    ],
+    "dos": [
+      "Do lead with city context, then the outing promise, then practical facts.",
+      "Do write like a knowledgeable local parent in Australian English.",
+      "Do keep events as collections on the national homepage, never individual event cards.",
+      "Do make external actions explicit and open them in a new tab."
+    ],
+    "donts": [
+      "Don't ship a homepage dominated by individual listings.",
+      "Don't use childish rainbow styling, novelty fonts, or cartoon UI chrome.",
+      "Don't wrap an entire place row in an external link.",
+      "Don't fabricate practical details, testimonials, or stale event dates."
+    ]
+  }
+}
