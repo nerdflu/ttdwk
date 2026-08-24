@@ -2,8 +2,8 @@ name: Import Content from Google Sheets
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '0 10 * * *' # Run daily at 10 AM (UTC)
+  schedule:
+    - cron: '0 10 * * *' # 10:00 UTC = 8:00 PM AEST (9:00 PM AEDT)
 
 permissions:
   contents: write
