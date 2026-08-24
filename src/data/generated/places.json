@@ -8,8 +8,8 @@
     "state": "QLD",
     "categories": [
       "free",
-      "beaches-rockpools",
-      "water-play"
+      "hot-days",
+      "outdoors"
     ],
     "discovery_tags": [
       "mini-adventure",
@@ -38,6 +38,7 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
+    "has_page": "no",
     "features": [
       "cafe"
     ]
@@ -51,15 +52,15 @@
     "state": "QLD",
     "categories": [
       "free",
-      "water-play",
-      "playgrounds"
+      "hot-days",
+      "outdoors"
     ],
     "discovery_tags": [
       "burn-energy",
       "quick-outing",
       "low-cost"
     ],
-    "summary": "A classic Brisbane family spot with water play, lawns and playgrounds. Super fun. Georgia is the best.",
+    "summary": "A classic Brisbane family spot with water play, lawns and playgrounds.",
     "why_we_like_it": "There is enough variety for a short visit or a half-day outing.",
     "good_to_know": "Can get busy on weekends. Pack swimmers.",
     "parent_tip": "Go early and combine water play with a picnic.",
@@ -81,6 +82,7 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
+    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -98,8 +100,8 @@
     "state": "QLD",
     "categories": [
       "free",
-      "water-play",
-      "playgrounds"
+      "hot-days",
+      "outdoors"
     ],
     "discovery_tags": [
       "burn-energy",
@@ -128,6 +130,7 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
+    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
