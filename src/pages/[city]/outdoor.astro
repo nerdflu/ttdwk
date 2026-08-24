@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCities } from '../../lib/data';
+
+export function getStaticPaths() {
+  return getCities().map((c: any) => ({
+    params: { city: c.slug }
+  }));
+}
+
+const { city } = Astro.params;
+const to = `/${city}/outdoors/`;
+const title = 'Redirecting…';
+const description = `Redirecting to ${to}`;
+---
+<BaseLayout title={title} description={description} canonical={to} noindex={true}>
+  <meta http-equiv="refresh" content={`0; url=${to}`} />
+  <p>Redirecting to <a href={to}>{to}</a>…</p>
+  <script>
+    // Client-side redirect as a fallback
+    window.location.replace("{to}");
+  </script>
+</BaseLayout>
+
