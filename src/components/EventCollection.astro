@@ -1,0 +1,500 @@
+---
+import ExternalLink from './ExternalLink.astro';
+
+export interface Props {
+  events: any[];
+  cityLocation: string;
+  scope: 'all' | 'weekend';
+  allHref: string;
+  weekendHref: string;
+}
+
+const { events, cityLocation, scope, allHref, weekendHref } = Astro.props;
+const heading = scope === 'weekend'
+  ? `What’s on for kids this weekend ${cityLocation}`
+  : `Upcoming kids’ events ${cityLocation}`;
+const count = events.length;
+const countCopy = scope === 'weekend'
+  ? `${count} ${count === 1 ? 'event' : 'events'} happening this weekend`
+  : `${count} upcoming ${count === 1 ? 'event' : 'events'}`;
+
+function parseDate(value?: string) {
+  if (!value) return null;
+  const date = new Date(`${value}T12:00:00`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function dateBlock(event: any) {
+  const start = parseDate(event.start_date);
+  const end = parseDate(event.end_date);
+  if (!start) return { month: 'Date', day: 'TBC' };
+
+  const month = new Intl.DateTimeFormat('en-AU', { month: 'short' }).format(start).toUpperCase();
+  const startDay = new Intl.DateTimeFormat('en-AU', { day: 'numeric' }).format(start);
+  const sameMonth = end && start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+  const endDay = end && end.getTime() !== start.getTime()
+    ? new Intl.DateTimeFormat('en-AU', { day: 'numeric' }).format(end)
+    : null;
+
+  return { month, day: endDay && sameMonth ? `${startDay}–${endDay}` : startDay };
+}
+
+function formatDate(value?: string) {
+  const date = parseDate(value);
+  if (!date) return value || 'Date to be confirmed';
+  return new Intl.DateTimeFormat('en-AU', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  }).format(date);
+}
+
+function formatTime(value?: string) {
+  if (!value) return '';
+  const [hours, minutes] = value.split(':').map(Number);
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return value;
+  const date = new Date(2000, 0, 1, hours, minutes);
+  return new Intl.DateTimeFormat('en-AU', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  }).format(date).replace(' am', 'am').replace(' pm', 'pm');
+}
+
+function schedule(event: any) {
+  const start = formatDate(event.start_date);
+  const end = event.end_date && event.end_date !== event.start_date
+    ? ` – ${formatDate(event.end_date)}`
+    : '';
+  const time = event.start_time
+    ? ` · ${formatTime(event.start_time)}${event.end_time ? `–${formatTime(event.end_time)}` : ''}`
+    : '';
+  return `${start}${end}${time}`;
+}
+
+function location(event: any) {
+  return [...new Set([event.venue, event.suburb].filter(Boolean))].join(', ');
+}
+
+function ageLabel(value?: string) {
+  if (!value) return '';
+  if (value.toLowerCase() === 'all ages') return 'All ages';
+  return `Ages ${value.replace('-', '–')}`;
+}
+
+function checkedLabel(value?: string) {
+  const date = parseDate(value);
+  if (!date) return '';
+  return `Checked ${new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'short' }).format(date)}`;
+}
+---
+
+<section class="event-intro" aria-labelledby="events-heading">
+  <div class="event-heading-group">
+    <h1 id="events-heading">{heading}</h1>
+    <p>{countCopy}. Compare dates, location, cost and age fit before opening the official listing.</p>
+  </div>
+
+  <nav class="event-scope" aria-label="Choose an event range">
+    <a href={weekendHref} aria-current={scope === 'weekend' ? 'page' : undefined}>This weekend</a>
+    <a href={allHref} aria-current={scope === 'all' ? 'page' : undefined}>All upcoming</a>
+  </nav>
+
+  <p class="event-advisory">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 6.5v4M10 14h.01M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" /></svg>
+    <span>Event details can change. Check the official source before you go.</span>
+  </p>
+</section>
+
+{events.length > 0 ? (
+  <ol class="event-list" aria-label={countCopy}>
+    {events.map((event: any) => {
+      const block = dateBlock(event);
+      const eventLocation = location(event);
+      const eventAge = ageLabel(event.age_range);
+      const eventLink = event.booking_url || event.source_url;
+      const checked = checkedLabel(event.last_verified_at);
+      const booking = event.booking_required === 'yes'
+        ? 'Booking required'
+        : event.booking_required === 'no' ? 'No booking needed' : '';
+
+      return (
+        <li>
+          <article class="event-row">
+            <div class="event-date" aria-hidden="true">
+              <span class="event-month">{block.month}</span>
+              <span class="event-day">{block.day}</span>
+            </div>
+
+            <div class="event-body">
+              <header class="event-title-group">
+                <h2>{event.title}</h2>
+                <p class="event-schedule"><time datetime={event.start_date}>{schedule(event)}</time></p>
+                {eventLocation && <p class="event-location">{eventLocation}</p>}
+              </header>
+
+              {event.summary && <p class="event-summary">{event.summary}</p>}
+
+              <ul class="event-facts" aria-label="Event details">
+                {event.price && <li>{event.price}</li>}
+                {eventAge && <li>{eventAge}</li>}
+                {booking && <li>{booking}</li>}
+              </ul>
+
+              <footer class="event-footer">
+                {checked && <span class="event-checked">{checked}</span>}
+                {eventLink && <ExternalLink href={eventLink} class="event-action">Official details</ExternalLink>}
+              </footer>
+            </div>
+          </article>
+        </li>
+      );
+    })}
+  </ol>
+) : (
+  <section class="event-empty">
+    <h2>No events listed for this range</h2>
+    <p>Try all upcoming events, or check back after the next update.</p>
+    {scope === 'weekend' && <a href={allHref}>See all upcoming events</a>}
+  </section>
+)}
+
+<style>
+  .event-intro {
+    display: grid;
+    gap: var(--space-5);
+    margin-bottom: var(--space-7);
+  }
+
+  .event-heading-group {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  h1 {
+    max-width: 13ch;
+    margin: 0;
+    font-size: clamp(2.55rem, 2rem + 2.8vw, 4.75rem);
+    line-height: var(--font-leading-display);
+    letter-spacing: var(--font-tracking-tight);
+    text-wrap: balance;
+  }
+
+  .event-heading-group > p {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-large);
+  }
+
+  .event-scope {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .event-scope a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 0.6rem var(--space-4);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    background: var(--color-surface-canvas);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-keyline);
+    transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+  }
+
+  .event-scope a:hover {
+    background: var(--color-surface-soft);
+  }
+
+  .event-scope a[aria-current="page"] {
+    color: var(--color-text-inverse);
+    background: var(--color-surface-dark);
+    box-shadow: none;
+  }
+
+  .event-advisory {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    max-width: 62ch;
+    margin: 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-strong);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+  }
+
+  .event-advisory svg {
+    width: 1.15rem;
+    flex: 0 0 auto;
+    margin-top: 0.12rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+  }
+
+  .event-list {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .event-row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    min-width: 0;
+    overflow: hidden;
+    background: var(--color-surface-canvas);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-keyline);
+    transition: transform var(--motion-standard) var(--ease-out), box-shadow var(--motion-standard) var(--ease-out);
+  }
+
+  .event-row:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-1);
+    padding: var(--space-5) var(--space-2);
+    background: var(--color-accent-sun);
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .event-month {
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--font-tracking-label);
+    line-height: var(--font-leading-compact);
+  }
+
+  .event-day {
+    font-size: clamp(1.45rem, 1.25rem + 1vw, 2rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--font-tracking-tight);
+    line-height: 1;
+  }
+
+  .event-body {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
+  .event-title-group {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .event-title-group h2 {
+    max-width: 30ch;
+    margin: 0;
+    font-size: var(--font-size-h4);
+    line-height: var(--font-leading-heading);
+    letter-spacing: var(--font-tracking-tight);
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+  }
+
+  .event-schedule,
+  .event-location,
+  .event-summary {
+    margin: 0;
+  }
+
+  .event-schedule {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--font-leading-compact);
+  }
+
+  .event-location {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+  }
+
+  .event-summary {
+    max-width: 68ch;
+    color: var(--color-text-secondary);
+  }
+
+  .event-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .event-facts li {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    padding: 0.35rem var(--space-3);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+    background: var(--color-surface-soft);
+    border-radius: var(--radius-small);
+  }
+
+  .event-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .event-checked {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+  }
+
+  .event-action {
+    display: inline-flex;
+    gap: var(--space-2);
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem var(--space-4);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    background: var(--color-surface-dark);
+    border-radius: var(--radius-medium);
+    transition: transform var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out);
+  }
+
+  .event-action:hover {
+    color: var(--color-text-inverse);
+    background: var(--color-text-link);
+  }
+
+  .event-action:active {
+    transform: scale(0.98);
+  }
+
+  .event-empty {
+    padding: var(--space-7);
+    background: var(--color-surface-canvas);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-keyline);
+  }
+
+  .event-empty h2,
+  .event-empty p {
+    margin: 0;
+  }
+
+  .event-empty p {
+    margin-top: var(--space-2);
+    color: var(--color-text-secondary);
+  }
+
+  .event-empty a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    margin-top: var(--space-4);
+    font-weight: var(--font-weight-semibold);
+    text-underline-offset: 0.18em;
+  }
+
+  @media (min-width: 42rem) {
+    .event-intro {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .event-heading-group,
+    .event-advisory {
+      grid-column: 1 / -1;
+    }
+
+    .event-heading-group {
+      grid-row: 1;
+    }
+
+    .event-scope {
+      grid-column: 2;
+      grid-row: 2;
+      justify-content: flex-end;
+    }
+
+    .event-advisory {
+      grid-row: 2;
+      grid-column: 1;
+    }
+
+    .event-row {
+      grid-template-columns: 7rem minmax(0, 1fr);
+    }
+
+    .event-date {
+      justify-content: center;
+      padding: var(--space-6) var(--space-3);
+    }
+
+    .event-body {
+      padding: var(--space-6);
+    }
+  }
+
+  @media (max-width: 23.99rem) {
+    .event-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .event-date {
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .event-day {
+      font-size: var(--font-size-h4);
+    }
+
+    .event-body {
+      padding: var(--space-4);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .event-row,
+    .event-action,
+    .event-scope a {
+      transition: none;
+    }
+
+    .event-row:hover,
+    .event-action:active {
+      transform: none;
+    }
+  }
+</style>

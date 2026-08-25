@@ -2,7 +2,7 @@
 import CityShell from '../../components/CityShell.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getCities, getCityBySlug, getAvailableCategoriesForCity, getUpcomingEventsForCity, getWeekendEventsForCity, getIdeasForCity, getGuidesForCity } from '../../lib/data';
-import { generateCitySeoTitle } from '../../lib/seo';
+import { generateCityHeading, generateCitySeoTitle } from '../../lib/seo';
 import { collectionPageSchema, itemListSchema, breadcrumbSchema } from '../../lib/schema';
 
 export function getStaticPaths() {
@@ -14,6 +14,7 @@ export function getStaticPaths() {
 const { city } = Astro.params;
 const cityData = getCityBySlug(city as string);
 const title = generateCitySeoTitle(city as string);
+const heading = generateCityHeading(city as string);
 const description = cityData?.description || title;
 
 const categories = getAvailableCategoriesForCity(city as string);
@@ -44,12 +45,12 @@ const jsonLd = [
 <CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={breadcrumbs} />
 
-  <h1>{title}</h1>
+  <h1>{heading}</h1>
   {cityData?.description && <p class='intro'>{cityData.description}</p>}
   
   {upcomingEvents.length > 0 && (
     <section class='home-module'>
-      <h2>What's on</h2>
+      <h2>What's on for kids</h2>
       <p>Fresh things happening around {cityData?.title || city}.</p>
       <ul class='gateway-links'>
         {weekendEvents.length > 0 && <li><a href={'/' + city + '/events/this-weekend/'}>This weekend</a></li>}
@@ -60,7 +61,7 @@ const jsonLd = [
 
   {categories.length > 0 && (
     <section class='home-module'>
-      <h2>Explore by mood</h2>
+      <h2>Explore family activities by mood</h2>
       <ul class='gateway-links'>
         {categories.map((c: any) => (
           <li><a href={'/' + city + '/' + c.slug + '/'}>{c.title}</a></li>
@@ -71,7 +72,7 @@ const jsonLd = [
   
   {topIdeas.length > 0 && (
     <section class='home-module'>
-      <h2>Little Adventures</h2>
+      <h2>Easy family adventure ideas</h2>
       <ul>
         {topIdeas.map((i: any) => (
           <li><a href={'/' + city + '/ideas/' + i.slug + '/'}>{i.title}</a></li>
@@ -82,7 +83,7 @@ const jsonLd = [
 
   {topGuides.length > 0 && (
     <section class='home-module'>
-      <h2>Local Guides</h2>
+      <h2>{cityData?.title || city} family guides</h2>
       <ul>
         {topGuides.map((g: any) => (
           <li><a href={'/' + city + '/guides/' + g.slug + '/'}>{g.title}</a></li>

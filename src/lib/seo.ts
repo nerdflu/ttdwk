@@ -6,48 +6,81 @@ import { getCityBySlug, getCategoryBySlug } from './data';
  */
 function getCurrentMonthAndYearForAu(): { monthLong: string; year: number } {
   const now = new Date();
-  // Use Australian locale and timezone for consistent month names
   const monthLong = now.toLocaleString('en-AU', {
     month: 'long',
     timeZone: 'Australia/Sydney',
   });
   return {
     monthLong,
-    year: now.getFullYear(),
+    year: Number(now.toLocaleString('en-AU', {
+      year: 'numeric',
+      timeZone: 'Australia/Sydney',
+    })),
   };
 }
 
 /**
  * Builds a date suffix for SEO titles.
- * - "monthYear" -> " - October 2026"
- * - "yearParens" -> " (2026)"
+ * - "monthYear" -> " | October 2026"
+ * - "year" -> " | 2026"
  */
-function buildDateSuffix(style: 'monthYear' | 'yearParens' = 'monthYear'): string {
+function buildDateSuffix(style: 'monthYear' | 'year' = 'monthYear'): string {
   const { monthLong, year } = getCurrentMonthAndYearForAu();
-  return style === 'yearParens' ? ` (${year})` : ` - ${monthLong} ${year}`;
+  return style === 'year' ? ` | ${year}` : ` | ${monthLong} ${year}`;
 }
 
-export const generateCitySeoTitle = (citySlug: string) => {
+export const generateCityHeading = (citySlug: string) => {
   const city = getCityBySlug(citySlug);
-  const base = city
+  return city
     ? `Things to do with kids ${city.preposition} ${city.title}`
     : 'Things to do with kids';
-  return `${base}${buildDateSuffix('monthYear')}`;
 };
 
-export const generateCategorySeoTitle = (citySlug: string, categorySlug: string) => {
+export const generateCitySeoTitle = (citySlug: string) => {
+  return `${generateCityHeading(citySlug)}${buildDateSuffix('monthYear')}`;
+};
+
+export const generateCategoryHeading = (citySlug: string, categorySlug: string) => {
   const city = getCityBySlug(citySlug);
   const cat = getCategoryBySlug(categorySlug);
   if (!city || !cat || !cat.seo_title_pattern) return 'Things to do with kids';
-  const base = cat.seo_title_pattern
+  return cat.seo_title_pattern
     .replace('{preposition}', city.preposition)
     .replace('{city}', city.title);
-
-  // Use a year-only style for specific categories like "free"; default to month+year
-  const dateStyle: 'monthYear' | 'yearParens' =
-    (cat as any).seo_date_style === 'yearParens' || cat.slug === 'free'
-      ? 'yearParens'
-      : 'monthYear';
-
-  return `${base}${buildDateSuffix(dateStyle)}`;
 };
+
+export const generateCategorySeoTitle = (citySlug: string, categorySlug: string) => {
+  return `${generateCategoryHeading(citySlug, categorySlug)}${buildDateSuffix('year')}`;
+};
+
+export const generateEventsSeoTitle = (citySlug: string) => {
+  const city = getCityBySlug(citySlug);
+  const location = city ? `${city.preposition} ${city.title}` : '';
+  return `Kids' events${location ? ` ${location}` : ''}${buildDateSuffix('monthYear')}`;
+};
+
+export const generateWeekendTitle = (citySlug: string) => {
+  const city = getCityBySlug(citySlug);
+  return city
+    ? `Things to do with kids ${city.preposition} ${city.title} this weekend`
+    : 'Things to do with kids this weekend';
+};
+
+export const generatePlaceSeoTitle = (placeTitle: string, cityName: string) =>
+  `${placeTitle} with Kids | ${cityName} Family Guide`;
+
+export const generatePlaceHeading = (placeTitle: string) =>
+  `${placeTitle} with kids`;
+
+export const generateIdeaSeoTitle = (
+  ideaTitle: string,
+  citySlug: string,
+) => {
+  const city = getCityBySlug(citySlug);
+  return city
+    ? `${ideaTitle} with kids ${city.preposition} ${city.title}`
+    : `${ideaTitle} with kids`;
+};
+
+export const generateGuideSeoTitle = (guideTitle: string) =>
+  `${guideTitle} | Family Guide`;

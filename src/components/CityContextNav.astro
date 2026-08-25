@@ -9,11 +9,14 @@ export interface Props {
 const { citySlug, currentPath = '' } = Astro.props;
 const navItems = citySlug ? getCityNavItems(citySlug) : [];
 const normalised = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+const activeHref = navItems
+  .filter(item => normalised === item.href || normalised.startsWith(item.href))
+  .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 ---
 <nav class="city-nav" aria-label="City sections">
   <ul>
     {navItems.map(item => {
-      const active = normalised === item.href || normalised.startsWith(item.href);
+      const active = item.href === activeHref;
       return (
         <li>
           <a href={item.href} aria-current={active ? 'page' : undefined}>{item.label}</a>
@@ -61,6 +64,8 @@ const normalised = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
     .city-nav {
       max-width: 100%;
       overflow-x: auto;
+      -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 2rem), transparent 100%);
+      mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 2rem), transparent 100%);
       scrollbar-width: thin;
       scrollbar-color: var(--color-border-strong) transparent;
     }

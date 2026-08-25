@@ -7,7 +7,7 @@ const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
   <div id="coming-soon-gate" class="coming-soon-overlay" role="dialog" aria-modal="true" aria-labelledby="coming-soon-title" tabindex="-1">
     <div class="coming-soon-content">
       <p class="brand">Things To Do With Kids</p>
-      <h1 id="coming-soon-title">A family guide for Australian cities, almost ready.</h1>
+      <p class="coming-soon-title" id="coming-soon-title">A family guide for Australian cities, almost ready.</p>
       <p>We're finishing the first cities. Check back soon for places, ideas and weekends worth leaving the house for.</p>
     </div>
   </div>
@@ -72,14 +72,14 @@ const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
       letter-spacing: var(--font-tracking-label);
       text-transform: uppercase;
     }
-    .coming-soon-content h1 {
+    .coming-soon-content .coming-soon-title {
       margin: 0 0 var(--space-4);
       font-size: var(--font-size-h3);
       font-weight: var(--font-weight-semibold);
       line-height: var(--font-leading-heading);
       letter-spacing: var(--font-tracking-tight);
     }
-    .coming-soon-content p {
+    .coming-soon-content p:not(.coming-soon-title) {
       margin: 0;
       color: var(--color-text-secondary);
       font-size: var(--font-size-body-large);

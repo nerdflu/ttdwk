@@ -3,7 +3,7 @@ import CityShell from '../../components/CityShell.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import DiscoveryRow from '../../components/DiscoveryRow.astro';
 import { getCities, getCityBySlug, getAvailableCategoriesForCity, getPlacesForCity, getEventsForCity, getIdeasForCity, getCategoryBySlug } from '../../lib/data';
-import { generateCategorySeoTitle } from '../../lib/seo';
+import { generateCategoryHeading, generateCategorySeoTitle } from '../../lib/seo';
 import { collectionPageSchema, itemListSchema, breadcrumbSchema } from '../../lib/schema';
 import { countLabel } from '../../lib/presentation';
 
@@ -27,9 +27,7 @@ const cityData = getCityBySlug(city as string);
 const catData = getCategoryBySlug(category as string);
 const title = generateCategorySeoTitle(city as string, category as string);
 const description = catData?.description || title;
-const heading = cityData && catData
-  ? `${catData.title} things to do with kids ${cityData.preposition} ${cityData.title}`
-  : title.replace(/ \((19|20)\d{2}\)$/, '');
+const heading = generateCategoryHeading(city as string, category as string);
 
 const places = getPlacesForCity(city as string).filter((p: any) => p.categories?.includes(category as string));
 const events = getEventsForCity(city as string).filter((e: any) => e.categories?.includes(category as string));
