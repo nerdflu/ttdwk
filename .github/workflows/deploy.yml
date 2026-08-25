@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  schedule:
+    # Rebuild after midnight AEST so yesterday's events drop off city event pages.
+    # 14:00 UTC = 12:00 AM AEST / 1:00 AM AEDT / 10:00 PM AWST
+    - cron: '0 14 * * *'
   workflow_run:
     workflows: ["Import Content from Google Sheets"]
     types:

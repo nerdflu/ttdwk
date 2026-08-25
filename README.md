@@ -44,10 +44,8 @@ Read more in `docs/GOOGLE_SHEETS_PIPELINE.md`.
 
 We use a chained GitHub Actions workflow pipeline to sync content from our Google Sheets database and deploy the site.
 
-1. **Import Content from Google Sheets (Manual)**: Pulls CSVs via GitHub repository variables, validates the data, and commits any updated JSON files back to the `main` branch.
-2. **Deploy to GitHub Pages (Automatic)**: Automatically triggers upon the successful completion of the Import action (or on direct pushes to `main`). It builds the Astro site and deploys it live.
-
-*Note: Daily scheduled imports can be enabled in the `.github/workflows/import-content.yml` file once the content team is ready for full automation.*
+1. **Import Content from Google Sheets**: Pulls CSVs via GitHub repository variables, validates the data, and commits any updated JSON files back to the `main` branch. Runs nightly at 10:00 UTC (8:00 PM AEST) and can also be triggered manually.
+2. **Deploy to GitHub Pages**: Builds the Astro site and deploys it live. Runs on pushes to `main`, after a successful import, and again at 14:00 UTC (midnight AEST) so expired events drop off city event pages even when the spreadsheet has not changed.
 
 For detailed instructions, see [Google Sheets Pipeline](docs/GOOGLE_SHEETS_PIPELINE.md)
 

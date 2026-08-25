@@ -21,4 +21,4 @@ Since the site uses sample or unverified data during Phase 3, production safety 
 3. **Coming Soon Overlay**: The `ComingSoonGate` component acts as a visual block for real users, ensuring they do not see the test content.
 
 ## Known Limitations
-- Since "today" is resolved at build time, the site **must** be rebuilt daily for events to naturally expire and disappear from the front-end. If the site is not rebuilt, yesterday's events will remain visible. A daily CRON schedule in GitHub Actions is highly recommended once real content begins flowing.
+- Since "today" is resolved at build time, the site **must** be rebuilt daily for events to naturally expire and disappear from the front-end. If the site is not rebuilt, yesterday's events will remain visible. **Deploy to GitHub Pages** runs on a daily CRON at 14:00 UTC (midnight AEST) for this reason, in addition to rebuilds after content import.
