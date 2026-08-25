@@ -57,6 +57,21 @@ const normalised = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
     box-shadow: none;
   }
 
+  @media (max-width: 63.99rem) {
+    .city-nav {
+      max-width: 100%;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-strong) transparent;
+    }
+
+    .city-nav ul {
+      width: max-content;
+      flex-wrap: nowrap;
+      padding-bottom: var(--space-1);
+    }
+  }
+
   @media (min-width: 64rem) {
     .city-nav ul {
       flex-direction: column;

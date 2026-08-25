@@ -3,6 +3,7 @@ import CityShell from '../../../components/CityShell.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import RelatedLinks from '../../../components/RelatedLinks.astro';
 import { getApprovedPlaces, getCityBySlug } from '../../../lib/data';
+import { placeFacts } from '../../../lib/presentation';
 import { placeSchema, breadcrumbSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
@@ -12,33 +13,642 @@ export function getStaticPaths() {
   }));
 }
 
-const { city, slug } = Astro.params;
+const { city } = Astro.params;
 const { place } = Astro.props;
 const cityData = getCityBySlug(city as string);
+const cityName = cityData?.title || (city as string);
 const title = `${place.title} with kids`;
 const description = place.summary;
+const hasDemoGallery = place.slug === 'burleigh-heads-rockpools';
+const facts = [
+  { label: 'Cost', value: place.price || 'Check current details' },
+  { label: 'Best for', value: place.age || place.best_for || 'All ages' },
+  { label: 'When', value: place.hours || 'Check before visiting' },
+  { label: 'Where', value: [place.suburb, place.state].filter(Boolean).join(', ') || cityName }
+];
+const usefulFeatures = placeFacts(place, 6);
+const verifiedLabel = place.last_verified_at
+  ? new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${place.last_verified_at}T00:00:00`))
+  : null;
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
-  { label: cityData?.title || (city as string), href: `/${city}/` },
+  { label: cityName, href: `/${city}/` },
   { label: 'Places' },
   { label: place.title }
 ];
 
-const jsonLd = [
-  placeSchema(place, cityData),
-  breadcrumbSchema(breadcrumbs)
-];
+const jsonLd = [placeSchema(place, cityData), breadcrumbSchema(breadcrumbs)];
+const directionContract = `
+THESIS: A place page is a practical field note beside an immersive location gallery; it refuses both the three-rail directory squeeze and a logo-driven oversized header.
+OWN-WORLD: Warm canvas, sky square brand tile, white practical panel, eucalyptus close, sun demo disclosure, rounded keyline panels and natural editorial media.
+STORY: A parent confirms place, cost, age, timing and location; sees the outing; checks map and official details; reads practical cautions; continues locally.
+FIRST VIEWPORT: Desktop shows the square logo and navigation rail beside a compact story panel and dominant gallery. Mobile shows compact brand and city context, a one-line city nav, title, summary, four facts and the lead image.
+FORM: Direct user-confirmed precise form, place-hybrid-v1; no roll seed applies because the user supplied and confirmed the composition.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+`;
 ---
-<CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd}>
-  <Breadcrumbs items={breadcrumbs} />
-  
-  <h1>{place.title}</h1>
-  <p class="summary">{place.summary}</p>
-  
-  {place.why_we_like_it && <div><h2>Why we like it</h2><p>{place.why_we_like_it}</p></div>}
-  {place.good_to_know && <div><h2>Good to know</h2><p>{place.good_to_know}</p></div>}
-  {place.parent_tip && <div><h2>Parent tip</h2><p>{place.parent_tip}</p></div>}
-  
-  <RelatedLinks citySlug={city as string} cityName={cityData?.title || (city as string)} />
+<CityShell citySlug={city as string} title={title} description={description} jsonLd={jsonLd} variant="place" directionContract={directionContract}>
+  <article class="place-spotlight">
+    <div class="place-story">
+      <Breadcrumbs items={breadcrumbs} />
+
+      <div class="title-group">
+        <h1>{place.title}</h1>
+        <p class="summary">{place.summary}</p>
+      </div>
+
+      <dl class="quick-facts">
+        {facts.map(fact => (
+          <div>
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {hasDemoGallery && (
+        <figure class="mobile-demo-lead">
+          <span>Synthetic demo media · replace before launch</span>
+          <img src="/images/places/demo/rockpools-lead.webp" width="1536" height="1024" alt="Generic coastal rockpools used as synthetic demonstration media" />
+        </figure>
+      )}
+
+      <div class="place-actions">
+        {place.maps_url && (
+          <a class="action action-primary" href={place.maps_url} target="_blank" rel="noopener noreferrer">
+            Open map
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 13 13 7M8 7h5v5" /></svg>
+          </a>
+        )}
+        {place.website && (
+          <a class="action action-secondary" href={place.website} target="_blank" rel="noopener noreferrer">
+            Official details
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 13 13 7M8 7h5v5" /></svg>
+          </a>
+        )}
+      </div>
+
+      {usefulFeatures.length > 0 && (
+        <ul class="feature-list" aria-label="Useful features">
+          {usefulFeatures.map(feature => <li>{feature}</li>)}
+        </ul>
+      )}
+
+      <div class="editorial-notes">
+        {place.why_we_like_it && <section><h2>Why we like it</h2><p>{place.why_we_like_it}</p></section>}
+        {place.good_to_know && <section><h2>Good to know</h2><p>{place.good_to_know}</p></section>}
+        {place.parent_tip && <section><h2>Parent tip</h2><p>{place.parent_tip}</p></section>}
+        {place.what_to_bring && <section><h2>What to bring</h2><p>{place.what_to_bring}</p></section>}
+        {place.safety_notes && <section><h2>Safety</h2><p>{place.safety_notes}</p></section>}
+      </div>
+
+      {verifiedLabel && <p class="verified">Details last checked {verifiedLabel}. Always confirm changing conditions before you go.</p>}
+    </div>
+
+    <div class="place-gallery" aria-label={`Media gallery for ${place.title}`}>
+      {hasDemoGallery ? (
+        <>
+          <div class="demo-media-note">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 6.5v4M10 14h.01M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" /></svg>
+            <span>Synthetic demo media for layout testing — replace before launch</span>
+          </div>
+
+          <figure class="gallery-item gallery-lead">
+            <img src="/images/places/demo/rockpools-lead.webp" width="1536" height="1024" alt="Generic coastal rockpools used as synthetic demonstration media" fetchpriority="high" />
+            <figcaption>Lead image position · generic demonstration scene</figcaption>
+          </figure>
+
+          <div class="gallery-pair">
+            <figure class="gallery-item gallery-detail">
+              <img src="/images/places/demo/rockpools-detail.webp" width="1024" height="1536" alt="Generic close-up of a shallow rockpool used as synthetic demonstration media" loading="lazy" />
+              <figcaption>Detail and discovery</figcaption>
+            </figure>
+
+            <figure class="gallery-item gallery-video">
+              <img src="/images/places/demo/rockpools-path.webp" width="1536" height="1024" alt="Generic coastal path used as a synthetic video poster demonstration" loading="lazy" />
+              <span class="video-slot" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m9 7 8 5-8 5V7Z" /></svg>
+                Video slot
+              </span>
+              <figcaption>Short arrival video would live here</figcaption>
+            </figure>
+
+            <div class="gallery-future">
+              <h2>One more useful view</h2>
+              <p>Parking, access, facilities or the view parents need before they arrive.</p>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div class="gallery-empty">
+          <span>Place gallery</span>
+          <h2>Photography coming soon</h2>
+          <p>This page is ready for one lead image, supporting details and an optional short video.</p>
+        </div>
+      )}
+    </div>
+  </article>
+
+  <div class="place-close">
+    <div>
+      <h2>Keep the day moving</h2>
+    </div>
+    <RelatedLinks citySlug={city as string} cityName={cityName} />
+  </div>
 </CityShell>
+
+<style>
+  .place-spotlight {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .place-story {
+    min-width: 0;
+    padding: var(--space-5);
+    background: var(--color-surface-canvas);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-keyline);
+  }
+
+  .title-group {
+    padding-bottom: var(--space-6);
+  }
+
+  h1 {
+    max-width: 11ch;
+    margin: 0;
+    font-size: clamp(2.5rem, 2rem + 2.4vw, 4.5rem);
+    line-height: var(--font-leading-display);
+    letter-spacing: var(--font-tracking-tight);
+    text-wrap: balance;
+  }
+
+  .summary {
+    max-width: 48ch;
+    margin: var(--space-5) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-large);
+    line-height: 1.48;
+  }
+
+  .quick-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .quick-facts div {
+    min-width: 0;
+    padding: var(--space-4) 0;
+  }
+
+  .quick-facts div:nth-child(odd) {
+    padding-right: var(--space-4);
+  }
+
+  .quick-facts div:nth-child(even) {
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .quick-facts div:nth-child(n + 3) {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .quick-facts dt {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .quick-facts dd {
+    margin: 0;
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--font-leading-compact);
+  }
+
+  .place-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+  }
+
+  .mobile-demo-lead {
+    display: none;
+  }
+
+  .action {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-medium);
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: transform var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out);
+  }
+
+  .action:hover {
+    transform: translateY(-2px);
+  }
+
+  .action svg {
+    width: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .action-primary {
+    background: var(--color-surface-dark);
+    color: var(--color-text-inverse);
+  }
+
+  .action-primary:hover {
+    background: var(--color-accent-eucalyptus);
+    color: var(--color-text-inverse);
+  }
+
+  .action-secondary {
+    color: var(--color-text-primary);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-keyline);
+  }
+
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .feature-list li {
+    padding: 0.38rem 0.65rem;
+    color: var(--color-text-primary);
+    background: var(--color-accent-sand);
+    border-radius: var(--radius-small);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .editorial-notes {
+    margin-top: var(--space-6);
+  }
+
+  .editorial-notes section {
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .editorial-notes h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-ui);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--font-tracking-normal);
+  }
+
+  .editorial-notes p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  .verified {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+  }
+
+  .place-gallery {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .place-gallery {
+      animation: gallery-settle 620ms var(--ease-out) both;
+    }
+  }
+
+  @keyframes gallery-settle {
+    from {
+      clip-path: inset(0 0 2.5rem 0 round var(--radius-large));
+      filter: saturate(0.82) brightness(0.97);
+    }
+    to {
+      clip-path: inset(0 0 0 0 round var(--radius-large));
+      filter: saturate(1) brightness(1);
+    }
+  }
+
+  .demo-media-note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text-primary);
+    background: var(--color-accent-sun);
+    border-radius: var(--radius-medium);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--font-leading-compact);
+  }
+
+  .demo-media-note svg {
+    flex: 0 0 auto;
+    width: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.7;
+  }
+
+  .gallery-item {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-surface-soft);
+    border-radius: var(--radius-large);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--motion-slow) var(--ease-out);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.015);
+  }
+
+  .gallery-item figcaption {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    left: var(--space-3);
+    width: fit-content;
+    max-width: calc(100% - 2 * var(--space-3));
+    padding: 0.42rem 0.65rem;
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-surface-canvas) 90%, transparent);
+    border-radius: var(--radius-small);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-medium);
+    backdrop-filter: blur(8px);
+  }
+
+  .gallery-lead {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gallery-pair {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .gallery-detail,
+  .gallery-video {
+    min-height: 20rem;
+  }
+
+  .gallery-future {
+    display: grid;
+    min-height: 16rem;
+    align-content: end;
+    padding: var(--space-5);
+    background: var(--color-accent-lavender);
+    border-radius: var(--radius-large);
+    color: var(--color-text-primary);
+  }
+
+  .gallery-future h2 {
+    max-width: 12ch;
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-h4);
+    line-height: var(--font-leading-heading);
+    letter-spacing: var(--font-tracking-tight);
+  }
+
+  .gallery-future p {
+    max-width: 32ch;
+    margin: 0;
+    font-size: var(--font-size-small);
+  }
+
+  .video-slot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.65rem 0.85rem;
+    background: var(--color-surface-canvas);
+    border-radius: var(--radius-medium);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+    transform: translate(-50%, -50%);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .video-slot svg {
+    width: 1.1rem;
+    fill: currentColor;
+  }
+
+  .gallery-empty {
+    display: grid;
+    min-height: 34rem;
+    align-content: end;
+    padding: var(--space-7);
+    overflow: hidden;
+    background: var(--color-accent-sky);
+    border-radius: var(--radius-xlarge);
+  }
+
+  .gallery-empty span {
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .gallery-empty h2 {
+    max-width: 10ch;
+    margin: var(--space-2) 0 var(--space-3);
+    font-size: var(--font-size-h2);
+    line-height: var(--font-leading-heading);
+    letter-spacing: var(--font-tracking-tight);
+  }
+
+  .gallery-empty p {
+    max-width: 38ch;
+    margin: 0;
+  }
+
+  .place-close {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    background: var(--color-accent-eucalyptus);
+    border-radius: var(--radius-large);
+    color: var(--color-text-inverse);
+  }
+
+  .place-close h2 {
+    max-width: 12ch;
+    margin: 0;
+    font-size: var(--font-size-h3);
+    line-height: var(--font-leading-heading);
+    letter-spacing: var(--font-tracking-tight);
+  }
+
+  .place-close :global(.related-links) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .place-close :global(.related-links h3) {
+    display: none;
+  }
+
+  .place-close :global(.related-links ul) {
+    margin: 0;
+  }
+
+  .place-close :global(.related-links a) {
+    color: var(--color-text-inverse);
+    text-underline-offset: 0.18em;
+  }
+
+  @media (min-width: 40rem) {
+    .gallery-pair {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .gallery-detail {
+      grid-row: span 2;
+    }
+
+    .place-close {
+      grid-template-columns: minmax(13rem, 0.7fr) minmax(0, 1.3fr);
+      align-items: end;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .place-spotlight {
+      grid-template-columns: minmax(17.5rem, 0.76fr) minmax(0, 1.24fr);
+      gap: var(--space-6);
+    }
+
+    .place-story {
+      position: sticky;
+      top: var(--space-5);
+    }
+
+    .gallery-lead {
+      aspect-ratio: 16 / 11;
+    }
+
+    .gallery-pair {
+      grid-template-rows: minmax(20rem, 1.05fr) minmax(17rem, 0.95fr);
+    }
+
+    .gallery-detail,
+    .gallery-video {
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 39.99rem) {
+    .place-story {
+      padding: var(--space-4);
+    }
+
+    .quick-facts {
+      grid-template-columns: 1fr;
+    }
+
+    .quick-facts div,
+    .quick-facts div:nth-child(odd),
+    .quick-facts div:nth-child(even) {
+      padding: var(--space-3) 0;
+      border-left: 0;
+    }
+
+    .quick-facts div + div {
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .mobile-demo-lead {
+      position: relative;
+      display: block;
+      aspect-ratio: 4 / 3;
+      margin: var(--space-4) 0 0;
+      overflow: hidden;
+      background: var(--color-surface-soft);
+      border-radius: var(--radius-medium);
+    }
+
+    .mobile-demo-lead img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mobile-demo-lead span {
+      position: absolute;
+      right: var(--space-2);
+      bottom: var(--space-2);
+      left: var(--space-2);
+      z-index: 1;
+      width: fit-content;
+      max-width: calc(100% - 2 * var(--space-2));
+      padding: 0.38rem 0.55rem;
+      background: color-mix(in srgb, var(--color-surface-canvas) 92%, transparent);
+      border-radius: var(--radius-small);
+      color: var(--color-text-primary);
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--font-leading-compact);
+    }
+
+    .place-actions,
+    .action {
+      width: 100%;
+    }
+
+    .gallery-lead {
+      display: none;
+    }
+
+    .gallery-detail,
+    .gallery-video {
+      min-height: 18rem;
+    }
+
+    .gallery-future {
+      min-height: 16rem;
+    }
+  }
+</style>

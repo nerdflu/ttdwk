@@ -8,18 +8,20 @@ export interface Props {
   title: string;
   description: string;
   jsonLd?: any;
+  variant?: 'default' | 'place';
+  directionContract?: string;
 }
 
-const { citySlug, title, description, jsonLd } = Astro.props;
+const { citySlug, title, description, jsonLd, variant = 'default', directionContract } = Astro.props;
 const city = citySlug ? getCityBySlug(citySlug) : null;
 const allCities = getCities();
 const nearbyCities = citySlug ? getNearbyCities(citySlug) : [];
 const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 ---
-<BaseLayout title={title} description={description} jsonLd={jsonLd}>
-  <div class="city-shell">
+<BaseLayout title={title} description={description} jsonLd={jsonLd} directionContract={directionContract}>
+  <div class:list={['city-shell', variant === 'place' && 'place-shell']}>
     <header class="masthead">
-      <a class="brand" href={city ? `/${city.slug}/` : '/'} id="brand-link">Things To Do With Kids</a>
+      <a class="brand brand-mobile" href={city ? `/${city.slug}/` : '/'} id="brand-link">Things To Do With Kids</a>
       <div class="city-picker">
         <a href={city ? `/${city.slug}/` : '/'} id="city-selector-link" class="city-name-link">
           <strong id="city-selector-label">{city?.title || 'Choose a city'}</strong>
@@ -37,6 +39,11 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     </header>
 
     <aside class="left-rail">
+      <a class="brand-tile" href={city ? `/${city.slug}/` : '/'} aria-label="Things To Do With Kids home">
+        <span>Things</span>
+        <span>to do</span>
+        <span>with kids</span>
+      </a>
       <CityContextNav citySlug={citySlug} currentPath={currentPath} />
       <p class="suggest-note">Know a good outing? Suggestions open at launch.</p>
     </aside>
@@ -47,9 +54,16 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     
     <aside class="right-rail">
       <div class="weekend-digest">
-        <h2>Weekend digest</h2>
-        <p>A short list of the best local ideas, when the public site opens.</p>
+        <h2>Make the next outing easy</h2>
+        <p>A short, useful list of local ideas, delivered when the public site opens.</p>
+        <span class="digest-status">Newsletter form coming next</span>
       </div>
+      {variant === 'place' && (
+        <div class="ad-reserve" aria-label="Reserved advertising placement">
+          <span>Advertisement</span>
+          <p>Reserved for a quiet, clearly labelled partner placement.</p>
+        </div>
+      )}
       {nearbyCities.length > 0 && (
         <div class="nearby-regions">
           <h2>Nearby</h2>
@@ -103,8 +117,9 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
 <style>
   .city-shell {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-6);
-    width: min(100% - 2 * var(--gutter), var(--layout-max));
+    width: min(calc(100% - 2 * var(--gutter)), var(--layout-max));
     margin: 0 auto;
     padding: var(--space-5) 0 var(--space-10);
   }
@@ -117,12 +132,22 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     gap: var(--space-3);
   }
 
-  .brand {
+  .masthead,
+  .left-rail,
+  .right-rail {
+    min-width: 0;
+  }
+
+  .brand-mobile {
     color: var(--color-text-primary);
     font-size: var(--font-size-small);
     font-weight: var(--font-weight-semibold);
     letter-spacing: var(--font-tracking-normal);
     text-decoration: none;
+  }
+
+  .brand-tile {
+    display: none;
   }
 
   .city-picker {
@@ -140,7 +165,7 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
   }
 
   .city-name-link:hover,
-  .brand:hover {
+  .brand-mobile:hover {
     text-decoration: underline;
     text-underline-offset: 0.18em;
   }
@@ -220,6 +245,13 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     letter-spacing: var(--font-tracking-normal);
   }
 
+  .weekend-digest h2 {
+    max-width: 17ch;
+    margin-bottom: var(--space-3);
+    font-size: var(--font-size-h4);
+    letter-spacing: var(--font-tracking-tight);
+  }
+
   .weekend-digest,
   .nearby-regions {
     padding: var(--space-5);
@@ -231,6 +263,38 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
   .weekend-digest p,
   .nearby-regions a {
     margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+  }
+
+  .digest-status {
+    display: inline-block;
+    margin-top: var(--space-4);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .ad-reserve {
+    display: grid;
+    min-height: 10rem;
+    place-content: center;
+    padding: var(--space-5);
+    text-align: center;
+    background: var(--color-surface-soft);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-large);
+  }
+
+  .ad-reserve span {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .ad-reserve p {
+    max-width: 34ch;
+    margin: var(--space-2) auto 0;
     color: var(--color-text-secondary);
     font-size: var(--font-size-small);
   }
@@ -259,7 +323,7 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     .city-shell {
       grid-template-columns: 14.5rem minmax(0, 1fr) 15rem;
       grid-template-areas:
-        "masthead masthead masthead"
+        "rail masthead masthead"
         "rail main aside";
       align-items: start;
       column-gap: var(--space-8);
@@ -269,5 +333,61 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     .left-rail { grid-area: rail; position: sticky; top: var(--space-5); }
     .center-column { grid-area: main; }
     .right-rail { grid-area: aside; }
+
+    .brand-mobile {
+      display: none;
+    }
+
+    .brand-tile {
+      display: flex;
+      width: min(100%, 10.75rem);
+      aspect-ratio: 1;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: var(--space-6);
+      padding: var(--space-5);
+      overflow: hidden;
+      background: var(--color-accent-sky);
+      border-radius: var(--radius-large);
+      color: var(--color-text-primary);
+      font-size: clamp(1.25rem, 1rem + 0.55vw, 1.7rem);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--font-tracking-tight);
+      line-height: 0.92;
+      text-decoration: none;
+      transition: transform var(--motion-standard) var(--ease-out);
+    }
+
+    .brand-tile:hover {
+      color: var(--color-text-primary);
+      transform: translateY(-2px);
+    }
+
+    .brand-tile span:last-child {
+      margin-top: var(--space-2);
+    }
+
+    .place-shell {
+      grid-template-columns: 13rem minmax(0, 1fr);
+      grid-template-areas:
+        "rail masthead"
+        "rail main"
+        "rail aside";
+    }
+
+    .place-shell .right-rail {
+      grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+      margin-top: var(--space-4);
+    }
+
+    .place-shell .nearby-regions {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 63.99rem) {
+    .place-shell .suggest-note {
+      display: none;
+    }
   }
 </style>

@@ -1,12 +1,13 @@
 ---
 import { siteConfig } from '../config';
+const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
 ---
 
-{siteConfig.comingSoon && (
-  <div id="coming-soon-gate" class="coming-soon-overlay">
+{showComingSoon && (
+  <div id="coming-soon-gate" class="coming-soon-overlay" role="dialog" aria-modal="true" aria-labelledby="coming-soon-title" tabindex="-1">
     <div class="coming-soon-content">
       <p class="brand">Things To Do With Kids</p>
-      <h1>A family guide for Australian cities, almost ready.</h1>
+      <h1 id="coming-soon-title">A family guide for Australian cities, almost ready.</h1>
       <p>We're finishing the first cities. Check back soon for places, ideas and weekends worth leaving the house for.</p>
     </div>
   </div>
@@ -15,7 +16,12 @@ import { siteConfig } from '../config';
     window.disableComingSoon = function() {
       localStorage.setItem('bypass_coming_soon', 'true');
       const gate = document.getElementById('coming-soon-gate');
+      const content = document.getElementById('site-content');
       if (gate) gate.remove();
+      if (content) {
+        content.removeAttribute('inert');
+        content.removeAttribute('aria-hidden');
+      }
       return 'Coming soon disabled!';
     };
 
@@ -27,7 +33,14 @@ import { siteConfig } from '../config';
 
     if (localStorage.getItem('bypass_coming_soon') === 'true') {
       const gate = document.getElementById('coming-soon-gate');
+      const content = document.getElementById('site-content');
       if (gate) gate.remove();
+      if (content) {
+        content.removeAttribute('inert');
+        content.removeAttribute('aria-hidden');
+      }
+    } else {
+      document.getElementById('coming-soon-gate')?.focus();
     }
   </script>
 
