@@ -7,7 +7,7 @@ import { placeFacts } from '../../../lib/presentation';
 import { placeSchema, breadcrumbSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
-  return getApprovedPlaces().map(place => ({
+  return getApprovedPlaces().filter(place => place.has_page === 'yes').map(place => ({
     params: { city: place.city, slug: place.slug },
     props: { place }
   }));

@@ -59,6 +59,7 @@ const rowId = kind === 'place' || kind === 'idea' ? item.slug : undefined;
       </ul>
     )}
     <p class="actions">
+      {kind === 'place' && placeHref && <a href={placeHref}>View place</a>}
       {kind === 'place' && website && <ExternalLink href={website}>Official site</ExternalLink>}
       {kind === 'place' && mapsUrl && <ExternalLink href={mapsUrl}>Map</ExternalLink>}
       {kind === 'idea' && ideaHref && <a href={ideaHref}>Read guide</a>}

@@ -13,8 +13,7 @@ const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
   </div>
 
   <script is:inline>
-    window.disableComingSoon = function() {
-      localStorage.setItem('bypass_coming_soon', 'true');
+    function releaseSiteContent() {
       const gate = document.getElementById('coming-soon-gate');
       const content = document.getElementById('site-content');
       if (gate) gate.remove();
@@ -22,6 +21,19 @@ const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
         content.removeAttribute('inert');
         content.removeAttribute('aria-hidden');
       }
+    }
+
+    function applyStoredComingSoonPreference() {
+      if (localStorage.getItem('bypass_coming_soon') === 'true') {
+        releaseSiteContent();
+      } else {
+        document.getElementById('coming-soon-gate')?.focus();
+      }
+    }
+
+    window.disableComingSoon = function() {
+      localStorage.setItem('bypass_coming_soon', 'true');
+      releaseSiteContent();
       return 'Coming soon disabled!';
     };
 
@@ -31,16 +43,10 @@ const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
       return 'Coming soon enabled!';
     };
 
-    if (localStorage.getItem('bypass_coming_soon') === 'true') {
-      const gate = document.getElementById('coming-soon-gate');
-      const content = document.getElementById('site-content');
-      if (gate) gate.remove();
-      if (content) {
-        content.removeAttribute('inert');
-        content.removeAttribute('aria-hidden');
-      }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyStoredComingSoonPreference, { once: true });
     } else {
-      document.getElementById('coming-soon-gate')?.focus();
+      applyStoredComingSoonPreference();
     }
   </script>
 
