@@ -10,11 +10,10 @@ export interface Props {
   ogImage?: string;
   noindex?: boolean;
   jsonLd?: any;
-  directionContract?: string;
 }
 
 import { siteConfig } from "../config";
-const { title, description, canonical, ogImage, noindex, jsonLd, directionContract } = Astro.props;
+const { title, description, canonical, ogImage, noindex, jsonLd } = Astro.props;
 const shouldNoIndex = noindex || siteConfig.comingSoon;
 const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
 ---
@@ -35,7 +34,6 @@ const showComingSoon = siteConfig.comingSoon && !import.meta.env.DEV;
     )}
   </head>
   <body>
-    {directionContract && <Fragment set:html={`<!-- ${directionContract} -->`} />}
     <a class="skip-link" href="#main">Skip to content</a>
     <ComingSoonGate />
     <div id="site-content" inert={showComingSoon} aria-hidden={showComingSoon ? 'true' : undefined}>

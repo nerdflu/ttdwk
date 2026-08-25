@@ -11,9 +11,6 @@ interface Props {
 
 const { kind, item, citySlug, categoryLabel } = Astro.props;
 
-const placeHref = kind === 'place' && item.has_page === 'yes'
-  ? `/${citySlug}/places/${item.slug}/`
-  : undefined;
 const ideaHref = kind === 'idea' ? `/${citySlug}/ideas/${item.slug}/` : undefined;
 const eventHref = kind === 'event' ? (item.booking_url || item.source_url) : undefined;
 const website = kind === 'place' ? item.website : undefined;
@@ -25,25 +22,29 @@ const kicker = kind === 'event'
     ? ''
     : [item.suburb, categoryLabel].filter(Boolean).join(' · ');
 
-const facts = kind === 'place' ? placeFacts(item) : kind === 'idea' ? ideaFacts(item) : [
+const facts = kind === 'place' ? placeFacts(item, 6) : kind === 'idea' ? ideaFacts(item) : [
   item.is_free ? 'Free' : item.price,
   item.age_range,
   item.booking_required ? 'Booking required' : '',
 ].filter(Boolean).slice(0, 4);
 
 const copy = kind === 'place' ? placeCopy(item) : item.summary;
-const headingHref = placeHref || ideaHref;
+const headingHref = ideaHref;
 const rowId = kind === 'place' || kind === 'idea' ? item.slug : undefined;
 ---
 
 <article class:list={['discovery-row', `is-${kind}`]} id={rowId}>
-  <div class="media" aria-hidden="true">
-    <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
-      <rect width="160" height="120" fill="currentColor" class="media-fill" />
-      <circle cx="112" cy="38" r="22" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
-      <circle cx="112" cy="38" r="11" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
-      <path d="M12 96c18-18 36-18 54 0s36 18 54 0 36-18 52 0" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
-    </svg>
+  <div class="media" aria-hidden={kind === 'place' && item.image_url ? undefined : 'true'}>
+    {kind === 'place' && item.image_url ? (
+      <img src={item.image_url} alt={item.image_alt || ''} loading="lazy" />
+    ) : (
+      <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+        <rect width="160" height="120" fill="currentColor" class="media-fill" />
+        <circle cx="112" cy="38" r="22" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
+        <circle cx="112" cy="38" r="11" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
+        <path d="M12 96c18-18 36-18 54 0s36 18 54 0 36-18 52 0" fill="none" stroke="currentColor" class="media-mark" stroke-width="1.5" />
+      </svg>
+    )}
     {categoryLabel && <span class="media-label">{categoryLabel}</span>}
   </div>
 
@@ -53,13 +54,13 @@ const rowId = kind === 'place' || kind === 'idea' ? item.slug : undefined;
     </h2>
     {kicker && <p class="meta">{kicker}</p>}
     {copy && <p class="copy">{copy}</p>}
+    {kind === 'place' && item.parent_tip && <p class="parent-tip"><strong>Parent tip:</strong> {item.parent_tip}</p>}
     {facts.length > 0 && (
       <ul class="facts">
         {facts.map((fact) => <li>{fact}</li>)}
       </ul>
     )}
     <p class="actions">
-      {kind === 'place' && placeHref && <a href={placeHref}>View place</a>}
       {kind === 'place' && website && <ExternalLink href={website}>Official site</ExternalLink>}
       {kind === 'place' && mapsUrl && <ExternalLink href={mapsUrl}>Map</ExternalLink>}
       {kind === 'idea' && ideaHref && <a href={ideaHref}>Read guide</a>}
@@ -92,6 +93,12 @@ const rowId = kind === 'place' || kind === 'idea' ? item.slug : undefined;
 
   .media-fill {
     color: var(--color-accent-sand);
+  }
+
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .media-mark {
@@ -142,6 +149,12 @@ const rowId = kind === 'place' || kind === 'idea' ? item.slug : undefined;
     margin: var(--space-3) 0 0;
     max-width: 62ch;
     color: var(--color-text-secondary);
+  }
+
+  .parent-tip {
+    margin: var(--space-3) 0 0;
+    max-width: 62ch;
+    color: var(--color-text-primary);
   }
 
   .facts {

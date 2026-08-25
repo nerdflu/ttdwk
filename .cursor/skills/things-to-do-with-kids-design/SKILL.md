@@ -28,7 +28,7 @@ This repo is Astro (not Jekyll). `PRODUCT.md` wins on product truth, routes, and
 
 Known overrides vs the generated design spec:
 
-- Place pages exist when `has_page = yes` (`/[city]/places/[slug]/`).
+- Places never get individual detail pages. Their slugs remain stable identifiers and in-page anchors.
 - Events never get detail pages. Event cards link out.
 - The public site stays coming-soon and `noindex` until launch is explicit.
 - Do not fabricate testimonials, ratings, or first-hand claims.
@@ -53,7 +53,7 @@ The desired reaction is: “Oh cool, I hadn’t thought of that. Let’s go do s
 - Every deep page must show its city context and an obvious route back to the city home.
 - The primary navigation must support `Browse cities`, `Events`, `Guides`, and `Suggest a place or idea`.
 - The main homepage must lead to discovery collections such as `This weekend` and `All upcoming events`; it must not promote individual event-detail links.
-- Places and ongoing activities live as rich entries on city/category list pages. Place detail routes exist only when `has_page = yes`.
+- Places and ongoing activities live as rich entries on city/category and curated collection pages. Each place entry contains its useful details and explicit external Website/Map links.
 - A place entry may use a stable in-page anchor for sharing; useful list-page information must remain visible even when a detail page exists.
 - Events never get internal detail pages. Event cards link out to the official source.
 - External venue, booking, map, council, and official-information links must open in a new tab with `target="_blank"` and `rel="noopener noreferrer"`. Internal discovery links must stay in the same tab.
@@ -172,7 +172,7 @@ Then expand the system deliberately for tablet and desktop; do not merely stretc
 
 - a generic three-column directory grid as the dominant experience
 - homepage links straight to individual events
-- a place detail page for a listing that does not have `has_page = yes`
+- an individual place detail page
 - childlike rainbow colours, bubbly novelty type, cartoon overload, or school-worksheet styling
 - dense badge clouds that compete with the place name
 - generic stock photos of smiling families
@@ -194,4 +194,3 @@ When producing design guidance or code:
 - include accessible interaction states
 - keep content realistic enough to expose layout problems
 - finish with a short QA check against the non-negotiable information architecture
-

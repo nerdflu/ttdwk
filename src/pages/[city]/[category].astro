@@ -48,8 +48,8 @@ const visibleItems = [...events, ...places, ...ideas].map(item => {
   let itemUrl = '/' + city + '/' + subpath + '/' + item.slug + '/';
   if (subpath === 'events') {
     itemUrl = item.booking_url || item.source_url || '';
-  } else if (subpath === 'places' && item.has_page !== 'yes') {
-    itemUrl = item.affiliate_url || item.booking_url || item.website || item.maps_url || '';
+  } else if (subpath === 'places') {
+    itemUrl = '/' + city + '/' + category + '/#' + item.slug;
   }
   
   return {

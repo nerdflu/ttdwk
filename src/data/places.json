@@ -38,7 +38,6 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
-    "has_page": "yes",
     "features": [
       "cafe"
     ]
@@ -82,7 +81,6 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -130,7 +128,6 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",

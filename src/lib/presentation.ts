@@ -44,6 +44,7 @@ export function placeFacts(place: any, limit = 4): string[] {
   const facts: string[] = [];
   uniquePush(facts, place.price);
   uniquePush(facts, place.age);
+  uniquePush(facts, place.hours);
   if (place.local_gem) uniquePush(facts, 'Hidden gem');
   for (const feature of collectFeatures(place)) {
     uniquePush(facts, featureLabel(feature));

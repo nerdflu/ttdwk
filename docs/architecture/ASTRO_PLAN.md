@@ -11,7 +11,6 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 - `/[city]/[category]/` - Category filtering within a city context
 - `/[city]/events/` - All upcoming events for a city
 - `/[city]/events/this-weekend/` - Events happening this weekend
-- `/[city]/places/[slug]/` - Place detail page
 - `/[city]/ideas/[slug]/` - Idea/itinerary detail page
 - `/[city]/guides/[slug]/` - Curated guide detail page
 
@@ -25,6 +24,7 @@ React/Vue and heavy UI libraries are avoided to keep the core lightweight.
 - **Content-Aware Navigation**: Left nav is strictly for city-level browsing. It only shows links (like Overview, Events, This Weekend, or matching Categories) if data exists. Guides are currently not included in the left nav, and will be surfaced via right rails or related content instead.
 - **City Selector**: A dropdown is used to select cities. It lists all cities and includes a "Browse all cities" link that returns to `/`.
 - Empty states are avoided at the routing layer.
+- Places are complete entries within city/category or curated collection pages; their slugs are identifiers and page anchors, not routes.
 
 ## Future Automation
 - Google Sheets will act as the single source of truth/database.

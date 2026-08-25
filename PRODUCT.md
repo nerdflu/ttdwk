@@ -41,7 +41,7 @@ Confirmed:
 - Live cities today: Gold Coast, Brisbane, Sydney.
 - City is the geographic and routing boundary.
 - Content types: City, Category, Discovery Tag, Place, Event, Idea, Guide.
-- Place detail routes exist only for published places with `has_page = yes`. Most places surface as cards on list pages, with external fallback links.
+- Places do not have individual routes. They surface as rich entries on city/category and curated collection pages, with stable slug-based anchors and explicit external Website/Map links.
 - Events never get `/[city]/events/[slug]/` pages. Cards link out to the official source. The site takes no responsibility for cancellations or changed info.
 - Categories currently include Free, Indoors, Outdoors, Rainy Days, Hot Days, and School Holidays.
 - Copy and UI language is Australian English (`en-AU`).

@@ -38,7 +38,6 @@
     "source_type": "qld-parks",
     "source_url": "https://parks.qld.gov.au/parks/burleigh-head/about",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "cafe"
     ]
@@ -82,7 +81,6 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -130,7 +128,6 @@
     "source_type": "manual",
     "source_url": "https://example.com",
     "last_verified_at": "2026-04-29",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -179,7 +176,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Murlong-Park",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -227,7 +223,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Currumbin-Rock-Pools",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "toilets",
       "shade",
@@ -275,7 +270,6 @@
     "source_type": "qld-parks",
     "source_url": "https://parks.qld.gov.au/parks/springbrook/journeys",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -323,7 +317,6 @@
     "source_type": "qld-parks",
     "source_url": "https://parks.qld.gov.au/parks/springbrook/journeys",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "toilets",
       "shade"
@@ -369,7 +362,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Tallebudgera-Creek-Park",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -418,7 +410,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Palm-Beach-Parklands",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -467,7 +458,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Pat-Fagan-Park",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -516,7 +506,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Country-Paradise-Parklands",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -564,7 +553,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Home-Of-The-Arts-HOTA-Parklands",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -613,7 +601,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Broadwater-Parklands",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -662,7 +649,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Harley-Park",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -711,7 +697,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Paradise-Point-Parklands",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -760,7 +745,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Jabiru-Island-Park",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -808,7 +792,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Things-to-do/Parks-gardens-reserves/Park-Finder/Budds-Beach-Reserve",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -858,7 +841,6 @@
     "source_type": "official-venue",
     "source_url": "https://hota.com.au/gallery",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "rainy_day",
       "pram_friendly",
@@ -909,7 +891,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/libraries/Our-libraries/Broadbeach-Library",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "rainy_day",
       "pram_friendly",
@@ -958,7 +939,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Services/Venues-facilities/Aquatic-centres/Palm-Beach-Aquatic-Centre",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "rainy_day",
       "pram_friendly",
@@ -1007,7 +987,6 @@
     "source_type": "council",
     "source_url": "https://www.goldcoast.qld.gov.au/Services/Venues-facilities/Aquatic-centres/Upper-Coomera-Aquatic-Centre",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -1055,7 +1034,6 @@
     "source_type": "official-venue",
     "source_url": "https://gcaquapark.com.au/",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",
@@ -1104,7 +1082,6 @@
     "source_type": "official-venue",
     "source_url": "https://wetnwild.com.au/",
     "last_verified_at": "2026-08-25",
-    "has_page": "no",
     "features": [
       "pram_friendly",
       "toilets",

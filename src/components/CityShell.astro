@@ -8,18 +8,17 @@ export interface Props {
   title: string;
   description: string;
   jsonLd?: any;
-  variant?: 'default' | 'place' | 'events';
-  directionContract?: string;
+  variant?: 'default' | 'events';
 }
 
-const { citySlug, title, description, jsonLd, variant = 'default', directionContract } = Astro.props;
+const { citySlug, title, description, jsonLd, variant = 'default' } = Astro.props;
 const city = citySlug ? getCityBySlug(citySlug) : null;
 const allCities = getCities();
 const nearbyCities = citySlug ? getNearbyCities(citySlug) : [];
 const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 ---
-<BaseLayout title={title} description={description} jsonLd={jsonLd} directionContract={directionContract}>
-  <div class:list={['city-shell', variant === 'place' && 'place-shell', variant === 'events' && 'events-shell']}>
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class:list={['city-shell', variant === 'events' && 'events-shell']}>
     <aside class="left-rail">
       <a class="brand brand-mobile" href={city ? `/${city.slug}/` : '/'} id="brand-link">Things To Do With Kids</a>
       <a class="brand-tile" href={city ? `/${city.slug}/` : '/'} aria-label="Things To Do With Kids home">
@@ -60,12 +59,6 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
         <p>A short, useful list of local ideas, delivered when the public site opens.</p>
         <span class="digest-status">Newsletter form coming next</span>
       </div>
-      {variant === 'place' && (
-        <div class="ad-reserve" aria-label="Reserved advertising placement">
-          <span>Advertisement</span>
-          <p>Reserved for a quiet, clearly labelled partner placement.</p>
-        </div>
-      )}
       {nearbyCities.length > 0 && (
         <div class="nearby-regions">
           <h2>Nearby</h2>
@@ -292,30 +285,6 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
     font-weight: var(--font-weight-semibold);
   }
 
-  .ad-reserve {
-    display: grid;
-    min-height: 10rem;
-    place-content: center;
-    padding: var(--space-5);
-    text-align: center;
-    background: var(--color-surface-soft);
-    border: 1px dashed var(--color-border-strong);
-    border-radius: var(--radius-large);
-  }
-
-  .ad-reserve span {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-caption);
-    font-weight: var(--font-weight-semibold);
-  }
-
-  .ad-reserve p {
-    max-width: 34ch;
-    margin: var(--space-2) auto 0;
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-small);
-  }
-
   .nearby-regions ul {
     margin: 0;
     padding: 0;
@@ -381,22 +350,6 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
       margin-top: var(--space-2);
     }
 
-    .place-shell {
-      grid-template-columns: 13rem minmax(0, 1fr);
-      grid-template-areas:
-        "rail main"
-        "rail aside";
-    }
-
-    .place-shell .right-rail {
-      grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
-      margin-top: var(--space-4);
-    }
-
-    .place-shell .nearby-regions {
-      grid-column: 1 / -1;
-    }
-
     .events-shell {
       grid-template-columns: 14.5rem minmax(0, 1fr);
       grid-template-areas:
@@ -412,7 +365,6 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
   }
 
   @media (max-width: 63.99rem) {
-    .place-shell .suggest-note,
     .events-shell .suggest-note {
       display: none;
     }

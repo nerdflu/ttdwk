@@ -11,10 +11,9 @@ This document outlines how ThingsToDoWithKids.com.au handles SEO structured data
 | **City Hub** (`/[city]/`) | `CollectionPage`, `ItemList`, `BreadcrumbList` |
 | **Category Hub** (`/[city]/[category]/`) | `CollectionPage`, `ItemList`, `BreadcrumbList` |
 | **Events Hub** (`/[city]/events/`) | `CollectionPage`, `ItemList`, `BreadcrumbList` |
-| **Place Detail** (`/[city]/places/[slugU`) | `Place` (or `Park`, `Museum`, `Beach`), `BreadcrumbList` |
 | **Guide/Idea** (`/[city]/guides/[slug]`) | `Article`, `BreadcrumbList` |
 
-*Note: The `ItemList` schema is only used when items are visibly listed on the page.*
+*Note: The `ItemList` schema is only used when items are visibly listed on the page. Place items point to their stable anchors within the collection page; there are no individual place routes.*
 
 ## Schema Safety and Exclusions
 We prioritize truthful, visible data. The following rules are strictly enforced:

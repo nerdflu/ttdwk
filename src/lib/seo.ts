@@ -66,12 +66,6 @@ export const generateWeekendTitle = (citySlug: string) => {
     : 'Things to do with kids this weekend';
 };
 
-export const generatePlaceSeoTitle = (placeTitle: string, cityName: string) =>
-  `${placeTitle} with Kids | ${cityName} Family Guide`;
-
-export const generatePlaceHeading = (placeTitle: string) =>
-  `${placeTitle} with kids`;
-
 export const generateIdeaSeoTitle = (
   ideaTitle: string,
   citySlug: string,

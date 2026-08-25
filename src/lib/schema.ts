@@ -50,52 +50,6 @@ export const itemListSchema = (items: { name: string; url: string }[]) => ({
   }))
 });
 
-export const placeSchema = (place: any, city: any) => {
-  let placeType = "Place";
-  const cats = place.categories || [];
-  if (cats.includes("playgrounds")) placeType = "Park";
-  else if (cats.includes("museums-science")) placeType = "Museum";
-  else if (cats.includes("beaches-rockpools")) placeType = "Beach";
-  else if (cats.includes("water-play")) placeType = "Park";
-
-  const schema: any = {
-    "@context": "https://schema.org",
-    "@type": placeType,
-    "name": place.title,
-    "description": place.summary || place.why_we_like_it
-  };
-
-  if (place.address || place.suburb || city) {
-    schema.address = {
-      "@type": "PostalAddress",
-      "addressLocality": place.suburb || city?.title,
-      "addressRegion": place.state || city?.state,
-      "addressCountry": "AU"
-    };
-    if (place.address) {
-      schema.address.streetAddress = place.address;
-    }
-  }
-
-  if (place.latitude && place.longitude) {
-    schema.geo = {
-      "@type": "GeoCoordinates",
-      "latitude": place.latitude,
-      "longitude": place.longitude
-    };
-  }
-  
-  if (place.image_url) {
-    schema.image = place.image_url;
-  }
-  
-  if (place.website) {
-    schema.url = place.website;
-  }
-
-  return schema;
-};
-
 export const eventSchema = (event: any, city: any) => {
   const schema: any = {
     "@context": "https://schema.org",
