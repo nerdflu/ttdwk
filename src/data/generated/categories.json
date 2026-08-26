@@ -12,7 +12,7 @@
     "slug": "indoors",
     "description": "Indoor ideas for rainy days, hot days or low-effort outings.",
     "group": "weather",
-    "seo_title_pattern": "Things to do with kids indoors {preposition} {city}",
+    "seo_title_pattern": "Indoor things to do with kids {preposition} {city}",
     "seo_description_pattern": "Find indoor things to do with kids {preposition} {city}, from libraries and museums to workshops, play spaces and easy weather-safe ideas."
   },
   {
@@ -20,7 +20,7 @@
     "slug": "outdoors",
     "description": "Outdoor places, parks, nature spots and little adventures.",
     "group": "outdoors",
-    "seo_title_pattern": "Things to do with kids outdoors {preposition} {city}",
+    "seo_title_pattern": "Outdoor things to do with kids {preposition} {city}",
     "seo_description_pattern": "Find outdoor things to do with kids {preposition} {city}, including parks, walks, beaches, nature spots and easy little adventures."
   },
   {
@@ -28,7 +28,7 @@
     "slug": "rainy-days",
     "description": "Weather-safe ideas for wet days when you still need to get out.",
     "group": "weather",
-    "seo_title_pattern": "Things to do with kids on rainy days {preposition} {city}",
+    "seo_title_pattern": "Rainy day things to do with kids {preposition} {city}",
     "seo_description_pattern": "Find rainy day things to do with kids {preposition} {city}, including indoor ideas, local favourites and easy ways to get out despite the weather."
   },
   {
@@ -36,7 +36,7 @@
     "slug": "hot-days",
     "description": "Ideas for hot days: water, shade, air-con and low-effort escapes.",
     "group": "weather",
-    "seo_title_pattern": "Things to do with kids on hot days {preposition} {city}",
+    "seo_title_pattern": "Hot day things to do with kids {preposition} {city}",
     "seo_description_pattern": "Find hot day things to do with kids {preposition} {city}, including water play, shady spots, air-conditioned escapes and easy family outings."
   },
   {
@@ -44,7 +44,7 @@
     "slug": "school-holidays",
     "description": "School holiday ideas, events, outings and mini adventures.",
     "group": "seasonal",
-    "seo_title_pattern": "Things to do with kids during school holidays {preposition} {city}",
+    "seo_title_pattern": "School holiday things to do with kids {preposition} {city}",
     "seo_description_pattern": "Find school holiday things to do with kids {preposition} {city}, including events, activities, free ideas and little adventures for families."
   }
 ]
